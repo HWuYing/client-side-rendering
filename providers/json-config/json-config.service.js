@@ -1,15 +1,18 @@
-import { __decorate } from "tslib";
-import { Injectable } from '@fm/di';
-import { HttpClient } from '@fm/shared/common/http';
-import { JsonConfigService as SharedJsonConfigService } from '@fm/shared/providers/json-config';
-let JsonConfigService = class JsonConfigService extends SharedJsonConfigService {
-    http = this.ls.getService(HttpClient);
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.JsonConfigService = void 0;
+const tslib_1 = require("tslib");
+const di_1 = require("@fm/di");
+const http_1 = require("@fm/shared/common/http");
+const json_config_1 = require("@fm/shared/providers/json-config");
+let JsonConfigService = class JsonConfigService extends json_config_1.JsonConfigService {
+    http = this.ls.getService(http_1.HttpClient);
     getServerFetchData(url) {
         const { publicPath = '/' } = this.appContext.getEnvironment() || {};
         return this.http.get(/http|https/.test(url) ? url : `${publicPath}/${url}`.replace(/\/+/g, '/'));
     }
 };
-JsonConfigService = __decorate([
-    Injectable()
+JsonConfigService = tslib_1.__decorate([
+    (0, di_1.Injectable)()
 ], JsonConfigService);
-export { JsonConfigService };
+exports.JsonConfigService = JsonConfigService;

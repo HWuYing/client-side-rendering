@@ -1,4 +1,7 @@
-export class MicroStore {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.MicroStore = void 0;
+class MicroStore {
     microName;
     staticAssets;
     microManage;
@@ -82,3 +85,4 @@ export class MicroStore {
         return `${source}\n`;
     }
 }
+exports.MicroStore = MicroStore;
