@@ -1,5 +1,5 @@
 {
-  "name": "@fm/client-side-rendering",
+  "name": "@fm/csr",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
