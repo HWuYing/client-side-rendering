@@ -2,7 +2,7 @@
   "name": "@fm/csr",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "module": "index.js",
   "devDependencies": {
     "rxjs": "~7.4.0",
     "lodash": "~4.17.21"
