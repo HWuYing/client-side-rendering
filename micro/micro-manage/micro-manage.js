@@ -3,15 +3,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.MicroManage = void 0;
 const tslib_1 = require("tslib");
 const di_1 = require("@fm/di");
-const import_rxjs_1 = require("@fm/import-rxjs");
-const import_rxjs_2 = require("@fm/import-rxjs");
+const rxjs_1 = require("rxjs");
+const operators_1 = require("rxjs/operators");
 const load_assets_1 = require("../load-assets/load-assets");
 const micro_store_1 = require("../micro-store/micro-store");
 const share_data_1 = require("../shared-data/share-data");
 let MicroManage = class MicroManage {
     ls;
     la;
-    loaderStyleSubject = new import_rxjs_1.Subject();
+    loaderStyleSubject = new rxjs_1.Subject();
     chunkMap = {};
     microCache = new Map();
     constructor(ls, la) {
@@ -22,7 +22,7 @@ let MicroManage = class MicroManage {
     bootstrapMicro(microName) {
         let storeSubject = this.microCache.get(microName);
         if (!storeSubject) {
-            storeSubject = this.la.readMicroStatic(microName).pipe((0, import_rxjs_2.tap)(({ links }) => Object.assign(this.chunkMap, { [microName]: links })), (0, import_rxjs_2.map)((result) => new micro_store_1.MicroStore(microName, result, this)), (0, import_rxjs_2.shareReplay)(1));
+            storeSubject = this.la.readMicroStatic(microName).pipe((0, operators_1.tap)(({ links }) => Object.assign(this.chunkMap, { [microName]: links })), (0, operators_1.map)((result) => new micro_store_1.MicroStore(microName, result, this)), (0, operators_1.shareReplay)(1));
             this.microCache.set(microName, storeSubject);
         }
         return storeSubject;

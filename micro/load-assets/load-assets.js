@@ -7,8 +7,8 @@ const http_1 = require("@fm/shared/common/http");
 const micro_1 = require("@fm/shared/micro");
 const token_1 = require("@fm/shared/token");
 const lodash_1 = require("lodash");
-const import_rxjs_1 = require("@fm/import-rxjs");
-const import_rxjs_2 = require("@fm/import-rxjs");
+const rxjs_1 = require("rxjs");
+const operators_1 = require("rxjs/operators");
 const defaultAssetsPath = (microName) => `/static/${microName}/static/assets.json`;
 const defaultOptions = { assetsPath: defaultAssetsPath };
 let LoadAssets = class LoadAssets {
@@ -36,21 +36,21 @@ let LoadAssets = class LoadAssets {
         return this.readJavascript(staticAssets);
     }
     reeadLinkToStyles(links) {
-        return (0, lodash_1.isEmpty)(links) ? (0, import_rxjs_1.of)(links) : (0, import_rxjs_1.forkJoin)(links.map((href) => this.http.getText(href)));
+        return (0, lodash_1.isEmpty)(links) ? (0, rxjs_1.of)(links) : (0, rxjs_1.forkJoin)(links.map((href) => this.http.getText(href)));
     }
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     readJavascript({ javascript, script, ...other }) {
-        return (0, import_rxjs_1.forkJoin)(javascript.map((src) => this.http.getText(src))).pipe((0, import_rxjs_2.map)((js) => ({ script: js, javascript, ...other })));
+        return (0, rxjs_1.forkJoin)(javascript.map((src) => this.http.getText(src))).pipe((0, operators_1.map)((js) => ({ script: js, javascript, ...other })));
     }
     createMicroTag(microName, staticAssets) {
         const tag = document.createElement(`${microName}-tag`);
-        return tag && tag.shadowRoot ? (0, import_rxjs_1.of)(staticAssets) : this.reeadLinkToStyles(staticAssets.links).pipe(
+        return tag && tag.shadowRoot ? (0, rxjs_1.of)(staticAssets) : this.reeadLinkToStyles(staticAssets.links).pipe(
         // eslint-disable-next-line no-new-func
-        (0, import_rxjs_2.tap)((linkToStyles) => new Function((0, micro_1.createMicroElementTemplate)(microName, { linkToStyles }))()), (0, import_rxjs_2.map)(() => staticAssets));
+        (0, operators_1.tap)((linkToStyles) => new Function((0, micro_1.createMicroElementTemplate)(microName, { linkToStyles }))()), (0, operators_1.map)(() => staticAssets));
     }
     readMicroStatic(microName) {
         const { assetsPath } = this.options;
-        return this.http.get(assetsPath(microName)).pipe((0, import_rxjs_2.switchMap)((result) => this.parseStatic(microName, result)), (0, import_rxjs_2.switchMap)((result) => this.createMicroTag(microName, result)));
+        return this.http.get(assetsPath(microName)).pipe((0, operators_1.switchMap)((result) => this.parseStatic(microName, result)), (0, operators_1.switchMap)((result) => this.createMicroTag(microName, result)));
     }
 };
 LoadAssets = tslib_1.__decorate([
