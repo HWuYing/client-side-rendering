@@ -4,7 +4,7 @@ exports.Platform = void 0;
 const di_1 = require("@fm/di");
 const app_context_1 = require("@fm/shared/providers/app-context");
 const json_config_1 = require("@fm/shared/providers/json-config");
-const token_1 = require("@fm/shared/token");
+const token_1 = require("../../token");
 const app_context_2 = require("../app-context");
 const json_config_2 = require("../json-config");
 class Platform {
@@ -42,7 +42,7 @@ class Platform {
         return injector;
     }
     async importMicro(injector) {
-        const { registryMicro, MicroManage } = await injector.get(token_1.LAZY_MICRO);
+        const { registryMicro, MicroManage } = await injector.get(token_1.IMPORT_MICRO);
         registryMicro(injector);
         injector.get(app_context_1.APP_CONTEXT).useMicroManage = () => injector.get(MicroManage);
         return injector;

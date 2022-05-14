@@ -9,8 +9,7 @@ const token_1 = require("@fm/shared/token");
 const lodash_1 = require("lodash");
 const rxjs_1 = require("rxjs");
 const operators_1 = require("rxjs/operators");
-const defaultAssetsPath = (microName) => `/static/${microName}/static/assets.json`;
-const defaultOptions = { assetsPath: defaultAssetsPath };
+const micro_options_1 = require("../micro-options");
 let LoadAssets = class LoadAssets {
     http;
     options;
@@ -18,7 +17,7 @@ let LoadAssets = class LoadAssets {
     constructor(http, options = {}) {
         this.http = http;
         this.options = options;
-        this.options = (0, lodash_1.merge)(defaultOptions, this.options);
+        this.options = (0, lodash_1.merge)(micro_options_1.microOptions, this.options);
     }
     initialCacheServerData() {
         return typeof microFetchData !== 'undefined' ? microFetchData : [];
