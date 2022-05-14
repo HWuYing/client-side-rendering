@@ -1,7 +1,4 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.MicroStore = void 0;
-class MicroStore {
+export class MicroStore {
     microName;
     staticAssets;
     microManage;
@@ -85,4 +82,3 @@ class MicroStore {
         return `${source}\n`;
     }
 }
-exports.MicroStore = MicroStore;
