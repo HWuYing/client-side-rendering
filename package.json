@@ -4,8 +4,7 @@
   "description": "",
   "main": "index.js",
   "devDependencies": {
-    "rxjs": "~7.4.0",
-    "lodash": "~4.17.21"
+    "@fm/import-rxjs": "git+https://github.com/hwyn/import-rxjs.git"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
