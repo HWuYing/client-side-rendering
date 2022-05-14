@@ -1,3 +1,7 @@
-import { AppContextService as SharedAppContextService } from '@fm/shared/providers/app-context';
-export class AppContextService extends SharedAppContextService {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.AppContextService = void 0;
+const app_context_1 = require("@fm/shared/providers/app-context");
+class AppContextService extends app_context_1.AppContextService {
 }
+exports.AppContextService = AppContextService;

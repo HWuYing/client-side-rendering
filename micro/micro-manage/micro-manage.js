@@ -1,14 +1,17 @@
-import { __decorate, __metadata } from "tslib";
-import { Injectable, LocatorStorage } from '@fm/di';
-import { Subject } from 'rxjs';
-import { map, shareReplay, tap } from 'rxjs/operators';
-import { LoadAssets } from '../load-assets/load-assets';
-import { MicroStore } from '../micro-store/micro-store';
-import { SharedData } from '../shared-data/share-data';
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.MicroManage = void 0;
+const tslib_1 = require("tslib");
+const di_1 = require("@fm/di");
+const rxjs_1 = require("rxjs");
+const operators_1 = require("rxjs/operators");
+const load_assets_1 = require("../load-assets/load-assets");
+const micro_store_1 = require("../micro-store/micro-store");
+const share_data_1 = require("../shared-data/share-data");
 let MicroManage = class MicroManage {
     ls;
     la;
-    loaderStyleSubject = new Subject();
+    loaderStyleSubject = new rxjs_1.Subject();
     chunkMap = {};
     microCache = new Map();
     constructor(ls, la) {
@@ -19,7 +22,7 @@ let MicroManage = class MicroManage {
     bootstrapMicro(microName) {
         let storeSubject = this.microCache.get(microName);
         if (!storeSubject) {
-            storeSubject = this.la.readMicroStatic(microName).pipe(tap(({ links }) => Object.assign(this.chunkMap, { [microName]: links })), map((result) => new MicroStore(microName, result, this)), shareReplay(1));
+            storeSubject = this.la.readMicroStatic(microName).pipe((0, operators_1.tap)(({ links }) => Object.assign(this.chunkMap, { [microName]: links })), (0, operators_1.map)((result) => new micro_store_1.MicroStore(microName, result, this)), (0, operators_1.shareReplay)(1));
             this.microCache.set(microName, storeSubject);
         }
         return storeSubject;
@@ -41,11 +44,11 @@ let MicroManage = class MicroManage {
         return appendChild(linkNode);
     }
     get sharedData() {
-        return this.ls.getService(SharedData);
+        return this.ls.getService(share_data_1.SharedData);
     }
 };
-MicroManage = __decorate([
-    Injectable(),
-    __metadata("design:paramtypes", [LocatorStorage, LoadAssets])
+MicroManage = tslib_1.__decorate([
+    (0, di_1.Injectable)(),
+    tslib_1.__metadata("design:paramtypes", [di_1.LocatorStorage, load_assets_1.LoadAssets])
 ], MicroManage);
-export { MicroManage };
+exports.MicroManage = MicroManage;
