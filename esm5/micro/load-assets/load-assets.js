@@ -1,10 +1,11 @@
 import { __decorate, __metadata, __param } from "tslib";
 import { Inject, Injectable } from '@fm/di';
-import { forkJoin, map, of, switchMap, tap } from '@fm/import-rxjs';
 import { HttpClient } from '@fm/shared/common/http';
 import { createMicroElementTemplate } from '@fm/shared/micro';
 import { MICRO_OPTIONS } from '@fm/shared/token';
 import { isEmpty, merge } from 'lodash';
+import { forkJoin, of } from 'rxjs';
+import { map, switchMap, tap } from 'rxjs/operators';
 import { microOptions } from '../micro-options';
 let LoadAssets = class LoadAssets {
     http;

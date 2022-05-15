@@ -1,6 +1,6 @@
 import { LocatorStorage } from '@fm/di';
-import { Observable, Subject } from '@fm/import-rxjs';
 import { MicroManageInterface } from '@fm/shared/micro';
+import { Observable, Subject } from 'rxjs';
 import { LoadAssets } from '../load-assets/load-assets';
 import { MicroStore } from '../micro-store/micro-store';
 import { SharedData } from '../shared-data/share-data';

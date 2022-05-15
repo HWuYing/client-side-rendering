@@ -1,5 +1,5 @@
-import { Observable } from '@fm/import-rxjs';
 import { HttpClient } from '@fm/shared/common/http';
+import { Observable } from 'rxjs';
 export interface StaticAssets {
     script: string[];
     javascript: string[];

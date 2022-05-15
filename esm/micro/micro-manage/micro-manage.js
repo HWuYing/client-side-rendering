@@ -1,6 +1,7 @@
 import { __decorate, __metadata } from "tslib";
 import { Injectable, LocatorStorage } from '@fm/di';
-import { map, shareReplay, Subject, tap } from '@fm/import-rxjs';
+import { Subject } from 'rxjs';
+import { map, shareReplay, tap } from 'rxjs/operators';
 import { LoadAssets } from '../load-assets/load-assets';
 import { MicroStore } from '../micro-store/micro-store';
 import { SharedData } from '../shared-data/share-data';
