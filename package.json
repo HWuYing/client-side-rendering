@@ -2,7 +2,29 @@
   "name": "@fm/csr",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "./cjs/index.js",
+  "module": "./esm5/index.js",
+  "es2015": "./esm/index.js",
+  "exports": {
+    ".": {
+      "node": "./cjs/index.js",
+      "require": "./cjs/index.js",
+      "es2015": "./esm/index.js",
+      "default": "./esm5/index.js"
+    },
+    "./providers": {
+      "node": "./cjs/providers/index.js",
+      "require": "./cjs/providers/index.js",
+      "es2015": "./esm/providers/index.js",
+      "default": "./esm5/providers/index.js"
+    },
+    "./micro": {
+      "node": "./cjs/micro/index.js",
+      "require": "./cjs/micro/index.js",
+      "es2015": "./esm/micro/index.js",
+      "default": "./esm5/micro/index.js"
+    }
+  },
   "dependencies": {
     "@fm/import-rxjs": "git+https://github.com/hwyn/import-rxjs.git"
   },
