@@ -42,9 +42,12 @@ class Platform {
         return injector;
     }
     async importMicro(injector) {
-        const { registryMicro, MicroManage } = await injector.get(token_1.IMPORT_MICRO);
-        registryMicro(injector);
-        injector.get(app_context_1.APP_CONTEXT).useMicroManage = () => injector.get(MicroManage);
+        const importMicro = injector.get(token_1.IMPORT_MICRO);
+        if (importMicro) {
+            const { registryMicro, MicroManage } = await importMicro;
+            registryMicro(this.rootInjector);
+            injector.get(app_context_1.APP_CONTEXT).useMicroManage = () => injector.get(MicroManage);
+        }
         return injector;
     }
     get isMicro() {

@@ -6,7 +6,7 @@ const di_1 = require("@fm/di");
 const http_1 = require("@fm/shared/common/http");
 const json_config_1 = require("@fm/shared/providers/json-config");
 let JsonConfigService = class JsonConfigService extends json_config_1.JsonConfigService {
-    http = this.ls.getService(http_1.HttpClient);
+    http = this.injector.get(http_1.HttpClient);
     getServerFetchData(url) {
         const { publicPath = '/' } = this.appContext.getEnvironment() || {};
         return this.http.get(/http|https/.test(url) ? url : `${publicPath}/${url}`.replace(/\/+/g, '/'));

@@ -9,13 +9,13 @@ const load_assets_1 = require("../load-assets/load-assets");
 const micro_store_1 = require("../micro-store/micro-store");
 const share_data_1 = require("../shared-data/share-data");
 let MicroManage = class MicroManage {
-    ls;
+    injector;
     la;
     loaderStyleSubject = new rxjs_1.Subject();
     chunkMap = {};
     microCache = new Map();
-    constructor(ls, la) {
-        this.ls = ls;
+    constructor(injector, la) {
+        this.injector = injector;
         this.la = la;
         document.querySelector = this.querySelectorProxy();
     }
@@ -44,11 +44,11 @@ let MicroManage = class MicroManage {
         return appendChild(linkNode);
     }
     get sharedData() {
-        return this.ls.getService(share_data_1.SharedData);
+        return this.injector.get(share_data_1.SharedData);
     }
 };
 MicroManage = tslib_1.__decorate([
     (0, di_1.Injectable)(),
-    tslib_1.__metadata("design:paramtypes", [di_1.LocatorStorage, load_assets_1.LoadAssets])
+    tslib_1.__metadata("design:paramtypes", [di_1.Injector, load_assets_1.LoadAssets])
 ], MicroManage);
 exports.MicroManage = MicroManage;

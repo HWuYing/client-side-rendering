@@ -1,18 +1,18 @@
 import { __decorate, __metadata } from "tslib";
-import { Injectable, LocatorStorage } from '@fm/di';
+import { Injectable, Injector } from '@fm/di';
 import { Subject } from 'rxjs';
 import { map, shareReplay, tap } from 'rxjs/operators';
 import { LoadAssets } from '../load-assets/load-assets';
 import { MicroStore } from '../micro-store/micro-store';
 import { SharedData } from '../shared-data/share-data';
 let MicroManage = class MicroManage {
-    ls;
+    injector;
     la;
     loaderStyleSubject = new Subject();
     chunkMap = {};
     microCache = new Map();
-    constructor(ls, la) {
-        this.ls = ls;
+    constructor(injector, la) {
+        this.injector = injector;
         this.la = la;
         document.querySelector = this.querySelectorProxy();
     }
@@ -41,11 +41,11 @@ let MicroManage = class MicroManage {
         return appendChild(linkNode);
     }
     get sharedData() {
-        return this.ls.getService(SharedData);
+        return this.injector.get(SharedData);
     }
 };
 MicroManage = __decorate([
     Injectable(),
-    __metadata("design:paramtypes", [LocatorStorage, LoadAssets])
+    __metadata("design:paramtypes", [Injector, LoadAssets])
 ], MicroManage);
 export { MicroManage };
