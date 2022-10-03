@@ -1,7 +1,7 @@
 import { __decorate, __metadata, __param } from "tslib";
 import { Inject, Injectable } from '@fm/di';
 import { HttpClient } from '@fm/shared/common/http';
-import { createMicroElementTemplate } from '@fm/shared/micro';
+import { createMicroElementTemplate, serializableAssets } from '@fm/shared/micro';
 import { MICRO_OPTIONS } from '@fm/shared/token';
 import { isEmpty, merge } from 'lodash';
 import { forkJoin, of } from 'rxjs';
@@ -20,23 +20,17 @@ let LoadAssets = class LoadAssets {
         return typeof microFetchData !== 'undefined' ? microFetchData : [];
     }
     parseStatic(microName, entrypoints) {
-        const entryKeys = Object.keys(entrypoints);
         const microData = this.cacheServerData.find(({ microName: _microName }) => microName === _microName);
         const fetchCacheData = JSON.parse(microData && microData.source || '{}');
-        const staticAssets = { javascript: [], script: [], links: [], fetchCacheData };
-        entryKeys.forEach((staticKey) => {
-            const { js: staticJs = [], css: staticLinks = [] } = entrypoints[staticKey];
-            staticAssets.javascript.push(...staticJs);
-            staticAssets.links.push(...staticLinks);
-        });
+        const staticAssets = { ...serializableAssets(entrypoints), script: [], fetchCacheData };
         return this.readJavascript(staticAssets);
     }
     reeadLinkToStyles(links) {
         return isEmpty(links) ? of(links) : forkJoin(links.map((href) => this.http.getText(href)));
     }
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    readJavascript({ javascript, script, ...other }) {
-        return forkJoin(javascript.map((src) => this.http.getText(src))).pipe(map((js) => ({ script: js, javascript, ...other })));
+    readJavascript({ js, script, ...other }) {
+        return forkJoin(js.map((src) => this.http.getText(src))).pipe(map((script) => ({ script, js, ...other })));
     }
     createMicroTag(microName, staticAssets) {
         const tag = document.createElement(`${microName}-tag`);

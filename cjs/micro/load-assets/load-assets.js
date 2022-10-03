@@ -23,23 +23,17 @@ let LoadAssets = class LoadAssets {
         return typeof microFetchData !== 'undefined' ? microFetchData : [];
     }
     parseStatic(microName, entrypoints) {
-        const entryKeys = Object.keys(entrypoints);
         const microData = this.cacheServerData.find(({ microName: _microName }) => microName === _microName);
         const fetchCacheData = JSON.parse(microData && microData.source || '{}');
-        const staticAssets = { javascript: [], script: [], links: [], fetchCacheData };
-        entryKeys.forEach((staticKey) => {
-            const { js: staticJs = [], css: staticLinks = [] } = entrypoints[staticKey];
-            staticAssets.javascript.push(...staticJs);
-            staticAssets.links.push(...staticLinks);
-        });
+        const staticAssets = { ...(0, micro_1.serializableAssets)(entrypoints), script: [], fetchCacheData };
         return this.readJavascript(staticAssets);
     }
     reeadLinkToStyles(links) {
         return (0, lodash_1.isEmpty)(links) ? (0, rxjs_1.of)(links) : (0, rxjs_1.forkJoin)(links.map((href) => this.http.getText(href)));
     }
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    readJavascript({ javascript, script, ...other }) {
-        return (0, rxjs_1.forkJoin)(javascript.map((src) => this.http.getText(src))).pipe((0, operators_1.map)((js) => ({ script: js, javascript, ...other })));
+    readJavascript({ js, script, ...other }) {
+        return (0, rxjs_1.forkJoin)(js.map((src) => this.http.getText(src))).pipe((0, operators_1.map)((script) => ({ script, js, ...other })));
     }
     createMicroTag(microName, staticAssets) {
         const tag = document.createElement(`${microName}-tag`);

@@ -2,7 +2,7 @@ import { HttpClient } from '@fm/shared/common/http';
 import { Observable } from 'rxjs';
 export interface StaticAssets {
     script: string[];
-    javascript: string[];
+    js: string[];
     links: string[];
     fetchCacheData: {
         [url: string]: any;

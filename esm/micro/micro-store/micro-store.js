@@ -61,9 +61,9 @@ export class MicroStore {
         }
     }
     async loadScriptContext() {
-        const { script, javascript } = this.staticAssets;
+        const { script, js } = this.staticAssets;
         return Promise.all(script.map((source, index) => {
-            const hasSourceMap = !/[\S]+\.[\S]+\.js$/.test(javascript[index]);
+            const hasSourceMap = !/[\S]+\.[\S]+\.js$/.test(js[index]);
             const sourceCode = this.formatSourceCode(source);
             // eslint-disable-next-line no-new-func
             return hasSourceMap ? this.loadBlobScript(sourceCode) : Promise.resolve(new Function('microStore', 'fetchCacheData', sourceCode));
@@ -71,9 +71,9 @@ export class MicroStore {
     }
     async loadBlobScript(source) {
         return new Promise(resolve => {
-            const funName = `anonymous${Math.random().toString().replace(/0.([\d]{5})\d*/ig, '$1')}`;
+            const funName = `${this.microManage}${Math.random().toString().replace(/0.([\d]{5})\d*/ig, '$1')}`;
             const script = document.createElement('script');
-            script.src = URL.createObjectURL(new Blob([`window.${funName}=function(microStore, fetchCacheData){ ${source}\n}`]));
+            script.src = URL.createObjectURL(new Blob([`window.${funName}=function(microStore, fetchCacheData){ ${source}}`]));
             document.body.appendChild(script);
             script.onload = () => resolve(window[funName]);
         });
