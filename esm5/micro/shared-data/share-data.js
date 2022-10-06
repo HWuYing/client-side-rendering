@@ -1,15 +1,18 @@
 import { __decorate } from "tslib";
 import { Injectable } from '@fm/di';
-let SharedData = class SharedData {
-    data = new Map();
-    set(key, value) {
+var SharedData = /** @class */ (function () {
+    function SharedData() {
+        this.data = new Map();
+    }
+    SharedData.prototype.set = function (key, value) {
         this.data.set(key, value);
-    }
-    get(key) {
+    };
+    SharedData.prototype.get = function (key) {
         return this.data.get(key);
-    }
-};
-SharedData = __decorate([
-    Injectable()
-], SharedData);
+    };
+    SharedData = __decorate([
+        Injectable()
+    ], SharedData);
+    return SharedData;
+}());
 export { SharedData };

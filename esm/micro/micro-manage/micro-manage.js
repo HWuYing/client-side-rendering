@@ -6,14 +6,12 @@ import { LoadAssets } from '../load-assets/load-assets';
 import { MicroStore } from '../micro-store/micro-store';
 import { SharedData } from '../shared-data/share-data';
 let MicroManage = class MicroManage {
-    injector;
-    la;
-    loaderStyleSubject = new Subject();
-    chunkMap = {};
-    microCache = new Map();
     constructor(injector, la) {
         this.injector = injector;
         this.la = la;
+        this.loaderStyleSubject = new Subject();
+        this.chunkMap = {};
+        this.microCache = new Map();
         document.querySelector = this.querySelectorProxy();
     }
     bootstrapMicro(microName) {

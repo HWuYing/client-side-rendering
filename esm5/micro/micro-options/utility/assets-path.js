@@ -1,1 +1,1 @@
-export const assetsPath = (microName) => `/static/${microName}/static/assets.json`;
+export var assetsPath = function (microName) { return "/static/".concat(microName, "/static/assets.json"); };

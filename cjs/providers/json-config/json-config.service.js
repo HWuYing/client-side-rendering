@@ -1,18 +1,24 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.JsonConfigService = void 0;
-const tslib_1 = require("tslib");
-const di_1 = require("@fm/di");
-const http_1 = require("@fm/shared/common/http");
-const json_config_1 = require("@fm/shared/providers/json-config");
-let JsonConfigService = class JsonConfigService extends json_config_1.JsonConfigService {
-    http = this.injector.get(http_1.HttpClient);
-    getServerFetchData(url) {
-        const { publicPath = '/' } = this.appContext.getEnvironment() || {};
-        return this.http.get(/http|https/.test(url) ? url : `${publicPath}/${url}`.replace(/\/+/g, '/'));
+var tslib_1 = require("tslib");
+var di_1 = require("@fm/di");
+var http_1 = require("@fm/shared/common/http");
+var json_config_1 = require("@fm/shared/providers/json-config");
+var JsonConfigService = /** @class */ (function (_super) {
+    tslib_1.__extends(JsonConfigService, _super);
+    function JsonConfigService() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.http = _this.injector.get(http_1.HttpClient);
+        return _this;
     }
-};
-JsonConfigService = tslib_1.__decorate([
-    (0, di_1.Injectable)()
-], JsonConfigService);
+    JsonConfigService.prototype.getServerFetchData = function (url) {
+        var _a = (this.appContext.getEnvironment() || {}).publicPath, publicPath = _a === void 0 ? '/' : _a;
+        return this.http.get(/http|https/.test(url) ? url : "".concat(publicPath, "/").concat(url).replace(/\/+/g, '/'));
+    };
+    JsonConfigService = tslib_1.__decorate([
+        (0, di_1.Injectable)()
+    ], JsonConfigService);
+    return JsonConfigService;
+}(json_config_1.JsonConfigService));
 exports.JsonConfigService = JsonConfigService;

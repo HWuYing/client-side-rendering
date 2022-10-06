@@ -1,7 +1,9 @@
 import { __decorate } from "tslib";
 import { Injectable } from '@fm/di';
 let SharedData = class SharedData {
-    data = new Map();
+    constructor() {
+        this.data = new Map();
+    }
     set(key, value) {
         this.data.set(key, value);
     }

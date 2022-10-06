@@ -1,4 +1,4 @@
-import { __decorate, __metadata, __param } from "tslib";
+import { __decorate, __metadata, __param, __rest } from "tslib";
 import { Inject, Injectable } from '@fm/di';
 import { HttpClient } from '@fm/shared/common/http';
 import { createMicroElementTemplate, serializableAssets } from '@fm/shared/micro';
@@ -8,12 +8,10 @@ import { forkJoin, of } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs/operators';
 import { microOptions } from '../micro-options';
 let LoadAssets = class LoadAssets {
-    http;
-    options;
-    cacheServerData = this.initialCacheServerData();
     constructor(http, options = {}) {
         this.http = http;
         this.options = options;
+        this.cacheServerData = this.initialCacheServerData();
         this.options = merge(microOptions, this.options);
     }
     initialCacheServerData() {
@@ -22,15 +20,16 @@ let LoadAssets = class LoadAssets {
     parseStatic(microName, entrypoints) {
         const microData = this.cacheServerData.find(({ microName: _microName }) => microName === _microName);
         const fetchCacheData = JSON.parse(microData && microData.source || '{}');
-        const staticAssets = { ...serializableAssets(entrypoints), script: [], fetchCacheData };
+        const staticAssets = Object.assign(Object.assign({}, serializableAssets(entrypoints)), { script: [], fetchCacheData });
         return this.readJavascript(staticAssets);
     }
     reeadLinkToStyles(links) {
         return isEmpty(links) ? of(links) : forkJoin(links.map((href) => this.http.getText(href)));
     }
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    readJavascript({ js, script, ...other }) {
-        return forkJoin(js.map((src) => this.http.getText(src))).pipe(map((script) => ({ script, js, ...other })));
+    readJavascript(_a) {
+        var { js, script } = _a, other = __rest(_a, ["js", "script"]);
+        return forkJoin(js.map((src) => this.http.getText(src))).pipe(map((script) => (Object.assign({ script, js }, other))));
     }
     createMicroTag(microName, staticAssets) {
         const tag = document.createElement(`${microName}-tag`);
