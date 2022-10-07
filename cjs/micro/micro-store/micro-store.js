@@ -135,7 +135,7 @@ var MicroStore = /** @class */ (function () {
             var _this = this;
             return tslib_1.__generator(this, function (_a) {
                 return [2 /*return*/, new Promise(function (resolve) {
-                        var funName = "".concat(_this.microManage).concat(Math.random().toString().replace(/0.([\d]{5})\d*/ig, '$1'));
+                        var funName = "".concat(_this.microName).concat(Math.random().toString().replace(/0.([\d]{5})\d*/ig, '$1'));
                         var script = document.createElement('script');
                         script.src = URL.createObjectURL(new Blob(["window.".concat(funName, "=function(microStore, fetchCacheData){ ").concat(source, "}")]));
                         document.body.appendChild(script);

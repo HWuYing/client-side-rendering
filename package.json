@@ -1,94 +1,100 @@
 {
-  "name": "@fm/csr",
-  "version": "1.0.0",
-  "description": "",
-  "main": "./cjs/index.js",
-  "module": "./esm5/index.js",
-  "es2015": "./esm/index.js",
-  "exports": {
-    ".": {
-      "node": "./cjs/index.js",
-      "require": "./cjs/index.js",
-      "es2015": "./esm/index.js",
-      "default": "./esm5/index.js"
-    },
-    "./providers": {
-      "node": "./cjs/providers/index.js",
-      "require": "./cjs/providers/index.js",
-      "es2015": "./esm/providers/index.js",
-      "default": "./esm5/providers/index.js"
-    },
-    "./providers/platform": {
-      "node": "./cjs/providers/platform/index.js",
-      "require": "./cjs/providers/platform/index.js",
-      "es2015": "./esm/providers/platform/index.js",
-      "default": "./esm5/providers/platform/index.js"
-    },
-    "./providers/app-context": {
-      "node": "./cjs/providers/app-context/index.js",
-      "require": "./cjs/providers/app-context/index.js",
-      "es2015": "./esm/providers/app-context/index.js",
-      "default": "./esm5/providers/app-context/index.js"
-    },
-    "./providers/json-config": {
-      "node": "./cjs/providers/json-config/index.js",
-      "require": "./cjs/providers/json-config/index.js",
-      "es2015": "./esm/providers/json-config/index.js",
-      "default": "./esm5/providers/json-config/index.js"
-    },
-    "./micro": {
-      "node": "./cjs/micro/index.js",
-      "require": "./cjs/micro/index.js",
-      "es2015": "./esm/micro/index.js",
-      "default": "./esm5/micro/index.js"
-    },
-    "./micro/import-micro": {
-      "node": "./cjs/micro/import-micro.js",
-      "require": "./cjs/micro/import-micro.js",
-      "es2015": "./esm/micro/import-micro.js",
-      "default": "./esm5/micro/import-micro.js"
-    },
-    "./micro/load-assets": {
-      "node": "./cjs/micro/load-assets/index.js",
-      "require": "./cjs/micro/load-assets/index.js",
-      "es2015": "./esm/micro/load-assets/index.js",
-      "default": "./esm5/micro/load-assets/index.js"
-    },
-    "./micro/micro-manage": {
-      "node": "./cjs/micro/micro-manage/index.js",
-      "require": "./cjs/micro/micro-manage/index.js",
-      "es2015": "./esm/micro/micro-manage/index.js",
-      "default": "./esm5/micro/micro-manage/index.js"
-    },
-    "./micro/micro-store": {
-      "node": "./cjs/micro/micro-store/index.js",
-      "require": "./cjs/micro/micro-store/index.js",
-      "es2015": "./esm/micro/micro-store/index.js",
-      "default": "./esm5/micro/micro-store/index.js"
-    },
-    "./micro/micro-options": {
-      "node": "./cjs/micro/micro-options/index.js",
-      "require": "./cjs/micro/micro-options/index.js",
-      "es2015": "./esm/micro/micro-options/index.js",
-      "default": "./esm5/micro/micro-options/index.js"
-    },
-    "./micro/shared-data": {
-      "node": "./cjs/micro/shared-data/index.js",
-      "require": "./cjs/micro/shared-data/index.js",
-      "es2015": "./esm/micro/shared-data/index.js",
-      "default": "./esm5/micro/shared-data/index.js"
-    },
-    "./token": {
-      "node": "./cjs/token/index.js",
-      "require": "./cjs/token/index.js",
-      "es2015": "./esm/token/index.js",
-      "default": "./esm5/token/index.js"
-    }
-  },
-  "dependencies": {},
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "",
-  "license": "ISC"
+	"name": "@fm/csr",
+	"version": "1.0.0",
+	"description": "",
+	"main": "./cjs/index.js",
+	"module": "./esm5/index.js",
+	"es2015": "./esm/index.js",
+	"exports": {
+		".": {
+			"node": "./cjs/index.js",
+			"require": "./cjs/index.js",
+			"es2015": "./esm/index.js",
+			"default": "./esm5/index.js"
+		},
+		"./micro": {
+			"node": "./cjs/micro/index.js",
+			"require": "./cjs/micro/index.js",
+			"es2015": "./esm/micro/index.js",
+			"default": "./esm5/micro/index.js"
+		},
+		"./micro/import-micro/*": {
+			"node": "./cjs/micro/import-micro/*.js",
+			"require": "./cjs/micro/import-micro/*.js",
+			"es2015": "./esm/micro/import-micro/*.js",
+			"default": "./esm5/micro/import-micro/*.js"
+		},
+		"./micro/load-assets/*": {
+			"node": "./cjs/micro/load-assets/*.js",
+			"require": "./cjs/micro/load-assets/*.js",
+			"es2015": "./esm/micro/load-assets/*.js",
+			"default": "./esm5/micro/load-assets/*.js"
+		},
+		"./micro/micro-manage/*": {
+			"node": "./cjs/micro/micro-manage/*.js",
+			"require": "./cjs/micro/micro-manage/*.js",
+			"es2015": "./esm/micro/micro-manage/*.js",
+			"default": "./esm5/micro/micro-manage/*.js"
+		},
+		"./micro/micro-options": {
+			"node": "./cjs/micro/micro-options/index.js",
+			"require": "./cjs/micro/micro-options/index.js",
+			"es2015": "./esm/micro/micro-options/index.js",
+			"default": "./esm5/micro/micro-options/index.js"
+		},
+		"./micro/micro-options/utility/*": {
+			"node": "./cjs/micro/micro-options/utility/*.js",
+			"require": "./cjs/micro/micro-options/utility/*.js",
+			"es2015": "./esm/micro/micro-options/utility/*.js",
+			"default": "./esm5/micro/micro-options/utility/*.js"
+		},
+		"./micro/micro-store/*": {
+			"node": "./cjs/micro/micro-store/*.js",
+			"require": "./cjs/micro/micro-store/*.js",
+			"es2015": "./esm/micro/micro-store/*.js",
+			"default": "./esm5/micro/micro-store/*.js"
+		},
+		"./micro/shared-data/*": {
+			"node": "./cjs/micro/shared-data/*.js",
+			"require": "./cjs/micro/shared-data/*.js",
+			"es2015": "./esm/micro/shared-data/*.js",
+			"default": "./esm5/micro/shared-data/*.js"
+		},
+		"./providers": {
+			"node": "./cjs/providers/index.js",
+			"require": "./cjs/providers/index.js",
+			"es2015": "./esm/providers/index.js",
+			"default": "./esm5/providers/index.js"
+		},
+		"./providers/app-context": {
+			"node": "./cjs/providers/app-context/index.js",
+			"require": "./cjs/providers/app-context/index.js",
+			"es2015": "./esm/providers/app-context/index.js",
+			"default": "./esm5/providers/app-context/index.js"
+		},
+		"./providers/json-config": {
+			"node": "./cjs/providers/json-config/index.js",
+			"require": "./cjs/providers/json-config/index.js",
+			"es2015": "./esm/providers/json-config/index.js",
+			"default": "./esm5/providers/json-config/index.js"
+		},
+		"./providers/platform": {
+			"node": "./cjs/providers/platform/index.js",
+			"require": "./cjs/providers/platform/index.js",
+			"es2015": "./esm/providers/platform/index.js",
+			"default": "./esm5/providers/platform/index.js"
+		},
+		"./token": {
+			"node": "./cjs/token/index.js",
+			"require": "./cjs/token/index.js",
+			"es2015": "./esm/token/index.js",
+			"default": "./esm5/token/index.js"
+		}
+	},
+	"dependencies": {},
+	"scripts": {
+		"test": "echo 'Error: no test specified' && exit 1"
+	},
+	"author": "",
+	"license": "ISC"
 }

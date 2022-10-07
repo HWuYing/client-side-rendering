@@ -81,7 +81,7 @@ export class MicroStore {
     loadBlobScript(source) {
         return __awaiter(this, void 0, void 0, function* () {
             return new Promise(resolve => {
-                const funName = `${this.microManage}${Math.random().toString().replace(/0.([\d]{5})\d*/ig, '$1')}`;
+                const funName = `${this.microName}${Math.random().toString().replace(/0.([\d]{5})\d*/ig, '$1')}`;
                 const script = document.createElement('script');
                 script.src = URL.createObjectURL(new Blob([`window.${funName}=function(microStore, fetchCacheData){ ${source}}`]));
                 document.body.appendChild(script);
