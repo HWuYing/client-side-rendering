@@ -18,11 +18,11 @@
 			"es2015": "./esm/micro/index.js",
 			"default": "./esm5/micro/index.js"
 		},
-		"./micro/import-micro/*": {
-			"node": "./cjs/micro/import-micro/*.js",
-			"require": "./cjs/micro/import-micro/*.js",
-			"es2015": "./esm/micro/import-micro/*.js",
-			"default": "./esm5/micro/import-micro/*.js"
+		"./micro/import-micro": {
+			"node": "./cjs/micro/import-micro/index.js",
+			"require": "./cjs/micro/import-micro/index.js",
+			"es2015": "./esm/micro/import-micro/index.js",
+			"default": "./esm5/micro/import-micro/index.js"
 		},
 		"./micro/load-assets/*": {
 			"node": "./cjs/micro/load-assets/*.js",
