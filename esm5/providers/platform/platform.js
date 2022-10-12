@@ -39,7 +39,7 @@ var Platform = /** @class */ (function () {
         var injector = new StaticInjector(this.rootInjector, { isScope: 'self' });
         var container = document.getElementById('app');
         var styleContainer = document.head;
-        var appContext = __assign({ fetch: fetch, container: container, styleContainer: styleContainer, renderSSR: true, resource: this.resource, isMicro: this.isMicro }, context);
+        var appContext = __assign({ container: container, styleContainer: styleContainer, renderSSR: true, resource: this.resource, isMicro: this.isMicro }, context);
         var _providers = __spreadArray(__spreadArray(__spreadArray([], this.providers, true), [
             { provide: APP_CONTEXT, useValue: appContext },
             { provide: JsonConfigService, useClass: ClientJsonConfigService },

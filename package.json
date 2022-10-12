@@ -18,11 +18,23 @@
 			"es2015": "./esm/micro/index.js",
 			"default": "./esm5/micro/index.js"
 		},
+		"./micro/*": {
+			"node": "./cjs/micro/*.js",
+			"require": "./cjs/micro/*.js",
+			"es2015": "./esm/micro/*.js",
+			"default": "./esm5/micro/*.js"
+		},
 		"./micro/import-micro": {
 			"node": "./cjs/micro/import-micro/index.js",
 			"require": "./cjs/micro/import-micro/index.js",
 			"es2015": "./esm/micro/import-micro/index.js",
 			"default": "./esm5/micro/import-micro/index.js"
+		},
+		"./micro/import-micro/*": {
+			"node": "./cjs/micro/import-micro/*.js",
+			"require": "./cjs/micro/import-micro/*.js",
+			"es2015": "./esm/micro/import-micro/*.js",
+			"default": "./esm5/micro/import-micro/*.js"
 		},
 		"./micro/load-assets/*": {
 			"node": "./cjs/micro/load-assets/*.js",
@@ -41,6 +53,12 @@
 			"require": "./cjs/micro/micro-options/index.js",
 			"es2015": "./esm/micro/micro-options/index.js",
 			"default": "./esm5/micro/micro-options/index.js"
+		},
+		"./micro/micro-options/*": {
+			"node": "./cjs/micro/micro-options/*.js",
+			"require": "./cjs/micro/micro-options/*.js",
+			"es2015": "./esm/micro/micro-options/*.js",
+			"default": "./esm5/micro/micro-options/*.js"
 		},
 		"./micro/micro-options/utility/*": {
 			"node": "./cjs/micro/micro-options/utility/*.js",
@@ -66,11 +84,23 @@
 			"es2015": "./esm/providers/index.js",
 			"default": "./esm5/providers/index.js"
 		},
+		"./providers/*": {
+			"node": "./cjs/providers/*.js",
+			"require": "./cjs/providers/*.js",
+			"es2015": "./esm/providers/*.js",
+			"default": "./esm5/providers/*.js"
+		},
 		"./providers/app-context": {
 			"node": "./cjs/providers/app-context/index.js",
 			"require": "./cjs/providers/app-context/index.js",
 			"es2015": "./esm/providers/app-context/index.js",
 			"default": "./esm5/providers/app-context/index.js"
+		},
+		"./providers/app-context/*": {
+			"node": "./cjs/providers/app-context/*.js",
+			"require": "./cjs/providers/app-context/*.js",
+			"es2015": "./esm/providers/app-context/*.js",
+			"default": "./esm5/providers/app-context/*.js"
 		},
 		"./providers/json-config": {
 			"node": "./cjs/providers/json-config/index.js",
@@ -78,17 +108,35 @@
 			"es2015": "./esm/providers/json-config/index.js",
 			"default": "./esm5/providers/json-config/index.js"
 		},
+		"./providers/json-config/*": {
+			"node": "./cjs/providers/json-config/*.js",
+			"require": "./cjs/providers/json-config/*.js",
+			"es2015": "./esm/providers/json-config/*.js",
+			"default": "./esm5/providers/json-config/*.js"
+		},
 		"./providers/platform": {
 			"node": "./cjs/providers/platform/index.js",
 			"require": "./cjs/providers/platform/index.js",
 			"es2015": "./esm/providers/platform/index.js",
 			"default": "./esm5/providers/platform/index.js"
 		},
+		"./providers/platform/*": {
+			"node": "./cjs/providers/platform/*.js",
+			"require": "./cjs/providers/platform/*.js",
+			"es2015": "./esm/providers/platform/*.js",
+			"default": "./esm5/providers/platform/*.js"
+		},
 		"./token": {
 			"node": "./cjs/token/index.js",
 			"require": "./cjs/token/index.js",
 			"es2015": "./esm/token/index.js",
 			"default": "./esm5/token/index.js"
+		},
+		"./token/*": {
+			"node": "./cjs/token/*.js",
+			"require": "./cjs/token/*.js",
+			"es2015": "./esm/token/*.js",
+			"default": "./esm5/token/*.js"
 		}
 	},
 	"dependencies": {},

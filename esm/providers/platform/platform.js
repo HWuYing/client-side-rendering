@@ -29,7 +29,7 @@ export class Platform {
         const injector = new StaticInjector(this.rootInjector, { isScope: 'self' });
         const container = document.getElementById('app');
         const styleContainer = document.head;
-        const appContext = Object.assign({ fetch, container, styleContainer, renderSSR: true, resource: this.resource, isMicro: this.isMicro }, context);
+        const appContext = Object.assign({ container, styleContainer, renderSSR: true, resource: this.resource, isMicro: this.isMicro }, context);
         const _providers = [
             ...this.providers,
             { provide: APP_CONTEXT, useValue: appContext },

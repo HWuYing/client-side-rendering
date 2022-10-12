@@ -42,7 +42,7 @@ var Platform = /** @class */ (function () {
         var injector = new di_1.StaticInjector(this.rootInjector, { isScope: 'self' });
         var container = document.getElementById('app');
         var styleContainer = document.head;
-        var appContext = tslib_1.__assign({ fetch: fetch, container: container, styleContainer: styleContainer, renderSSR: true, resource: this.resource, isMicro: this.isMicro }, context);
+        var appContext = tslib_1.__assign({ container: container, styleContainer: styleContainer, renderSSR: true, resource: this.resource, isMicro: this.isMicro }, context);
         var _providers = tslib_1.__spreadArray(tslib_1.__spreadArray(tslib_1.__spreadArray([], this.providers, true), [
             { provide: app_context_1.APP_CONTEXT, useValue: appContext },
             { provide: json_config_1.JsonConfigService, useClass: json_config_2.JsonConfigService },
