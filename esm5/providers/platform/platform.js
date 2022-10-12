@@ -1,7 +1,6 @@
 import { __assign, __awaiter, __generator, __rest, __spreadArray } from "tslib";
 import { getProvider, Injector, StaticInjector } from '@fm/di';
-import { APP_CONTEXT, AppContextService } from '@fm/shared/providers/app-context';
-import { JsonConfigService } from '@fm/shared/providers/json-config';
+import { JsonConfigService, APP_CONTEXT, AppContextService } from '@fm/shared';
 import { IMPORT_MICRO } from '../../token';
 import { AppContextService as ClientAppContextService } from '../app-context';
 import { JsonConfigService as ClientJsonConfigService } from '../json-config';

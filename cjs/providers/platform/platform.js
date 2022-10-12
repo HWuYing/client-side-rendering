@@ -3,11 +3,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Platform = void 0;
 var tslib_1 = require("tslib");
 var di_1 = require("@fm/di");
-var app_context_1 = require("@fm/shared/providers/app-context");
-var json_config_1 = require("@fm/shared/providers/json-config");
+var shared_1 = require("@fm/shared");
 var token_1 = require("../../token");
-var app_context_2 = require("../app-context");
-var json_config_2 = require("../json-config");
+var app_context_1 = require("../app-context");
+var json_config_1 = require("../json-config");
 var Platform = /** @class */ (function () {
     function Platform(providers) {
         this.providers = providers;
@@ -44,9 +43,9 @@ var Platform = /** @class */ (function () {
         var styleContainer = document.head;
         var appContext = tslib_1.__assign({ container: container, styleContainer: styleContainer, renderSSR: true, resource: this.resource, isMicro: this.isMicro }, context);
         var _providers = tslib_1.__spreadArray(tslib_1.__spreadArray(tslib_1.__spreadArray([], this.providers, true), [
-            { provide: app_context_1.APP_CONTEXT, useValue: appContext },
-            { provide: json_config_1.JsonConfigService, useClass: json_config_2.JsonConfigService },
-            { provide: app_context_1.AppContextService, useClass: app_context_2.AppContextService }
+            { provide: shared_1.APP_CONTEXT, useValue: appContext },
+            { provide: shared_1.JsonConfigService, useClass: json_config_1.JsonConfigService },
+            { provide: shared_1.AppContextService, useClass: app_context_1.AppContextService }
         ], false), providers, true);
         _providers.forEach(function (provider) { return injector.set(provider.provide, provider); });
         return injector;
@@ -63,7 +62,7 @@ var Platform = /** @class */ (function () {
                     case 1:
                         _a = _b.sent(), registryMicro = _a.registryMicro, MicroManage_1 = _a.MicroManage;
                         registryMicro(this.rootInjector);
-                        injector.get(app_context_1.APP_CONTEXT).useMicroManage = function () { return injector.get(MicroManage_1); };
+                        injector.get(shared_1.APP_CONTEXT).useMicroManage = function () { return injector.get(MicroManage_1); };
                         _b.label = 2;
                     case 2: return [2 /*return*/, injector];
                 }

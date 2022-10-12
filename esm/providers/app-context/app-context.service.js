@@ -1,6 +1,6 @@
 import { __decorate } from "tslib";
 import { Injectable } from '@fm/di';
-import { AppContextService as SharedAppContextService } from '@fm/shared/providers/app-context';
+import { AppContextService as SharedAppContextService } from '@fm/shared';
 import { ProxyFetch } from './proxy-fetch';
 let AppContextService = class AppContextService extends SharedAppContextService {
     constructor() {

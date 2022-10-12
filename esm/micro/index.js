@@ -1,4 +1,4 @@
-export * from './load-assets/load-assets';
-export * from './micro-manage/micro-manage';
-export * from './micro-options';
-export * from './micro-store/micro-store';
+export { LoadAssets } from './load-assets/load-assets';
+export { MicroManage } from './micro-manage/micro-manage';
+export { microOptions, assetsPath } from './micro-options';
+export { MicroStore } from './micro-store/micro-store';

@@ -1,4 +1,4 @@
-import { MICRO_OPTIONS } from '@fm/shared/token';
+import { MICRO_OPTIONS } from '@fm/shared';
 import { microOptions } from '../micro-options';
 export const registryMicro = (injector) => {
     const providers = [{ provide: MICRO_OPTIONS, useValue: microOptions }];

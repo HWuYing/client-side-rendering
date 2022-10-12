@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AppContextService = void 0;
 var tslib_1 = require("tslib");
 var di_1 = require("@fm/di");
-var app_context_1 = require("@fm/shared/providers/app-context");
+var shared_1 = require("@fm/shared");
 var proxy_fetch_1 = require("./proxy-fetch");
 var AppContextService = /** @class */ (function (_super) {
     tslib_1.__extends(AppContextService, _super);
@@ -36,5 +36,5 @@ var AppContextService = /** @class */ (function (_super) {
         (0, di_1.Injectable)()
     ], AppContextService);
     return AppContextService;
-}(app_context_1.AppContextService));
+}(shared_1.AppContextService));
 exports.AppContextService = AppContextService;

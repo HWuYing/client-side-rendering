@@ -3,9 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.LoadAssets = void 0;
 var tslib_1 = require("tslib");
 var di_1 = require("@fm/di");
-var http_1 = require("@fm/shared/common/http");
-var micro_1 = require("@fm/shared/micro");
-var token_1 = require("@fm/shared/token");
+var shared_1 = require("@fm/shared");
 var lodash_1 = require("lodash");
 var rxjs_1 = require("rxjs");
 var operators_1 = require("rxjs/operators");
@@ -27,7 +25,7 @@ var LoadAssets = /** @class */ (function () {
             return microName === _microName;
         });
         var fetchCacheData = JSON.parse(microData && microData.source || '{}');
-        var staticAssets = tslib_1.__assign(tslib_1.__assign({}, (0, micro_1.serializableAssets)(entrypoints)), { script: [], fetchCacheData: fetchCacheData });
+        var staticAssets = tslib_1.__assign(tslib_1.__assign({}, (0, shared_1.serializableAssets)(entrypoints)), { script: [], fetchCacheData: fetchCacheData });
         return this.readJavascript(staticAssets);
     };
     LoadAssets.prototype.reeadLinkToStyles = function (links) {
@@ -44,7 +42,7 @@ var LoadAssets = /** @class */ (function () {
         var tag = document.createElement("".concat(microName, "-tag"));
         return tag && tag.shadowRoot ? (0, rxjs_1.of)(staticAssets) : this.reeadLinkToStyles(staticAssets.links).pipe(
         // eslint-disable-next-line no-new-func
-        (0, operators_1.tap)(function (linkToStyles) { return new Function((0, micro_1.createMicroElementTemplate)(microName, { linkToStyles: linkToStyles }))(); }), (0, operators_1.map)(function () { return staticAssets; }));
+        (0, operators_1.tap)(function (linkToStyles) { return new Function((0, shared_1.createMicroElementTemplate)(microName, { linkToStyles: linkToStyles }))(); }), (0, operators_1.map)(function () { return staticAssets; }));
     };
     LoadAssets.prototype.readMicroStatic = function (microName) {
         var _this = this;
@@ -53,8 +51,8 @@ var LoadAssets = /** @class */ (function () {
     };
     LoadAssets = tslib_1.__decorate([
         (0, di_1.Injectable)(),
-        tslib_1.__param(1, (0, di_1.Inject)(token_1.MICRO_OPTIONS)),
-        tslib_1.__metadata("design:paramtypes", [http_1.HttpClient, Object])
+        tslib_1.__param(1, (0, di_1.Inject)(shared_1.MICRO_OPTIONS)),
+        tslib_1.__metadata("design:paramtypes", [shared_1.HttpClient, Object])
     ], LoadAssets);
     return LoadAssets;
 }());

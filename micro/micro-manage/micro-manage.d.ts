@@ -1,5 +1,5 @@
 import { Injector } from '@fm/di';
-import { MicroManageInterface } from '@fm/shared/micro';
+import { MicroManageInterface } from '@fm/shared/micro/types';
 import { Observable, Subject } from 'rxjs';
 import { LoadAssets } from '../load-assets/load-assets';
 import { MicroStore } from '../micro-store/micro-store';
