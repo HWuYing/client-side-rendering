@@ -1,4 +1,5 @@
-import { AppContextService as SharedAppContextService, Fetch } from '@fm/shared/providers/app-context';
+import { Fetch } from '@fm/shared/common/http/type-api';
+import { AppContextService as SharedAppContextService } from '@fm/shared/providers/app-context';
 import { ProxyFetch } from './proxy-fetch';
 export declare class AppContextService extends SharedAppContextService {
     private resourceCache;

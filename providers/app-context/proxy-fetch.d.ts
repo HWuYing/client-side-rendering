@@ -1,4 +1,4 @@
-import { Fetch } from "@fm/shared/providers/app-context";
+import { Fetch } from '@fm/shared/common/http/type-api';
 export declare class ProxyFetch {
     private _fetch;
     private fetchCache;
