@@ -24,7 +24,7 @@ var LoadAssets = /** @class */ (function () {
             var _microName = _a.microName;
             return microName === _microName;
         });
-        var fetchCacheData = JSON.parse(microData && microData.source || '{}');
+        var fetchCacheData = JSON.parse(microData && microData.source || '[]');
         var staticAssets = tslib_1.__assign(tslib_1.__assign({}, (0, shared_1.serializableAssets)(entrypoints)), { script: [], fetchCacheData: fetchCacheData });
         return this.readJavascript(staticAssets);
     };

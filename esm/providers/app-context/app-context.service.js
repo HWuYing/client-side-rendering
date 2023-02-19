@@ -1,15 +1,10 @@
 import { __decorate } from "tslib";
 import { Injectable } from '@fm/di';
 import { AppContextService as SharedAppContextService } from '@fm/shared';
-import { ProxyFetch } from './proxy-fetch';
 let AppContextService = class AppContextService extends SharedAppContextService {
     constructor() {
         super(...arguments);
         this.resourceCache = new Map();
-        this.proxyFetch = this.createProxyFetch();
-    }
-    createProxyFetch() {
-        return new ProxyFetch(fetch.bind(window), this.getResourceCache('fetch-cache', true));
     }
     getResourceCache(type, needRemove) {
         if (!type || this.resourceCache.has(type)) {
@@ -21,7 +16,7 @@ let AppContextService = class AppContextService extends SharedAppContextService 
         return cacheResource;
     }
     get fetch() {
-        return this.proxyFetch.fetch.bind(this.proxyFetch);
+        return fetch.bind(window);
     }
 };
 AppContextService = __decorate([

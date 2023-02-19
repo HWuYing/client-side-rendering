@@ -1,4 +1,6 @@
 import { __awaiter } from "tslib";
+const FAIL = 'fail';
+const SUCCESS = 'success';
 export class MicroStore {
     constructor(microName, staticAssets, microManage) {
         var _a;
@@ -22,49 +24,59 @@ export class MicroStore {
         });
     }
     unMounted(container) {
-        var _a;
         return __awaiter(this, void 0, void 0, function* () {
             const [exMicroInfo] = this.mountedList.filter(({ container: _container }) => container === _container);
-            if (exMicroInfo) {
-                this.mountedList.splice(this.mountedList.indexOf(exMicroInfo), 1);
-                exMicroInfo.unRender && (yield exMicroInfo.unRender((_a = container.shadowRoot) === null || _a === void 0 ? void 0 : _a.querySelector('[data-app="body"]')));
+            const [execMounted] = this.execMountedList.filter(([_container]) => _container === container);
+            if (execMounted) {
+                this.execMountedList.splice(this.execMountedList.indexOf(execMounted), 1);
             }
+            if (exMicroInfo && exMicroInfo.unRender && exMicroInfo.unMounted !== SUCCESS) {
+                yield exMicroInfo.unRender(this.getByContainer(container, 'body'));
+                this.mountedList.splice(this.mountedList.indexOf(exMicroInfo), 1);
+                exMicroInfo.unMounted = SUCCESS;
+            }
+            if (exMicroInfo.unMounted !== SUCCESS) {
+                exMicroInfo.unMounted = FAIL;
+            }
+        });
+    }
+    resetUnMountedFail() {
+        return __awaiter(this, void 0, void 0, function* () {
+            return Promise.all(this.mountedList.filter((item) => item.unMounted === FAIL).map(({ container }) => this.unMounted(container)));
         });
     }
     execMounted() {
         return __awaiter(this, void 0, void 0, function* () {
             const [container, options] = this.execMountedList.shift();
-            const unRender = yield this._renderMicro(this.parseRenderOptions(container, options));
+            const mountedItem = { container };
+            this.mountedList.push(mountedItem);
+            mountedItem.unRender = yield this._renderMicro(this.parseRenderOptions(container, options));
+            yield this.resetUnMountedFail();
             this.mountendAppendLoadStyleNode(container);
-            this.mountedList.push({ unRender, container });
-            if (this.execMountedList.length !== 0) {
-                yield this.execMounted();
-            }
+            this.execMountedList.length !== 0 && (yield this.execMounted());
         });
     }
     execJavascript(execFunctions) {
+        const microStore = {};
         const { fetchCacheData } = this.staticAssets;
-        const microStore = { render: () => void (0) };
         execFunctions.forEach((fun) => fun(microStore, fetchCacheData));
-        return microStore.render;
+        return microStore.render || (() => void (0));
     }
     parseRenderOptions(container, options = {}) {
-        var _a, _b;
-        const head = (_a = container.shadowRoot) === null || _a === void 0 ? void 0 : _a.querySelector('[data-app="head"]');
-        const body = (_b = container.shadowRoot) === null || _b === void 0 ? void 0 : _b.querySelector('[data-app="body"]');
+        const head = this.getByContainer(container, 'head');
+        const body = this.getByContainer(container, 'body');
         return Object.assign(Object.assign({}, options), { head, body, microManage: this.microManage });
     }
     headAppendChildProxy(styleNode) {
         if (styleNode.getAttribute('data-micro') === this.microName) {
-            this.loaderStyleNodes.push(styleNode);
+            Promise.resolve().then(() => this.loaderStyleNodes.push(styleNode.cloneNode(true)));
             this.mountedList.forEach(({ container }) => this.mountendAppendLoadStyleNode(container, [styleNode]));
         }
     }
     mountendAppendLoadStyleNode(container, styleNodes = this.loaderStyleNodes) {
-        var _a;
-        const styleContainer = (_a = container.shadowRoot) === null || _a === void 0 ? void 0 : _a.querySelector('[data-app="head"]');
+        const styleContainer = this.getByContainer(container, 'head');
         if (styleContainer) {
-            styleNodes.forEach((styleNode) => styleContainer.appendChild(styleNode.cloneNode(true)));
+            styleNodes.forEach((styleNode) => styleContainer.appendChild(styleNode));
         }
     }
     loadScriptContext() {
@@ -88,6 +100,10 @@ export class MicroStore {
                 script.onload = () => resolve(window[funName]);
             });
         });
+    }
+    getByContainer(container, selector) {
+        var _a;
+        return (_a = container.shadowRoot) === null || _a === void 0 ? void 0 : _a.querySelector(`[data-app="${selector}"]`);
     }
     formatSourceCode(source) {
         return `${source}\n`;

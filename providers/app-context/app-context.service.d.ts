@@ -1,10 +1,7 @@
-import { Fetch } from '@fm/shared/common/http/type-api';
 import { AppContextService as SharedAppContextService } from '@fm/shared';
-import { ProxyFetch } from './proxy-fetch';
+import { Fetch } from '@fm/shared/common';
 export declare class AppContextService extends SharedAppContextService {
     private resourceCache;
-    protected proxyFetch: ProxyFetch;
-    private createProxyFetch;
     getResourceCache(type?: string, needRemove?: boolean): any;
     get fetch(): Fetch;
 }

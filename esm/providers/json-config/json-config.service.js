@@ -1,35 +1,25 @@
 import { __decorate, __metadata, __param } from "tslib";
 import { Inject, Injectable, Injector } from '@fm/di';
-import { HttpClient } from '@fm/shared';
-import { JsonConfigService as SharedJsonConfigService } from '@fm/shared';
+import { HttpClient, JsonConfigService as SharedJsonConfigService } from '@fm/shared';
 import { cloneDeep } from 'lodash';
-import { map, of, shareReplay } from 'rxjs';
+import { map, shareReplay } from 'rxjs';
 import { AppContextService } from '../app-context';
+import { JSON_TYPE } from './json-intercept';
 let JsonConfigService = class JsonConfigService extends SharedJsonConfigService {
     constructor(injector, http) {
         super(injector);
         this.injector = injector;
         this.http = http;
-        this.appContext = this.injector.get(AppContextService);
-        this.cacheConfig = this.resetCacheConfig();
-    }
-    createCache(observable) {
-        return observable.pipe(shareReplay(1), map(cloneDeep));
-    }
-    resetCacheConfig() {
-        const staticList = this.appContext.getResourceCache('file-static');
-        const entries = staticList.map(({ url, source }) => [url, this.createCache(of(source))]);
-        return new Map(entries);
-    }
-    getServerFetchData(url) {
-        const { publicPath = '/' } = this.appContext.getEnvironment() || {};
-        return this.http.get(/http|https/.test(url) ? url : `${publicPath}/${url}`.replace(/\/+/g, '/'));
+        this.cache = new Map();
     }
     getJsonConfig(url) {
-        let subject = this.cacheConfig.get(url);
+        const { publicPath = '/' } = this.injector.get(AppContextService).getEnvironment() || {};
+        const _url = /http|https/.test(url) ? url : `${publicPath}/${url}`.replace(/\/+/g, '/');
+        const params = { requestType: JSON_TYPE };
+        let subject = this.cache.get(_url);
         if (!subject) {
-            subject = this.createCache(this.getServerFetchData(url));
-            this.cacheConfig.set(url, subject);
+            subject = this.http.get(_url, params).pipe(shareReplay(1), map(cloneDeep));
+            this.cache.set(_url, subject);
         }
         return subject;
     }

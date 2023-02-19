@@ -1,6 +1,6 @@
 import { __decorate, __metadata, __param, __rest } from "tslib";
 import { Inject, Injectable } from '@fm/di';
-import { MICRO_OPTIONS, HttpClient, createMicroElementTemplate, serializableAssets } from '@fm/shared';
+import { createMicroElementTemplate, HttpClient, MICRO_OPTIONS, serializableAssets } from '@fm/shared';
 import { isEmpty, merge } from 'lodash';
 import { forkJoin, of } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs/operators';
@@ -17,7 +17,7 @@ let LoadAssets = class LoadAssets {
     }
     parseStatic(microName, entrypoints) {
         const microData = this.cacheServerData.find(({ microName: _microName }) => microName === _microName);
-        const fetchCacheData = JSON.parse(microData && microData.source || '{}');
+        const fetchCacheData = JSON.parse(microData && microData.source || '[]');
         const staticAssets = Object.assign(Object.assign({}, serializableAssets(entrypoints)), { script: [], fetchCacheData });
         return this.readJavascript(staticAssets);
     }

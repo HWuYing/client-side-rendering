@@ -1,6 +1,6 @@
 import { __assign, __decorate, __metadata, __param, __rest } from "tslib";
 import { Inject, Injectable } from '@fm/di';
-import { MICRO_OPTIONS, HttpClient, createMicroElementTemplate, serializableAssets } from '@fm/shared';
+import { createMicroElementTemplate, HttpClient, MICRO_OPTIONS, serializableAssets } from '@fm/shared';
 import { isEmpty, merge } from 'lodash';
 import { forkJoin, of } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs/operators';
@@ -21,7 +21,7 @@ var LoadAssets = /** @class */ (function () {
             var _microName = _a.microName;
             return microName === _microName;
         });
-        var fetchCacheData = JSON.parse(microData && microData.source || '{}');
+        var fetchCacheData = JSON.parse(microData && microData.source || '[]');
         var staticAssets = __assign(__assign({}, serializableAssets(entrypoints)), { script: [], fetchCacheData: fetchCacheData });
         return this.readJavascript(staticAssets);
     };

@@ -1,4 +1,4 @@
-import { MicroManageInterface, MicroStoreInterface } from '@fm/shared/micro/types';
+import { MicroManageInterface, MicroStoreInterface } from '@fm/shared/micro';
 import { StaticAssets } from '../load-assets/load-assets';
 export declare class MicroStore implements MicroStoreInterface {
     private microName;
@@ -11,6 +11,7 @@ export declare class MicroStore implements MicroStoreInterface {
     constructor(microName: string, staticAssets: StaticAssets, microManage: MicroManageInterface);
     onMounted(container: HTMLElement, options?: any): Promise<any>;
     unMounted(container: HTMLElement): Promise<void>;
+    private resetUnMountedFail;
     private execMounted;
     private execJavascript;
     private parseRenderOptions;
@@ -18,5 +19,6 @@ export declare class MicroStore implements MicroStoreInterface {
     private mountendAppendLoadStyleNode;
     private loadScriptContext;
     private loadBlobScript;
+    private getByContainer;
     protected formatSourceCode(source: string): string;
 }

@@ -1,13 +1,14 @@
-import { Provider } from '@fm/di';
+import { Injector, Provider } from '@fm/di';
 export declare type Render = (...args: any[]) => Promise<(container: HTMLElement) => void>;
 export declare class Platform {
-    private providers;
-    private rootInjector;
-    constructor(providers: Provider[]);
-    bootstrapRender(render: Render): Promise<(container: HTMLElement) => void>;
-    private proxyRender;
+    private platformInjector;
+    private resource;
+    private isMicro?;
+    constructor(platformInjector: Injector, { isMicro, resource }: any);
+    bootstrapRender(additionalProviders: Provider[] | Render, render?: Render): Promise<void>;
+    bootstrapMicroRender(additionalProviders: Provider[] | Render, render?: Render, options?: any): Promise<(_container: HTMLElement) => void>;
     private beforeBootstrapRender;
     private importMicro;
-    private get isMicro();
-    private get resource();
+    private regeditHistory;
+    private parseParams;
 }

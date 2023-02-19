@@ -4,41 +4,27 @@ exports.JsonConfigService = void 0;
 var tslib_1 = require("tslib");
 var di_1 = require("@fm/di");
 var shared_1 = require("@fm/shared");
-var shared_2 = require("@fm/shared");
 var lodash_1 = require("lodash");
 var rxjs_1 = require("rxjs");
 var app_context_1 = require("../app-context");
+var json_intercept_1 = require("./json-intercept");
 var JsonConfigService = /** @class */ (function (_super) {
     tslib_1.__extends(JsonConfigService, _super);
     function JsonConfigService(injector, http) {
         var _this = _super.call(this, injector) || this;
         _this.injector = injector;
         _this.http = http;
-        _this.appContext = _this.injector.get(app_context_1.AppContextService);
-        _this.cacheConfig = _this.resetCacheConfig();
+        _this.cache = new Map();
         return _this;
     }
-    JsonConfigService.prototype.createCache = function (observable) {
-        return observable.pipe((0, rxjs_1.shareReplay)(1), (0, rxjs_1.map)(lodash_1.cloneDeep));
-    };
-    JsonConfigService.prototype.resetCacheConfig = function () {
-        var _this = this;
-        var staticList = this.appContext.getResourceCache('file-static');
-        var entries = staticList.map(function (_a) {
-            var url = _a.url, source = _a.source;
-            return [url, _this.createCache((0, rxjs_1.of)(source))];
-        });
-        return new Map(entries);
-    };
-    JsonConfigService.prototype.getServerFetchData = function (url) {
-        var _a = (this.appContext.getEnvironment() || {}).publicPath, publicPath = _a === void 0 ? '/' : _a;
-        return this.http.get(/http|https/.test(url) ? url : "".concat(publicPath, "/").concat(url).replace(/\/+/g, '/'));
-    };
     JsonConfigService.prototype.getJsonConfig = function (url) {
-        var subject = this.cacheConfig.get(url);
+        var _a = (this.injector.get(app_context_1.AppContextService).getEnvironment() || {}).publicPath, publicPath = _a === void 0 ? '/' : _a;
+        var _url = /http|https/.test(url) ? url : "".concat(publicPath, "/").concat(url).replace(/\/+/g, '/');
+        var params = { requestType: json_intercept_1.JSON_TYPE };
+        var subject = this.cache.get(_url);
         if (!subject) {
-            subject = this.createCache(this.getServerFetchData(url));
-            this.cacheConfig.set(url, subject);
+            subject = this.http.get(_url, params).pipe((0, rxjs_1.shareReplay)(1), (0, rxjs_1.map)(lodash_1.cloneDeep));
+            this.cache.set(_url, subject);
         }
         return subject;
     };
@@ -48,5 +34,5 @@ var JsonConfigService = /** @class */ (function (_super) {
         tslib_1.__metadata("design:paramtypes", [di_1.Injector, shared_1.HttpClient])
     ], JsonConfigService);
     return JsonConfigService;
-}(shared_2.JsonConfigService));
+}(shared_1.JsonConfigService));
 exports.JsonConfigService = JsonConfigService;
