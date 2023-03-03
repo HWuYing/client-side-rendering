@@ -52,8 +52,8 @@ export class Platform {
         return __awaiter(this, void 0, void 0, function* () {
             const importMicro = this.platformInjector.get(IMPORT_MICRO);
             if (importMicro) {
-                const { registryMicro, MicroManage } = yield importMicro;
-                providers.push({ provide: IMPORT_MICRO, useExisting: MicroManage }, registryMicro());
+                const { MicroManage } = yield importMicro;
+                providers.push({ provide: IMPORT_MICRO, useExisting: MicroManage });
             }
         });
     }

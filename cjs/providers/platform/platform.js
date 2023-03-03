@@ -76,17 +76,17 @@ var Platform = /** @class */ (function () {
     };
     Platform.prototype.importMicro = function (providers) {
         return tslib_1.__awaiter(this, void 0, void 0, function () {
-            var importMicro, _a, registryMicro, MicroManage;
-            return tslib_1.__generator(this, function (_b) {
-                switch (_b.label) {
+            var importMicro, MicroManage;
+            return tslib_1.__generator(this, function (_a) {
+                switch (_a.label) {
                     case 0:
                         importMicro = this.platformInjector.get(token_1.IMPORT_MICRO);
                         if (!importMicro) return [3 /*break*/, 2];
                         return [4 /*yield*/, importMicro];
                     case 1:
-                        _a = _b.sent(), registryMicro = _a.registryMicro, MicroManage = _a.MicroManage;
-                        providers.push({ provide: token_1.IMPORT_MICRO, useExisting: MicroManage }, registryMicro());
-                        _b.label = 2;
+                        MicroManage = (_a.sent()).MicroManage;
+                        providers.push({ provide: token_1.IMPORT_MICRO, useExisting: MicroManage });
+                        _a.label = 2;
                     case 2: return [2 /*return*/];
                 }
             });
