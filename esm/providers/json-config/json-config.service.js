@@ -3,7 +3,6 @@ import { Inject, Injectable, Injector } from '@fm/di';
 import { HttpClient, JsonConfigService as SharedJsonConfigService } from '@fm/shared';
 import { cloneDeep } from 'lodash';
 import { map, shareReplay } from 'rxjs';
-import { AppContextService } from '../app-context';
 import { JSON_TYPE } from './json-intercept';
 let JsonConfigService = class JsonConfigService extends SharedJsonConfigService {
     constructor(injector, http) {
@@ -13,8 +12,7 @@ let JsonConfigService = class JsonConfigService extends SharedJsonConfigService 
         this.cache = new Map();
     }
     getJsonConfig(url) {
-        const { publicPath = '/' } = this.injector.get(AppContextService).getEnvironment() || {};
-        const _url = /http|https/.test(url) ? url : `${publicPath}/${url}`.replace(/\/+/g, '/');
+        const _url = /http|https/.test(url) ? url : `${url}`.replace(/\/+/g, '/');
         const params = { requestType: JSON_TYPE };
         let subject = this.cache.get(_url);
         if (!subject) {

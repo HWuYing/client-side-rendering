@@ -6,7 +6,6 @@ var di_1 = require("@fm/di");
 var shared_1 = require("@fm/shared");
 var lodash_1 = require("lodash");
 var rxjs_1 = require("rxjs");
-var app_context_1 = require("../app-context");
 var json_intercept_1 = require("./json-intercept");
 var JsonConfigService = /** @class */ (function (_super) {
     tslib_1.__extends(JsonConfigService, _super);
@@ -18,8 +17,7 @@ var JsonConfigService = /** @class */ (function (_super) {
         return _this;
     }
     JsonConfigService.prototype.getJsonConfig = function (url) {
-        var _a = (this.injector.get(app_context_1.AppContextService).getEnvironment() || {}).publicPath, publicPath = _a === void 0 ? '/' : _a;
-        var _url = /http|https/.test(url) ? url : "".concat(publicPath, "/").concat(url).replace(/\/+/g, '/');
+        var _url = /http|https/.test(url) ? url : "".concat(url).replace(/\/+/g, '/');
         var params = { requestType: json_intercept_1.JSON_TYPE };
         var subject = this.cache.get(_url);
         if (!subject) {

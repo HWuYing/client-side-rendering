@@ -63,10 +63,10 @@ var Platform = /** @class */ (function () {
         var styleContainer = document.head;
         var appContext = tslib_1.__assign({ container: container, styleContainer: styleContainer, renderSSR: true, resource: this.resource, isMicro: this.isMicro }, context);
         var additionalProviders = [
+            { provide: shared_1.HTTP_INTERCEPTORS, multi: true, useExisting: json_config_1.JsonIntercept },
             providers,
             { provide: di_1.INJECTOR_SCOPE, useValue: 'root' },
             { provide: shared_1.APP_CONTEXT, useValue: appContext },
-            { provide: shared_1.HTTP_INTERCEPTORS, multi: true, useExisting: json_config_1.JsonIntercept },
             { provide: shared_1.HttpHandler, useExisting: shared_1.HttpInterceptingHandler },
             { provide: shared_1.JsonConfigService, useExisting: json_config_1.JsonConfigService },
             { provide: shared_1.AppContextService, useExisting: app_context_1.AppContextService },

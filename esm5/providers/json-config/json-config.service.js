@@ -3,7 +3,6 @@ import { Inject, Injectable, Injector } from '@fm/di';
 import { HttpClient, JsonConfigService as SharedJsonConfigService } from '@fm/shared';
 import { cloneDeep } from 'lodash';
 import { map, shareReplay } from 'rxjs';
-import { AppContextService } from '../app-context';
 import { JSON_TYPE } from './json-intercept';
 var JsonConfigService = /** @class */ (function (_super) {
     __extends(JsonConfigService, _super);
@@ -15,8 +14,7 @@ var JsonConfigService = /** @class */ (function (_super) {
         return _this;
     }
     JsonConfigService.prototype.getJsonConfig = function (url) {
-        var _a = (this.injector.get(AppContextService).getEnvironment() || {}).publicPath, publicPath = _a === void 0 ? '/' : _a;
-        var _url = /http|https/.test(url) ? url : "".concat(publicPath, "/").concat(url).replace(/\/+/g, '/');
+        var _url = /http|https/.test(url) ? url : "".concat(url).replace(/\/+/g, '/');
         var params = { requestType: JSON_TYPE };
         var subject = this.cache.get(_url);
         if (!subject) {

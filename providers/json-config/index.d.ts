@@ -1,2 +1,2 @@
 export { JsonConfigService } from './json-config.service';
-export { JsonIntercept } from './json-intercept';
+export { JSON_TYPE, JsonIntercept } from './json-intercept';

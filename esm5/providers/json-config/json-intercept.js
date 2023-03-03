@@ -32,17 +32,17 @@ var JsonIntercept = /** @class */ (function () {
     };
     JsonIntercept.prototype.intercept = function (req, params, next) {
         var _this = this;
-        var _a = (this.appContext.getEnvironment() || {}).publicPath, publicPath = _a === void 0 ? '/' : _a;
-        var key = req.replace(publicPath, '');
-        var _b = params.requestType, requestType = _b === void 0 ? '' : _b;
+        var _a = params.requestType, requestType = _a === void 0 ? '' : _a;
         var isJsonFetch = requestType === JSON_TYPE;
-        if (isJsonFetch && this.cacheConfig.has(key)) {
+        if (isJsonFetch && this.cacheConfig.has(req)) {
             var respons = createResponse();
-            respons.json = function () { return _this.cacheConfig.get(key); };
+            respons.json = function () { return _this.cacheConfig.get(req); };
             return of(respons);
         }
         var event$ = next.handle(req, params);
-        return !isJsonFetch ? event$ : event$.pipe(mergeMap(function (response) { return from(response.clone().json()).pipe(tap(function (json) { return _this.putGlobalSource(key, json); }), map(function () { return response; })); }));
+        return !isJsonFetch ? event$ : event$.pipe(mergeMap(function (response) {
+            return from(response.clone().json()).pipe(tap(function (json) { return _this.putGlobalSource(req, json); }), map(function () { return response; }));
+        }));
     };
     JsonIntercept = __decorate([
         Injectable(),

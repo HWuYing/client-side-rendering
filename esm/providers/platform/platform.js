@@ -37,10 +37,10 @@ export class Platform {
         const styleContainer = document.head;
         const appContext = Object.assign({ container, styleContainer, renderSSR: true, resource: this.resource, isMicro: this.isMicro }, context);
         const additionalProviders = [
+            { provide: HTTP_INTERCEPTORS, multi: true, useExisting: JsonIntercept },
             providers,
             { provide: INJECTOR_SCOPE, useValue: 'root' },
             { provide: APP_CONTEXT, useValue: appContext },
-            { provide: HTTP_INTERCEPTORS, multi: true, useExisting: JsonIntercept },
             { provide: HttpHandler, useExisting: HttpInterceptingHandler },
             { provide: JsonConfigService, useExisting: ClientJsonConfigService },
             { provide: AppContextService, useExisting: ClientAppContextService },

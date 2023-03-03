@@ -35,17 +35,17 @@ var JsonIntercept = /** @class */ (function () {
     };
     JsonIntercept.prototype.intercept = function (req, params, next) {
         var _this = this;
-        var _a = (this.appContext.getEnvironment() || {}).publicPath, publicPath = _a === void 0 ? '/' : _a;
-        var key = req.replace(publicPath, '');
-        var _b = params.requestType, requestType = _b === void 0 ? '' : _b;
+        var _a = params.requestType, requestType = _a === void 0 ? '' : _a;
         var isJsonFetch = requestType === exports.JSON_TYPE;
-        if (isJsonFetch && this.cacheConfig.has(key)) {
+        if (isJsonFetch && this.cacheConfig.has(req)) {
             var respons = (0, shared_1.createResponse)();
-            respons.json = function () { return _this.cacheConfig.get(key); };
+            respons.json = function () { return _this.cacheConfig.get(req); };
             return (0, rxjs_1.of)(respons);
         }
         var event$ = next.handle(req, params);
-        return !isJsonFetch ? event$ : event$.pipe((0, rxjs_1.mergeMap)(function (response) { return (0, rxjs_1.from)(response.clone().json()).pipe((0, rxjs_1.tap)(function (json) { return _this.putGlobalSource(key, json); }), (0, rxjs_1.map)(function () { return response; })); }));
+        return !isJsonFetch ? event$ : event$.pipe((0, rxjs_1.mergeMap)(function (response) {
+            return (0, rxjs_1.from)(response.clone().json()).pipe((0, rxjs_1.tap)(function (json) { return _this.putGlobalSource(req, json); }), (0, rxjs_1.map)(function () { return response; }));
+        }));
     };
     JsonIntercept = tslib_1.__decorate([
         (0, di_1.Injectable)(),

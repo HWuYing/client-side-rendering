@@ -27,17 +27,17 @@ let JsonIntercept = class JsonIntercept {
         this.cacheConfig.set(url, this.createCache(of(json)));
     }
     intercept(req, params, next) {
-        const { publicPath = '/' } = this.appContext.getEnvironment() || {};
-        const key = req.replace(publicPath, '');
         const { requestType = '' } = params;
         const isJsonFetch = requestType === JSON_TYPE;
-        if (isJsonFetch && this.cacheConfig.has(key)) {
+        if (isJsonFetch && this.cacheConfig.has(req)) {
             const respons = createResponse();
-            respons.json = () => this.cacheConfig.get(key);
+            respons.json = () => this.cacheConfig.get(req);
             return of(respons);
         }
         const event$ = next.handle(req, params);
-        return !isJsonFetch ? event$ : event$.pipe(mergeMap((response) => from(response.clone().json()).pipe(tap((json) => this.putGlobalSource(key, json)), map(() => response))));
+        return !isJsonFetch ? event$ : event$.pipe(mergeMap((response) => {
+            return from(response.clone().json()).pipe(tap((json) => this.putGlobalSource(req, json)), map(() => response));
+        }));
     }
 };
 JsonIntercept = __decorate([
