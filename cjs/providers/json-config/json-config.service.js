@@ -17,18 +17,16 @@ var JsonConfigService = /** @class */ (function (_super) {
         return _this;
     }
     JsonConfigService.prototype.getJsonConfig = function (url) {
-        var _url = /http|https/.test(url) ? url : "".concat(url).replace(/\/+/g, '/');
-        var params = { requestType: json_intercept_1.JSON_TYPE };
-        var subject = this.cache.get(_url);
+        url = /http|https/.test(url) ? url : url.replace(/\/+/g, '/');
+        var subject = this.cache.get(url);
         if (!subject) {
-            subject = this.http.get(_url, params).pipe((0, rxjs_1.shareReplay)(1), (0, rxjs_1.map)(lodash_1.cloneDeep));
-            this.cache.set(_url, subject);
+            subject = this.http.get(url, { requestType: json_intercept_1.JSON_TYPE }).pipe((0, rxjs_1.shareReplay)(1), (0, rxjs_1.map)(lodash_1.cloneDeep));
+            this.cache.set(url, subject);
         }
         return subject;
     };
     JsonConfigService = tslib_1.__decorate([
         (0, di_1.Injectable)(),
-        tslib_1.__param(0, (0, di_1.Inject)(di_1.Injector)),
         tslib_1.__metadata("design:paramtypes", [di_1.Injector, shared_1.HttpClient])
     ], JsonConfigService);
     return JsonConfigService;

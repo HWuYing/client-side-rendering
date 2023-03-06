@@ -1,5 +1,5 @@
-import { __decorate, __extends, __metadata, __param } from "tslib";
-import { Inject, Injectable, Injector } from '@fm/di';
+import { __decorate, __extends, __metadata } from "tslib";
+import { Injectable, Injector } from '@fm/di';
 import { HttpClient, JsonConfigService as SharedJsonConfigService } from '@fm/shared';
 import { cloneDeep } from 'lodash';
 import { map, shareReplay } from 'rxjs';
@@ -14,18 +14,16 @@ var JsonConfigService = /** @class */ (function (_super) {
         return _this;
     }
     JsonConfigService.prototype.getJsonConfig = function (url) {
-        var _url = /http|https/.test(url) ? url : "".concat(url).replace(/\/+/g, '/');
-        var params = { requestType: JSON_TYPE };
-        var subject = this.cache.get(_url);
+        url = /http|https/.test(url) ? url : url.replace(/\/+/g, '/');
+        var subject = this.cache.get(url);
         if (!subject) {
-            subject = this.http.get(_url, params).pipe(shareReplay(1), map(cloneDeep));
-            this.cache.set(_url, subject);
+            subject = this.http.get(url, { requestType: JSON_TYPE }).pipe(shareReplay(1), map(cloneDeep));
+            this.cache.set(url, subject);
         }
         return subject;
     };
     JsonConfigService = __decorate([
         Injectable(),
-        __param(0, Inject(Injector)),
         __metadata("design:paramtypes", [Injector, HttpClient])
     ], JsonConfigService);
     return JsonConfigService;
