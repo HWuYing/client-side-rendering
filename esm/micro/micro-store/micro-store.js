@@ -35,8 +35,11 @@ export class MicroStore {
                 this.mountedList.splice(this.mountedList.indexOf(exMicroInfo), 1);
                 exMicroInfo.unMounted = SUCCESS;
             }
-            if (exMicroInfo.unMounted !== SUCCESS) {
+            if (exMicroInfo && exMicroInfo.unMounted !== SUCCESS) {
                 exMicroInfo.unMounted = FAIL;
+            }
+            if (!exMicroInfo) {
+                console.info('The node has no service attached or has been removed', container);
             }
         });
     }

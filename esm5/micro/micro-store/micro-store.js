@@ -59,8 +59,11 @@ var MicroStore = /** @class */ (function () {
                         exMicroInfo.unMounted = SUCCESS;
                         _a.label = 2;
                     case 2:
-                        if (exMicroInfo.unMounted !== SUCCESS) {
+                        if (exMicroInfo && exMicroInfo.unMounted !== SUCCESS) {
                             exMicroInfo.unMounted = FAIL;
+                        }
+                        if (!exMicroInfo) {
+                            console.info('The node has no service attached or has been removed', container);
                         }
                         return [2 /*return*/];
                 }
