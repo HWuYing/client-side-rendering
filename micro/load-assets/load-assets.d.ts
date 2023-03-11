@@ -1,4 +1,4 @@
-import { HttpClient } from '@fm/shared';
+import { HttpFetchHandler } from '@fm/shared';
 import { Observable } from 'rxjs';
 export interface StaticAssets {
     script: string[];
@@ -12,11 +12,12 @@ export declare class LoadAssets {
     private http;
     private options;
     private cacheServerData;
-    constructor(http: HttpClient, options?: any);
+    constructor(http: HttpFetchHandler, options?: any);
     private initialCacheServerData;
     private parseStatic;
     private reeadLinkToStyles;
     private readJavascript;
     private createMicroTag;
+    fetchStatic<T = any>(url: string, isText?: boolean): Observable<T>;
     readMicroStatic(microName: string): Observable<any>;
 }

@@ -5,6 +5,7 @@ export declare class MicroStore implements MicroStoreInterface {
     private staticAssets;
     private microManage;
     private mountedList;
+    private proxySandbox;
     private loaderStyleNodes;
     private execMountedList;
     private _renderMicro;

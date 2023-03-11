@@ -16,7 +16,7 @@ let AppContextService = class AppContextService extends SharedAppContextService 
         return cacheResource;
     }
     get fetch() {
-        return fetch.bind(window);
+        return fetch;
     }
 };
 AppContextService = __decorate([

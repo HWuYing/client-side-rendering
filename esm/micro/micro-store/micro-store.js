@@ -1,4 +1,5 @@
 import { __awaiter } from "tslib";
+import { ProxySandbox } from './proxy-sandbox';
 const FAIL = 'fail';
 const SUCCESS = 'success';
 export class MicroStore {
@@ -10,16 +11,19 @@ export class MicroStore {
         this.mountedList = [];
         this.loaderStyleNodes = [];
         this.execMountedList = [];
-        (_a = this.microManage.loaderStyleSubject) === null || _a === void 0 ? void 0 : _a.subscribe(this.headAppendChildProxy.bind(this));
+        this.proxySandbox = new ProxySandbox(microManage, staticAssets);
+        (_a = this.proxySandbox.loaderStyleSubject) === null || _a === void 0 ? void 0 : _a.subscribe(this.headAppendChildProxy.bind(this));
     }
-    onMounted(container, options) {
+    onMounted(container, options = {}) {
         return __awaiter(this, void 0, void 0, function* () {
+            const { selfScope } = options;
             this.execMountedList.push([container, options]);
-            if (!this._renderMicro) {
-                yield this.loadScriptContext();
+            if (selfScope || !this._renderMicro) {
+                const execFunctions = yield this.loadScriptContext();
+                this._renderMicro = this.execJavascript(execFunctions, selfScope && container.shadowRoot);
             }
             if (this.execMountedList.length === 1) {
-                yield this.execMounted();
+                yield this.execMounted(this._renderMicro);
             }
         });
     }
@@ -48,33 +52,32 @@ export class MicroStore {
             return Promise.all(this.mountedList.filter((item) => item.unMounted === FAIL).map(({ container }) => this.unMounted(container)));
         });
     }
-    execMounted() {
+    execMounted(_renderMicro = this._renderMicro) {
         return __awaiter(this, void 0, void 0, function* () {
             const [container, options] = this.execMountedList.shift();
             const mountedItem = { container };
             this.mountedList.push(mountedItem);
-            mountedItem.unRender = yield this._renderMicro(this.parseRenderOptions(container, options));
+            mountedItem.unRender = yield _renderMicro(this.parseRenderOptions(container, options));
             yield this.resetUnMountedFail();
             this.mountendAppendLoadStyleNode(container);
-            this.execMountedList.length !== 0 && (yield this.execMounted());
+            this.execMountedList.length !== 0 && (yield this.execMounted(_renderMicro));
         });
     }
-    execJavascript(execFunctions) {
+    execJavascript(execFunctions, shadow) {
         const microStore = {};
         const { fetchCacheData } = this.staticAssets;
-        execFunctions.forEach((fun) => fun(microStore, fetchCacheData));
+        const { document, window } = this.proxySandbox.createShanbox(shadow);
+        execFunctions.forEach((fun) => fun(window, document, microStore, fetchCacheData));
         return microStore.render || (() => void (0));
     }
     parseRenderOptions(container, options = {}) {
         const head = this.getByContainer(container, 'head');
         const body = this.getByContainer(container, 'body');
-        return Object.assign(Object.assign({}, options), { head, body, microManage: this.microManage });
+        return Object.assign(Object.assign({}, options), { shadow: container, head, body, microManage: this.microManage });
     }
     headAppendChildProxy(styleNode) {
-        if (styleNode.getAttribute('data-micro') === this.microName) {
-            Promise.resolve().then(() => this.loaderStyleNodes.push(styleNode.cloneNode(true)));
-            this.mountedList.forEach(({ container }) => this.mountendAppendLoadStyleNode(container, [styleNode]));
-        }
+        Promise.resolve().then(() => this.loaderStyleNodes.push(styleNode.cloneNode(true)));
+        this.mountedList.forEach(({ container }) => this.mountendAppendLoadStyleNode(container, [styleNode]));
     }
     mountendAppendLoadStyleNode(container, styleNodes = this.loaderStyleNodes) {
         const styleContainer = this.getByContainer(container, 'head');
@@ -88,9 +91,10 @@ export class MicroStore {
             return Promise.all(script.map((source, index) => {
                 const hasSourceMap = !/[\S]+\.[\S]+\.js$/.test(js[index]);
                 const sourceCode = this.formatSourceCode(source);
+                return hasSourceMap ? this.loadBlobScript(sourceCode) : Promise.resolve(
                 // eslint-disable-next-line no-new-func
-                return hasSourceMap ? this.loadBlobScript(sourceCode) : Promise.resolve(new Function('microStore', 'fetchCacheData', sourceCode));
-            })).then((execFunctions) => this._renderMicro = this.execJavascript(execFunctions));
+                new Function('window', 'document', 'microStore', 'fetchCacheData', sourceCode));
+            }));
         });
     }
     loadBlobScript(source) {
@@ -98,7 +102,7 @@ export class MicroStore {
             return new Promise(resolve => {
                 const funName = `${this.microName}${Math.random().toString().replace(/0.([\d]{5})\d*/ig, '$1')}`;
                 const script = document.createElement('script');
-                script.src = URL.createObjectURL(new Blob([`window.${funName}=function(microStore, fetchCacheData){ ${source}}`]));
+                script.src = URL.createObjectURL(new Blob([`window.${funName}=function(window, document, microStore, fetchCacheData){ ${source}}`]));
                 document.body.appendChild(script);
                 script.onload = () => resolve(window[funName]);
             });

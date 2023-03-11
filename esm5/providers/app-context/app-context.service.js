@@ -19,7 +19,7 @@ var AppContextService = /** @class */ (function (_super) {
     };
     Object.defineProperty(AppContextService.prototype, "fetch", {
         get: function () {
-            return fetch.bind(window);
+            return fetch;
         },
         enumerable: false,
         configurable: true
