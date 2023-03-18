@@ -1,5 +1,5 @@
 import { Injector, Provider } from '@fm/di';
-export declare type Render = (...args: any[]) => Promise<(container: HTMLElement) => void>;
+export type Render = (...args: any[]) => Promise<(container: HTMLElement) => void>;
 export declare class Platform {
     private platformInjector;
     private resource;
