@@ -21,5 +21,5 @@ export declare class MicroStore implements MicroStoreInterface {
     private loadScriptContext;
     private loadBlobScript;
     private getByContainer;
-    protected formatSourceCode(source: string): string;
+    protected formatSourceCode(source: string, shadBox: any): string;
 }

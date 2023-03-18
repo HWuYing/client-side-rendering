@@ -7,7 +7,6 @@ var FAIL = 'fail';
 var SUCCESS = 'success';
 var MicroStore = /** @class */ (function () {
     function MicroStore(microName, staticAssets, microManage) {
-        var _a;
         this.microName = microName;
         this.staticAssets = staticAssets;
         this.microManage = microManage;
@@ -15,29 +14,31 @@ var MicroStore = /** @class */ (function () {
         this.loaderStyleNodes = [];
         this.execMountedList = [];
         this.proxySandbox = new proxy_sandbox_1.ProxySandbox(microManage, staticAssets);
-        (_a = this.proxySandbox.loaderStyleSubject) === null || _a === void 0 ? void 0 : _a.subscribe(this.headAppendChildProxy.bind(this));
+        this.proxySandbox.loaderScriptSubject.subscribe(this.loadScriptContext.bind(this));
+        this.proxySandbox.loaderStyleSubject.subscribe(this.headAppendChildProxy.bind(this));
     }
     MicroStore.prototype.onMounted = function (container, options) {
         if (options === void 0) { options = {}; }
         return tslib_1.__awaiter(this, void 0, void 0, function () {
-            var selfScope, execFunctions;
-            return tslib_1.__generator(this, function (_a) {
-                switch (_a.label) {
+            var selfScope, shadBox, _a;
+            return tslib_1.__generator(this, function (_b) {
+                switch (_b.label) {
                     case 0:
                         selfScope = options.selfScope;
                         this.execMountedList.push([container, options]);
                         if (!(selfScope || !this._renderMicro)) return [3 /*break*/, 2];
-                        return [4 /*yield*/, this.loadScriptContext()];
+                        shadBox = this.proxySandbox.createShanbox(selfScope && container.shadowRoot);
+                        _a = this;
+                        return [4 /*yield*/, this.loadScriptContext([this.staticAssets, shadBox])];
                     case 1:
-                        execFunctions = _a.sent();
-                        this._renderMicro = this.execJavascript(execFunctions, selfScope && container.shadowRoot);
-                        _a.label = 2;
+                        _a._renderMicro = _b.sent();
+                        _b.label = 2;
                     case 2:
-                        if (!(this.execMountedList.length === 1)) return [3 /*break*/, 4];
+                        if (!(selfScope || this.execMountedList.length === 1)) return [3 /*break*/, 4];
                         return [4 /*yield*/, this.execMounted(this._renderMicro)];
                     case 3:
-                        _a.sent();
-                        _a.label = 4;
+                        _b.sent();
+                        _b.label = 4;
                     case 4: return [2 /*return*/];
                 }
             });
@@ -121,11 +122,11 @@ var MicroStore = /** @class */ (function () {
             });
         });
     };
-    MicroStore.prototype.execJavascript = function (execFunctions, shadow) {
-        var microStore = {};
+    MicroStore.prototype.execJavascript = function (execFunctions, shadBox) {
+        if (shadBox === void 0) { shadBox = {}; }
+        var microStore = { microName: this.microName };
         var fetchCacheData = this.staticAssets.fetchCacheData;
-        var _a = this.proxySandbox.createShanbox(shadow), document = _a.document, window = _a.window;
-        execFunctions.forEach(function (fun) { return fun(window, document, microStore, fetchCacheData); });
+        execFunctions.forEach(function (fun) { return fun(shadBox, microStore, fetchCacheData); });
         return microStore.render || (function () { return void (0); });
     };
     MicroStore.prototype.parseRenderOptions = function (container, options) {
@@ -149,19 +150,20 @@ var MicroStore = /** @class */ (function () {
             styleNodes.forEach(function (styleNode) { return styleContainer.appendChild(styleNode); });
         }
     };
-    MicroStore.prototype.loadScriptContext = function () {
+    MicroStore.prototype.loadScriptContext = function (_a) {
+        var staticAssets = _a[0], shadBox = _a[1];
         return tslib_1.__awaiter(this, void 0, void 0, function () {
-            var _a, script, js;
+            var script, js;
             var _this = this;
             return tslib_1.__generator(this, function (_b) {
-                _a = this.staticAssets, script = _a.script, js = _a.js;
+                script = staticAssets.script, js = staticAssets.js;
                 return [2 /*return*/, Promise.all(script.map(function (source, index) {
                         var hasSourceMap = !/[\S]+\.[\S]+\.js$/.test(js[index]);
-                        var sourceCode = _this.formatSourceCode(source);
+                        var sourceCode = _this.formatSourceCode(source, shadBox);
                         return hasSourceMap ? _this.loadBlobScript(sourceCode) : Promise.resolve(
                         // eslint-disable-next-line no-new-func
-                        new Function('window', 'document', 'microStore', 'fetchCacheData', sourceCode));
-                    }))];
+                        new Function('shadBox', 'microStore', 'fetchCacheData', sourceCode));
+                    })).then(function (execFunctions) { return _this.execJavascript(execFunctions, shadBox); })];
             });
         });
     };
@@ -170,11 +172,12 @@ var MicroStore = /** @class */ (function () {
             var _this = this;
             return tslib_1.__generator(this, function (_a) {
                 return [2 /*return*/, new Promise(function (resolve) {
+                        var global = window;
                         var funName = "".concat(_this.microName).concat(Math.random().toString().replace(/0.([\d]{5})\d*/ig, '$1'));
                         var script = document.createElement('script');
-                        script.src = URL.createObjectURL(new Blob(["window.".concat(funName, "=function(window, document, microStore, fetchCacheData){ ").concat(source, "}")]));
+                        script.src = URL.createObjectURL(new Blob(["window.".concat(funName, "=function(shadBox, microStore, fetchCacheData){ ").concat(source, "}")]));
                         document.body.appendChild(script);
-                        script.onload = function () { return resolve(window[funName]); };
+                        script.onload = function () { return (resolve(global[funName]), delete global[funName]); };
                     })];
             });
         });
@@ -183,8 +186,8 @@ var MicroStore = /** @class */ (function () {
         var _a;
         return (_a = container.shadowRoot) === null || _a === void 0 ? void 0 : _a.querySelector("[data-app=\"".concat(selector, "\"]"));
     };
-    MicroStore.prototype.formatSourceCode = function (source) {
-        return "".concat(source, "\n");
+    MicroStore.prototype.formatSourceCode = function (source, shadBox) {
+        return "".concat(Object.keys(shadBox).map(function (k) { return "var ".concat(k, "=shadBox.").concat(k, ";"); }).join('')).concat(source, "\n");
     };
     return MicroStore;
 }());

@@ -4,7 +4,6 @@ const FAIL = 'fail';
 const SUCCESS = 'success';
 export class MicroStore {
     constructor(microName, staticAssets, microManage) {
-        var _a;
         this.microName = microName;
         this.staticAssets = staticAssets;
         this.microManage = microManage;
@@ -12,17 +11,18 @@ export class MicroStore {
         this.loaderStyleNodes = [];
         this.execMountedList = [];
         this.proxySandbox = new ProxySandbox(microManage, staticAssets);
-        (_a = this.proxySandbox.loaderStyleSubject) === null || _a === void 0 ? void 0 : _a.subscribe(this.headAppendChildProxy.bind(this));
+        this.proxySandbox.loaderScriptSubject.subscribe(this.loadScriptContext.bind(this));
+        this.proxySandbox.loaderStyleSubject.subscribe(this.headAppendChildProxy.bind(this));
     }
     onMounted(container, options = {}) {
         return __awaiter(this, void 0, void 0, function* () {
             const { selfScope } = options;
             this.execMountedList.push([container, options]);
             if (selfScope || !this._renderMicro) {
-                const execFunctions = yield this.loadScriptContext();
-                this._renderMicro = this.execJavascript(execFunctions, selfScope && container.shadowRoot);
+                const shadBox = this.proxySandbox.createShanbox(selfScope && container.shadowRoot);
+                this._renderMicro = yield this.loadScriptContext([this.staticAssets, shadBox]);
             }
-            if (this.execMountedList.length === 1) {
+            if (selfScope || this.execMountedList.length === 1) {
                 yield this.execMounted(this._renderMicro);
             }
         });
@@ -63,11 +63,10 @@ export class MicroStore {
             this.execMountedList.length !== 0 && (yield this.execMounted(_renderMicro));
         });
     }
-    execJavascript(execFunctions, shadow) {
-        const microStore = {};
+    execJavascript(execFunctions, shadBox = {}) {
+        const microStore = { microName: this.microName };
         const { fetchCacheData } = this.staticAssets;
-        const { document, window } = this.proxySandbox.createShanbox(shadow);
-        execFunctions.forEach((fun) => fun(window, document, microStore, fetchCacheData));
+        execFunctions.forEach((fun) => fun(shadBox, microStore, fetchCacheData));
         return microStore.render || (() => void (0));
     }
     parseRenderOptions(container, options = {}) {
@@ -85,26 +84,27 @@ export class MicroStore {
             styleNodes.forEach((styleNode) => styleContainer.appendChild(styleNode));
         }
     }
-    loadScriptContext() {
+    loadScriptContext([staticAssets, shadBox]) {
         return __awaiter(this, void 0, void 0, function* () {
-            const { script, js } = this.staticAssets;
+            const { script, js } = staticAssets;
             return Promise.all(script.map((source, index) => {
                 const hasSourceMap = !/[\S]+\.[\S]+\.js$/.test(js[index]);
-                const sourceCode = this.formatSourceCode(source);
+                const sourceCode = this.formatSourceCode(source, shadBox);
                 return hasSourceMap ? this.loadBlobScript(sourceCode) : Promise.resolve(
                 // eslint-disable-next-line no-new-func
-                new Function('window', 'document', 'microStore', 'fetchCacheData', sourceCode));
-            }));
+                new Function('shadBox', 'microStore', 'fetchCacheData', sourceCode));
+            })).then((execFunctions) => this.execJavascript(execFunctions, shadBox));
         });
     }
     loadBlobScript(source) {
         return __awaiter(this, void 0, void 0, function* () {
             return new Promise(resolve => {
+                const global = window;
                 const funName = `${this.microName}${Math.random().toString().replace(/0.([\d]{5})\d*/ig, '$1')}`;
                 const script = document.createElement('script');
-                script.src = URL.createObjectURL(new Blob([`window.${funName}=function(window, document, microStore, fetchCacheData){ ${source}}`]));
+                script.src = URL.createObjectURL(new Blob([`window.${funName}=function(shadBox, microStore, fetchCacheData){ ${source}}`]));
                 document.body.appendChild(script);
-                script.onload = () => resolve(window[funName]);
+                script.onload = () => (resolve(global[funName]), delete global[funName]);
             });
         });
     }
@@ -112,7 +112,7 @@ export class MicroStore {
         var _a;
         return (_a = container.shadowRoot) === null || _a === void 0 ? void 0 : _a.querySelector(`[data-app="${selector}"]`);
     }
-    formatSourceCode(source) {
-        return `${source}\n`;
+    formatSourceCode(source, shadBox) {
+        return `${Object.keys(shadBox).map((k) => `var ${k}=shadBox.${k};`).join('')}${source}\n`;
     }
 }

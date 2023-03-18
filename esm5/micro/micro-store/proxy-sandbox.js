@@ -1,39 +1,68 @@
 import { __assign, __awaiter, __generator } from "tslib";
-import { lastValueFrom, Subject } from 'rxjs';
+import { isUndefined } from 'lodash';
+import { lastValueFrom, shareReplay, Subject } from 'rxjs';
 var docProxyMethod = ['querySelectorAll', 'getElementById'];
 var ProxySandbox = /** @class */ (function () {
     function ProxySandbox(microManage, staticAssets) {
         this.microManage = microManage;
         this.staticAssets = staticAssets;
+        this.cache = new Map();
         this.loaderStyleSubject = new Subject();
+        this.loaderScriptSubject = new Subject();
     }
     ProxySandbox.prototype.createShanbox = function (shadow) {
-        var _document = new Proxy(document, this.propProxy(this.docProxy(shadow)));
+        var shadBox = {};
+        var _document = new Proxy(document, this.propProxy(this.docProxy(shadBox, shadow)));
         var _window = new Proxy(window, this.propProxy({ document: _document }));
-        return { window: _window, document: _document };
+        return Object.assign(shadBox, { window: _window, self: _window, global: _window, document: _document });
     };
     ProxySandbox.prototype.linkToStyle = function (link) {
         return __awaiter(this, void 0, void 0, function () {
-            var href, text, style;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
+            var href, style, _a;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
                     case 0:
                         href = link.getAttribute('href') || '';
-                        link.href = URL.createObjectURL(new Blob(['']));
                         if (!(!this.staticAssets.links.includes(href) && href)) return [3 /*break*/, 2];
+                        this.staticAssets.links.push(href);
+                        style = document.createElement('style');
+                        _a = style;
                         return [4 /*yield*/, lastValueFrom(this.microManage.la.fetchStatic(href))];
                     case 1:
-                        text = _a.sent();
-                        style = document.createElement('style');
-                        style.innerText = text;
+                        _a.innerText = _b.sent();
                         this.loaderStyleSubject.next(style);
-                        _a.label = 2;
-                    case 2: return [2 /*return*/];
+                        _b.label = 2;
+                    case 2:
+                        link.setAttribute('proxy-href', href);
+                        link.href = URL.createObjectURL(new Blob(['']));
+                        return [2 /*return*/];
                 }
             });
         });
     };
-    ProxySandbox.prototype.appendChild = function (node) {
+    ProxySandbox.prototype.srcToScript = function (shadBox, node) {
+        return __awaiter(this, void 0, void 0, function () {
+            var src, subject, text;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        src = node.getAttribute('src') || '';
+                        subject = this.cache.get(src);
+                        if (!subject) {
+                            subject = this.microManage.la.fetchStatic(src).pipe(shareReplay(1));
+                            this.cache.set(src, subject);
+                        }
+                        return [4 /*yield*/, lastValueFrom(subject)];
+                    case 1:
+                        text = _a.sent();
+                        this.loaderScriptSubject.next([{ script: [text], js: [src] }, shadBox]);
+                        node.src = URL.createObjectURL(new Blob(['']));
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    ProxySandbox.prototype.appendChild = function (shadBox, node) {
         var _a;
         return __awaiter(this, void 0, void 0, function () {
             var name;
@@ -46,16 +75,22 @@ var ProxySandbox = /** @class */ (function () {
                     case 1:
                         _b.sent();
                         _b.label = 2;
-                    case 2: return [2 /*return*/, name === 'STYLE' ? (_a = this.loaderStyleSubject) === null || _a === void 0 ? void 0 : _a.next(node) : document.head.append(node)];
+                    case 2:
+                        if (!(name === 'SCRIPT')) return [3 /*break*/, 4];
+                        return [4 /*yield*/, this.srcToScript(shadBox, node)];
+                    case 3:
+                        _b.sent();
+                        _b.label = 4;
+                    case 4: return [2 /*return*/, name === 'STYLE' ? (_a = this.loaderStyleSubject) === null || _a === void 0 ? void 0 : _a.next(node) : document.head.append(node)];
                 }
             });
         });
     };
-    ProxySandbox.prototype.docProxy = function (shadow) {
+    ProxySandbox.prototype.docProxy = function (shadBox, shadow) {
         var shadowProxy = {};
         var head = (shadow === null || shadow === void 0 ? void 0 : shadow.querySelector("[data-app=\"head\"]")) || document.head;
         var body = (shadow === null || shadow === void 0 ? void 0 : shadow.querySelector("[data-app=\"body\"]")) || document.body;
-        var _head = new Proxy(head, this.propProxy({ appendChild: this.appendChild.bind(this) }));
+        var _head = new Proxy(head, this.propProxy({ appendChild: this.appendChild.bind(this, shadBox) }));
         var querySelector = this.querySelector(_head, body, shadow);
         shadow && docProxyMethod.forEach(function (key) {
             var method = shadow[key];
@@ -83,19 +118,13 @@ var ProxySandbox = /** @class */ (function () {
     ProxySandbox.prototype.propProxy = function (proxy) {
         var _this = this;
         return {
-            get: function (target, prop) { return proxy[prop] ? proxy[prop] : _this.bindMethod(target, prop); },
-            set: function (target, prop, value) { return proxy[prop] = value; }
+            get: function (target, prop) { return !isUndefined(proxy[prop]) ? proxy[prop] : _this.bindMethod(target, prop); },
+            set: function (target, prop, value) { return Reflect.set(target, prop, value); }
         };
     };
     ProxySandbox.prototype.bindMethod = function (target, props) {
         var attr = Reflect.get(target, props);
-        return typeof attr === 'function' && !(attr === null || attr === void 0 ? void 0 : attr.prototype) ? function () {
-            var args = [];
-            for (var _i = 0; _i < arguments.length; _i++) {
-                args[_i] = arguments[_i];
-            }
-            return attr.apply(target, args);
-        } : attr;
+        return typeof attr === 'function' && !(attr === null || attr === void 0 ? void 0 : attr.prototype) ? attr.bind(target) : attr;
     };
     return ProxySandbox;
 }());

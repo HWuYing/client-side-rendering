@@ -1,44 +1,65 @@
 import { __awaiter } from "tslib";
-import { lastValueFrom, Subject } from 'rxjs';
+import { isUndefined } from 'lodash';
+import { lastValueFrom, shareReplay, Subject } from 'rxjs';
 const docProxyMethod = ['querySelectorAll', 'getElementById'];
 export class ProxySandbox {
     constructor(microManage, staticAssets) {
         this.microManage = microManage;
         this.staticAssets = staticAssets;
+        this.cache = new Map();
         this.loaderStyleSubject = new Subject();
+        this.loaderScriptSubject = new Subject();
     }
     createShanbox(shadow) {
-        const _document = new Proxy(document, this.propProxy(this.docProxy(shadow)));
+        const shadBox = {};
+        const _document = new Proxy(document, this.propProxy(this.docProxy(shadBox, shadow)));
         const _window = new Proxy(window, this.propProxy({ document: _document }));
-        return { window: _window, document: _document };
+        return Object.assign(shadBox, { window: _window, self: _window, global: _window, document: _document });
     }
     linkToStyle(link) {
         return __awaiter(this, void 0, void 0, function* () {
             const href = link.getAttribute('href') || '';
-            link.href = URL.createObjectURL(new Blob(['']));
             if (!this.staticAssets.links.includes(href) && href) {
-                const text = yield lastValueFrom(this.microManage.la.fetchStatic(href));
+                this.staticAssets.links.push(href);
                 const style = document.createElement('style');
-                style.innerText = text;
+                style.innerText = yield lastValueFrom(this.microManage.la.fetchStatic(href));
                 this.loaderStyleSubject.next(style);
             }
+            link.setAttribute('proxy-href', href);
+            link.href = URL.createObjectURL(new Blob(['']));
         });
     }
-    appendChild(node) {
+    srcToScript(shadBox, node) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const src = node.getAttribute('src') || '';
+            let subject = this.cache.get(src);
+            if (!subject) {
+                subject = this.microManage.la.fetchStatic(src).pipe(shareReplay(1));
+                this.cache.set(src, subject);
+            }
+            const text = yield lastValueFrom(subject);
+            this.loaderScriptSubject.next([{ script: [text], js: [src] }, shadBox]);
+            node.src = URL.createObjectURL(new Blob(['']));
+        });
+    }
+    appendChild(shadBox, node) {
         var _a;
         return __awaiter(this, void 0, void 0, function* () {
             const name = node.nodeName;
             if (name === 'LINK') {
                 yield this.linkToStyle(node);
             }
+            if (name === 'SCRIPT') {
+                yield this.srcToScript(shadBox, node);
+            }
             return name === 'STYLE' ? (_a = this.loaderStyleSubject) === null || _a === void 0 ? void 0 : _a.next(node) : document.head.append(node);
         });
     }
-    docProxy(shadow) {
+    docProxy(shadBox, shadow) {
         const shadowProxy = {};
         const head = (shadow === null || shadow === void 0 ? void 0 : shadow.querySelector(`[data-app="head"]`)) || document.head;
         const body = (shadow === null || shadow === void 0 ? void 0 : shadow.querySelector(`[data-app="body"]`)) || document.body;
-        const _head = new Proxy(head, this.propProxy({ appendChild: this.appendChild.bind(this) }));
+        const _head = new Proxy(head, this.propProxy({ appendChild: this.appendChild.bind(this, shadBox) }));
         const querySelector = this.querySelector(_head, body, shadow);
         shadow && docProxyMethod.forEach((key) => {
             const method = shadow[key];
@@ -58,12 +79,12 @@ export class ProxySandbox {
     }
     propProxy(proxy) {
         return {
-            get: (target, prop) => proxy[prop] ? proxy[prop] : this.bindMethod(target, prop),
-            set: (target, prop, value) => proxy[prop] = value
+            get: (target, prop) => !isUndefined(proxy[prop]) ? proxy[prop] : this.bindMethod(target, prop),
+            set: (target, prop, value) => Reflect.set(target, prop, value)
         };
     }
     bindMethod(target, props) {
         const attr = Reflect.get(target, props);
-        return typeof attr === 'function' && !(attr === null || attr === void 0 ? void 0 : attr.prototype) ? (...args) => attr.apply(target, args) : attr;
+        return typeof attr === 'function' && !(attr === null || attr === void 0 ? void 0 : attr.prototype) ? attr.bind(target) : attr;
     }
 }
