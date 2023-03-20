@@ -14,4 +14,4 @@ Object.defineProperty(exports, "MicroStore", { enumerable: true, get: function (
 var platform_1 = require("./providers/platform");
 Object.defineProperty(exports, "dynamicPlatform", { enumerable: true, get: function () { return platform_1.dynamicPlatform; } });
 tslib_1.__exportStar(require("./token"), exports);
-tslib_1.__exportStar(require("@fm/shared"), exports);
+tslib_1.__exportStar(require("@fm/core"), exports);

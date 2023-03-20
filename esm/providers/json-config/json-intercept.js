@@ -1,8 +1,8 @@
 import { __decorate, __metadata, __param } from "tslib";
 import { Inject, Injectable, Injector } from '@fm/di';
-import { AppContextService as SharedContext, createResponse } from '@fm/shared';
+import { AppContextService as SharedContext, createResponse } from '@fm/core';
 import { cloneDeep } from 'lodash';
-import { from, map, mergeMap, of, shareReplay, tap } from 'rxjs';
+import { from, map, of, shareReplay, switchMap, tap } from 'rxjs';
 const FILE_STATIC = 'file-static';
 export const JSON_TYPE = 'json-config';
 let JsonIntercept = class JsonIntercept {
@@ -15,7 +15,7 @@ let JsonIntercept = class JsonIntercept {
         return observable.pipe(shareReplay(1), map(cloneDeep));
     }
     resetCacheConfig() {
-        const staticList = this.appContext.getResourceCache(FILE_STATIC);
+        const staticList = this.appContext.getResourceCache(FILE_STATIC, false);
         const entries = staticList.map(({ url, source }) => [url, this.createCache(of(source))]);
         return new Map(entries);
     }
@@ -35,7 +35,7 @@ let JsonIntercept = class JsonIntercept {
             return of(respons);
         }
         const event$ = next.handle(req, params);
-        return !isJsonFetch ? event$ : event$.pipe(mergeMap((response) => {
+        return !isJsonFetch ? event$ : event$.pipe(switchMap((response) => {
             return from(response.clone().json()).pipe(tap((json) => this.putGlobalSource(req, json)), map(() => response));
         }));
     }

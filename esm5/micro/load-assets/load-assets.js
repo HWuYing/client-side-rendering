@@ -1,6 +1,6 @@
 import { __assign, __decorate, __metadata, __param, __rest } from "tslib";
 import { Inject, Injectable } from '@fm/di';
-import { createMicroElementTemplate, HttpFetchHandler, MICRO_OPTIONS, serializableAssets } from '@fm/shared';
+import { createMicroElementTemplate, HttpFetchHandler, MICRO_OPTIONS, serializableAssets } from '@fm/core';
 import { isEmpty, merge } from 'lodash';
 import { forkJoin, of } from 'rxjs';
 import { map, mergeMap, switchMap, tap } from 'rxjs/operators';
@@ -29,7 +29,6 @@ var LoadAssets = /** @class */ (function () {
         var _this = this;
         return isEmpty(links) ? of(links) : forkJoin(links.map(function (href) { return _this.fetchStatic(href); }));
     };
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     LoadAssets.prototype.readJavascript = function (_a) {
         var _this = this;
         var js = _a.js, script = _a.script, other = __rest(_a, ["js", "script"]);

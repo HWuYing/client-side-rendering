@@ -1,4 +1,4 @@
-import { MicroManageInterface } from '@fm/shared/micro';
+import { MicroManageInterface } from '@fm/core/micro';
 import { Subject } from 'rxjs';
 import { StaticAssets } from '../load-assets/load-assets';
 export declare class ProxySandbox {

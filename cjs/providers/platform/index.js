@@ -2,15 +2,15 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.dynamicPlatform = void 0;
 var di_1 = require("@fm/di");
-var shared_1 = require("@fm/shared");
-var platform_1 = require("@fm/shared/providers/platform");
+var core_1 = require("@fm/core");
+var platform_1 = require("@fm/core/providers/platform");
 var platform_2 = require("./platform");
 var isMicro = typeof microStore !== 'undefined';
 var resource = typeof fetchCacheData !== 'undefined' ? fetchCacheData : [];
 var _CORE_PLATFORM_PROVIDERS = [
     { provide: platform_1.PlatformOptions, useValue: { isMicro: isMicro, resource: resource } },
     { provide: platform_2.Platform, deps: [di_1.Injector, platform_1.PlatformOptions] },
-    { provide: shared_1.PLATFORM, useExisting: platform_2.Platform }
+    { provide: core_1.PLATFORM, useExisting: platform_2.Platform }
 ];
 var DyanmicPlatfom = /** @class */ (function () {
     function DyanmicPlatfom(providers) {

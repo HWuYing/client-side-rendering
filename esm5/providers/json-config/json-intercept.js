@@ -1,8 +1,8 @@
 import { __decorate, __metadata, __param } from "tslib";
 import { Inject, Injectable, Injector } from '@fm/di';
-import { AppContextService as SharedContext, createResponse } from '@fm/shared';
+import { AppContextService as SharedContext, createResponse } from '@fm/core';
 import { cloneDeep } from 'lodash';
-import { from, map, mergeMap, of, shareReplay, tap } from 'rxjs';
+import { from, map, of, shareReplay, switchMap, tap } from 'rxjs';
 var FILE_STATIC = 'file-static';
 export var JSON_TYPE = 'json-config';
 var JsonIntercept = /** @class */ (function () {
@@ -16,7 +16,7 @@ var JsonIntercept = /** @class */ (function () {
     };
     JsonIntercept.prototype.resetCacheConfig = function () {
         var _this = this;
-        var staticList = this.appContext.getResourceCache(FILE_STATIC);
+        var staticList = this.appContext.getResourceCache(FILE_STATIC, false);
         var entries = staticList.map(function (_a) {
             var url = _a.url, source = _a.source;
             return [url, _this.createCache(of(source))];
@@ -40,7 +40,7 @@ var JsonIntercept = /** @class */ (function () {
             return of(respons);
         }
         var event$ = next.handle(req, params);
-        return !isJsonFetch ? event$ : event$.pipe(mergeMap(function (response) {
+        return !isJsonFetch ? event$ : event$.pipe(switchMap(function (response) {
             return from(response.clone().json()).pipe(tap(function (json) { return _this.putGlobalSource(req, json); }), map(function () { return response; }));
         }));
     };

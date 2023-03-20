@@ -1,6 +1,6 @@
 import { __assign, __awaiter, __generator, __rest, __spreadArray } from "tslib";
 import { Injector, INJECTOR_SCOPE } from '@fm/di';
-import { APP_CONTEXT, AppContextService, HISTORY, HTTP_INTERCEPTORS, HttpHandler, HttpInterceptingHandler, JsonConfigService } from '@fm/shared';
+import { APP_CONTEXT, AppContextService, HISTORY, HTTP_INTERCEPTORS, HttpHandler, HttpInterceptingHandler, JsonConfigService } from '@fm/core';
 import { IMPORT_MICRO } from '../../token';
 import { AppContextService as ClientAppContextService } from '../app-context';
 import { JsonConfigService as ClientJsonConfigService, JsonIntercept } from '../json-config';
@@ -46,8 +46,8 @@ var Platform = /** @class */ (function () {
                         unRender = _b.sent();
                         return [2 /*return*/, function (_container) {
                                 unRender(_container);
-                                injector.destory();
-                                _this.platformInjector.destory();
+                                injector.destroy();
+                                _this.platformInjector.destroy();
                             }];
                 }
             });
@@ -61,13 +61,13 @@ var Platform = /** @class */ (function () {
         var appContext = __assign({ container: container, styleContainer: styleContainer, renderSSR: true, resource: this.resource, isMicro: this.isMicro }, context);
         var additionalProviders = [
             { provide: HTTP_INTERCEPTORS, multi: true, useExisting: JsonIntercept },
-            providers,
             { provide: INJECTOR_SCOPE, useValue: 'root' },
             { provide: APP_CONTEXT, useValue: appContext },
             { provide: HttpHandler, useExisting: HttpInterceptingHandler },
             { provide: JsonConfigService, useExisting: ClientJsonConfigService },
             { provide: AppContextService, useExisting: ClientAppContextService },
-            this.regeditHistory() || []
+            this.regeditHistory() || [],
+            providers
         ];
         return Injector.create(additionalProviders, this.platformInjector);
     };

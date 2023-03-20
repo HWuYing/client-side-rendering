@@ -1,6 +1,6 @@
 import { __decorate, __extends, __metadata } from "tslib";
 import { Injectable, Injector } from '@fm/di';
-import { HttpClient, JsonConfigService as SharedJsonConfigService } from '@fm/shared';
+import { HttpClient, JsonConfigService as SharedJsonConfigService } from '@fm/core';
 import { cloneDeep } from 'lodash';
 import { map, shareReplay } from 'rxjs';
 import { JSON_TYPE } from './json-intercept';

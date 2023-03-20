@@ -1,6 +1,6 @@
 import { Injector } from '@fm/di';
-import { PLATFORM } from '@fm/shared';
-import { createPlafformFactory, PlatformOptions } from '@fm/shared/providers/platform';
+import { PLATFORM } from '@fm/core';
+import { createPlafformFactory, PlatformOptions } from '@fm/core/providers/platform';
 import { Platform } from './platform';
 var isMicro = typeof microStore !== 'undefined';
 var resource = typeof fetchCacheData !== 'undefined' ? fetchCacheData : [];

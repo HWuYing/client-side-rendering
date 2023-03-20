@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.LoadAssets = void 0;
 var tslib_1 = require("tslib");
 var di_1 = require("@fm/di");
-var shared_1 = require("@fm/shared");
+var core_1 = require("@fm/core");
 var lodash_1 = require("lodash");
 var rxjs_1 = require("rxjs");
 var operators_1 = require("rxjs/operators");
@@ -25,14 +25,13 @@ var LoadAssets = /** @class */ (function () {
             return microName === _microName;
         });
         var fetchCacheData = JSON.parse(microData && microData.source || '[]');
-        var staticAssets = tslib_1.__assign(tslib_1.__assign({}, (0, shared_1.serializableAssets)(entrypoints)), { script: [], fetchCacheData: fetchCacheData });
+        var staticAssets = tslib_1.__assign(tslib_1.__assign({}, (0, core_1.serializableAssets)(entrypoints)), { script: [], fetchCacheData: fetchCacheData });
         return this.readJavascript(staticAssets);
     };
     LoadAssets.prototype.reeadLinkToStyles = function (links) {
         var _this = this;
         return (0, lodash_1.isEmpty)(links) ? (0, rxjs_1.of)(links) : (0, rxjs_1.forkJoin)(links.map(function (href) { return _this.fetchStatic(href); }));
     };
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     LoadAssets.prototype.readJavascript = function (_a) {
         var _this = this;
         var js = _a.js, script = _a.script, other = tslib_1.__rest(_a, ["js", "script"]);
@@ -42,7 +41,7 @@ var LoadAssets = /** @class */ (function () {
         var tag = document.createElement("".concat(microName, "-tag"));
         return tag && tag.shadowRoot ? (0, rxjs_1.of)(staticAssets) : this.reeadLinkToStyles(staticAssets.links).pipe(
         // eslint-disable-next-line no-new-func
-        (0, operators_1.tap)(function (linkToStyles) { return new Function((0, shared_1.createMicroElementTemplate)(microName, { linkToStyles: linkToStyles }))(); }), (0, operators_1.map)(function () { return staticAssets; }));
+        (0, operators_1.tap)(function (linkToStyles) { return new Function((0, core_1.createMicroElementTemplate)(microName, { linkToStyles: linkToStyles }))(); }), (0, operators_1.map)(function () { return staticAssets; }));
     };
     LoadAssets.prototype.fetchStatic = function (url, isText) {
         if (isText === void 0) { isText = true; }
@@ -56,8 +55,8 @@ var LoadAssets = /** @class */ (function () {
     };
     LoadAssets = tslib_1.__decorate([
         (0, di_1.Injectable)(),
-        tslib_1.__param(1, (0, di_1.Inject)(shared_1.MICRO_OPTIONS)),
-        tslib_1.__metadata("design:paramtypes", [shared_1.HttpFetchHandler, Object])
+        tslib_1.__param(1, (0, di_1.Inject)(core_1.MICRO_OPTIONS)),
+        tslib_1.__metadata("design:paramtypes", [core_1.HttpFetchHandler, Object])
     ], LoadAssets);
     return LoadAssets;
 }());

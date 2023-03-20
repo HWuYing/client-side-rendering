@@ -1,6 +1,6 @@
 import { __awaiter, __rest } from "tslib";
 import { Injector, INJECTOR_SCOPE } from '@fm/di';
-import { APP_CONTEXT, AppContextService, HISTORY, HTTP_INTERCEPTORS, HttpHandler, HttpInterceptingHandler, JsonConfigService } from '@fm/shared';
+import { APP_CONTEXT, AppContextService, HISTORY, HTTP_INTERCEPTORS, HttpHandler, HttpInterceptingHandler, JsonConfigService } from '@fm/core';
 import { IMPORT_MICRO } from '../../token';
 import { AppContextService as ClientAppContextService } from '../app-context';
 import { JsonConfigService as ClientJsonConfigService, JsonIntercept } from '../json-config';
@@ -27,8 +27,8 @@ export class Platform {
             const unRender = yield _render(injector, _options);
             return (_container) => {
                 unRender(_container);
-                injector.destory();
-                this.platformInjector.destory();
+                injector.destroy();
+                this.platformInjector.destroy();
             };
         });
     }
@@ -38,13 +38,13 @@ export class Platform {
         const appContext = Object.assign({ container, styleContainer, renderSSR: true, resource: this.resource, isMicro: this.isMicro }, context);
         const additionalProviders = [
             { provide: HTTP_INTERCEPTORS, multi: true, useExisting: JsonIntercept },
-            providers,
             { provide: INJECTOR_SCOPE, useValue: 'root' },
             { provide: APP_CONTEXT, useValue: appContext },
             { provide: HttpHandler, useExisting: HttpInterceptingHandler },
             { provide: JsonConfigService, useExisting: ClientJsonConfigService },
             { provide: AppContextService, useExisting: ClientAppContextService },
-            this.regeditHistory() || []
+            this.regeditHistory() || [],
+            providers
         ];
         return Injector.create(additionalProviders, this.platformInjector);
     }

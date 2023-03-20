@@ -1,4 +1,4 @@
-import { HttpFetchHandler } from '@fm/shared';
+import { HttpFetchHandler } from '@fm/core';
 import { Observable } from 'rxjs';
 export interface StaticAssets {
     script: string[];

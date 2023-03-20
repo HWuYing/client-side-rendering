@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.JsonConfigService = void 0;
 var tslib_1 = require("tslib");
 var di_1 = require("@fm/di");
-var shared_1 = require("@fm/shared");
+var core_1 = require("@fm/core");
 var lodash_1 = require("lodash");
 var rxjs_1 = require("rxjs");
 var json_intercept_1 = require("./json-intercept");
@@ -27,8 +27,8 @@ var JsonConfigService = /** @class */ (function (_super) {
     };
     JsonConfigService = tslib_1.__decorate([
         (0, di_1.Injectable)(),
-        tslib_1.__metadata("design:paramtypes", [di_1.Injector, shared_1.HttpClient])
+        tslib_1.__metadata("design:paramtypes", [di_1.Injector, core_1.HttpClient])
     ], JsonConfigService);
     return JsonConfigService;
-}(shared_1.JsonConfigService));
+}(core_1.JsonConfigService));
 exports.JsonConfigService = JsonConfigService;

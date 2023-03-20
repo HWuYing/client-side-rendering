@@ -4,4 +4,4 @@ export { assetsPath, microOptions } from './micro/micro-options';
 export { MicroStore } from './micro/micro-store/micro-store';
 export { dynamicPlatform } from './providers/platform';
 export * from './token';
-export * from '@fm/shared';
+export * from '@fm/core';

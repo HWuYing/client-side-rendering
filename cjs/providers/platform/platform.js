@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Platform = void 0;
 var tslib_1 = require("tslib");
 var di_1 = require("@fm/di");
-var shared_1 = require("@fm/shared");
+var core_1 = require("@fm/core");
 var token_1 = require("../../token");
 var app_context_1 = require("../app-context");
 var json_config_1 = require("../json-config");
@@ -49,8 +49,8 @@ var Platform = /** @class */ (function () {
                         unRender = _b.sent();
                         return [2 /*return*/, function (_container) {
                                 unRender(_container);
-                                injector.destory();
-                                _this.platformInjector.destory();
+                                injector.destroy();
+                                _this.platformInjector.destroy();
                             }];
                 }
             });
@@ -63,14 +63,14 @@ var Platform = /** @class */ (function () {
         var styleContainer = document.head;
         var appContext = tslib_1.__assign({ container: container, styleContainer: styleContainer, renderSSR: true, resource: this.resource, isMicro: this.isMicro }, context);
         var additionalProviders = [
-            { provide: shared_1.HTTP_INTERCEPTORS, multi: true, useExisting: json_config_1.JsonIntercept },
-            providers,
+            { provide: core_1.HTTP_INTERCEPTORS, multi: true, useExisting: json_config_1.JsonIntercept },
             { provide: di_1.INJECTOR_SCOPE, useValue: 'root' },
-            { provide: shared_1.APP_CONTEXT, useValue: appContext },
-            { provide: shared_1.HttpHandler, useExisting: shared_1.HttpInterceptingHandler },
-            { provide: shared_1.JsonConfigService, useExisting: json_config_1.JsonConfigService },
-            { provide: shared_1.AppContextService, useExisting: app_context_1.AppContextService },
-            this.regeditHistory() || []
+            { provide: core_1.APP_CONTEXT, useValue: appContext },
+            { provide: core_1.HttpHandler, useExisting: core_1.HttpInterceptingHandler },
+            { provide: core_1.JsonConfigService, useExisting: json_config_1.JsonConfigService },
+            { provide: core_1.AppContextService, useExisting: app_context_1.AppContextService },
+            this.regeditHistory() || [],
+            providers
         ];
         return di_1.Injector.create(additionalProviders, this.platformInjector);
     };
@@ -94,15 +94,15 @@ var Platform = /** @class */ (function () {
     };
     Platform.prototype.regeditHistory = function () {
         var _this = this;
-        if (this.platformInjector.get(shared_1.HISTORY)) {
+        if (this.platformInjector.get(core_1.HISTORY)) {
             var factory = function (injector) {
-                var historyKey = shared_1.HISTORY.toString();
-                var _a = injector.get(shared_1.AppContextService).microManage, _b = _a === void 0 ? {} : _a, _c = _b.sharedData, sharedData = _c === void 0 ? void (0) : _c;
-                var sharedHistory = (sharedData === null || sharedData === void 0 ? void 0 : sharedData.get(historyKey)) || _this.platformInjector.get(shared_1.HISTORY);
+                var historyKey = core_1.HISTORY.toString();
+                var _a = injector.get(core_1.AppContextService).microManage, _b = _a === void 0 ? {} : _a, _c = _b.sharedData, sharedData = _c === void 0 ? void (0) : _c;
+                var sharedHistory = (sharedData === null || sharedData === void 0 ? void 0 : sharedData.get(historyKey)) || _this.platformInjector.get(core_1.HISTORY);
                 sharedData === null || sharedData === void 0 ? void 0 : sharedData.set(historyKey, sharedHistory);
                 return sharedHistory;
             };
-            return [{ provide: shared_1.HISTORY, useFactory: factory, deps: [di_1.Injector] }];
+            return [{ provide: core_1.HISTORY, useFactory: factory, deps: [di_1.Injector] }];
         }
     };
     Platform.prototype.parseParams = function (providers, render, options) {
