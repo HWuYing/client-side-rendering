@@ -2,8 +2,9 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Platform = void 0;
 var tslib_1 = require("tslib");
-var di_1 = require("@fm/di");
 var core_1 = require("@fm/core");
+var platform_1 = require("@fm/core/providers/platform");
+var di_1 = require("@fm/di");
 var token_1 = require("../../token");
 var app_context_1 = require("../app-context");
 var json_config_1 = require("../json-config");
@@ -25,7 +26,7 @@ var Platform = /** @class */ (function () {
                     case 1:
                         _b.sent();
                         injector = this.beforeBootstrapRender({ useMicroManage: function () { return injector.get(token_1.IMPORT_MICRO); } }, providers);
-                        return [4 /*yield*/, _render(injector)];
+                        return [4 /*yield*/, this.runRender(injector, undefined, _render)];
                     case 2:
                         _b.sent();
                         return [2 /*return*/];
@@ -44,7 +45,7 @@ var Platform = /** @class */ (function () {
                         microManage = __options.microManage, head = __options.head, body = __options.body, _options = tslib_1.__rest(__options, ["microManage", "head", "body"]);
                         microConfig = { container: body, styleContainer: head, useMicroManage: function () { return microManage; } };
                         injector = this.beforeBootstrapRender(microConfig, providers);
-                        return [4 /*yield*/, _render(injector, _options)];
+                        return [4 /*yield*/, this.runRender(injector, _options, _render)];
                     case 1:
                         unRender = _b.sent();
                         return [2 /*return*/, function (_container) {
@@ -63,15 +64,15 @@ var Platform = /** @class */ (function () {
         var styleContainer = document.head;
         var appContext = tslib_1.__assign({ container: container, styleContainer: styleContainer, renderSSR: true, resource: this.resource, isMicro: this.isMicro }, context);
         var additionalProviders = [
-            { provide: core_1.HTTP_INTERCEPTORS, multi: true, useExisting: json_config_1.JsonIntercept },
             { provide: di_1.INJECTOR_SCOPE, useValue: 'root' },
             { provide: core_1.APP_CONTEXT, useValue: appContext },
             { provide: core_1.HttpHandler, useExisting: core_1.HttpInterceptingHandler },
             { provide: core_1.JsonConfigService, useExisting: json_config_1.JsonConfigService },
             { provide: core_1.AppContextService, useExisting: app_context_1.AppContextService },
-            this.regeditHistory() || [],
-            providers
+            { provide: core_1.HTTP_INTERCEPTORS, multi: true, useExisting: json_config_1.JsonIntercept },
+            providers,
         ];
+        this.regeditHistory(providers);
         return di_1.Injector.create(additionalProviders, this.platformInjector);
     };
     Platform.prototype.importMicro = function (providers) {
@@ -92,18 +93,31 @@ var Platform = /** @class */ (function () {
             });
         });
     };
-    Platform.prototype.regeditHistory = function () {
+    Platform.prototype.regeditHistory = function (providers) {
         var _this = this;
-        if (this.platformInjector.get(core_1.HISTORY)) {
-            var factory = function (injector) {
+        var historyProvider = providers.find(function (_a) {
+            var provide = _a.provide;
+            return provide === core_1.HISTORY;
+        });
+        if (historyProvider || this.platformInjector.get(core_1.HISTORY)) {
+            var deps = [di_1.Injector];
+            var factory = function (injector, history) {
                 var historyKey = core_1.HISTORY.toString();
                 var _a = injector.get(core_1.AppContextService).microManage, _b = _a === void 0 ? {} : _a, _c = _b.sharedData, sharedData = _c === void 0 ? void (0) : _c;
-                var sharedHistory = (sharedData === null || sharedData === void 0 ? void 0 : sharedData.get(historyKey)) || _this.platformInjector.get(core_1.HISTORY);
+                var sharedHistory = (sharedData === null || sharedData === void 0 ? void 0 : sharedData.get(historyKey)) || history || _this.platformInjector.get(core_1.HISTORY);
                 sharedData === null || sharedData === void 0 ? void 0 : sharedData.set(historyKey, sharedHistory);
                 return sharedHistory;
             };
-            return [{ provide: core_1.HISTORY, useFactory: factory, deps: [di_1.Injector] }];
+            if (historyProvider) {
+                providers.push(tslib_1.__assign(tslib_1.__assign({}, historyProvider), { provide: historyProvider }));
+                deps.push(historyProvider);
+            }
+            providers.push({ provide: core_1.HISTORY, useFactory: factory, deps: deps });
         }
+    };
+    Platform.prototype.runRender = function (injector, options, render) {
+        var application = injector.get(platform_1.APPLICATION_TOKEN);
+        return (render || application.bootstrapRender).call(application, injector, options);
     };
     Platform.prototype.parseParams = function (providers, render, options) {
         return typeof providers === 'function' ? [[], providers, options] : [tslib_1.__spreadArray([], providers, true), render, options];

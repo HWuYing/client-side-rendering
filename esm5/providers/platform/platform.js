@@ -1,6 +1,7 @@
 import { __assign, __awaiter, __generator, __rest, __spreadArray } from "tslib";
-import { Injector, INJECTOR_SCOPE } from '@fm/di';
 import { APP_CONTEXT, AppContextService, HISTORY, HTTP_INTERCEPTORS, HttpHandler, HttpInterceptingHandler, JsonConfigService } from '@fm/core';
+import { APPLICATION_TOKEN } from '@fm/core/providers/platform';
+import { Injector, INJECTOR_SCOPE } from '@fm/di';
 import { IMPORT_MICRO } from '../../token';
 import { AppContextService as ClientAppContextService } from '../app-context';
 import { JsonConfigService as ClientJsonConfigService, JsonIntercept } from '../json-config';
@@ -22,7 +23,7 @@ var Platform = /** @class */ (function () {
                     case 1:
                         _b.sent();
                         injector = this.beforeBootstrapRender({ useMicroManage: function () { return injector.get(IMPORT_MICRO); } }, providers);
-                        return [4 /*yield*/, _render(injector)];
+                        return [4 /*yield*/, this.runRender(injector, undefined, _render)];
                     case 2:
                         _b.sent();
                         return [2 /*return*/];
@@ -41,7 +42,7 @@ var Platform = /** @class */ (function () {
                         microManage = __options.microManage, head = __options.head, body = __options.body, _options = __rest(__options, ["microManage", "head", "body"]);
                         microConfig = { container: body, styleContainer: head, useMicroManage: function () { return microManage; } };
                         injector = this.beforeBootstrapRender(microConfig, providers);
-                        return [4 /*yield*/, _render(injector, _options)];
+                        return [4 /*yield*/, this.runRender(injector, _options, _render)];
                     case 1:
                         unRender = _b.sent();
                         return [2 /*return*/, function (_container) {
@@ -60,15 +61,15 @@ var Platform = /** @class */ (function () {
         var styleContainer = document.head;
         var appContext = __assign({ container: container, styleContainer: styleContainer, renderSSR: true, resource: this.resource, isMicro: this.isMicro }, context);
         var additionalProviders = [
-            { provide: HTTP_INTERCEPTORS, multi: true, useExisting: JsonIntercept },
             { provide: INJECTOR_SCOPE, useValue: 'root' },
             { provide: APP_CONTEXT, useValue: appContext },
             { provide: HttpHandler, useExisting: HttpInterceptingHandler },
             { provide: JsonConfigService, useExisting: ClientJsonConfigService },
             { provide: AppContextService, useExisting: ClientAppContextService },
-            this.regeditHistory() || [],
-            providers
+            { provide: HTTP_INTERCEPTORS, multi: true, useExisting: JsonIntercept },
+            providers,
         ];
+        this.regeditHistory(providers);
         return Injector.create(additionalProviders, this.platformInjector);
     };
     Platform.prototype.importMicro = function (providers) {
@@ -89,18 +90,31 @@ var Platform = /** @class */ (function () {
             });
         });
     };
-    Platform.prototype.regeditHistory = function () {
+    Platform.prototype.regeditHistory = function (providers) {
         var _this = this;
-        if (this.platformInjector.get(HISTORY)) {
-            var factory = function (injector) {
+        var historyProvider = providers.find(function (_a) {
+            var provide = _a.provide;
+            return provide === HISTORY;
+        });
+        if (historyProvider || this.platformInjector.get(HISTORY)) {
+            var deps = [Injector];
+            var factory = function (injector, history) {
                 var historyKey = HISTORY.toString();
                 var _a = injector.get(AppContextService).microManage, _b = _a === void 0 ? {} : _a, _c = _b.sharedData, sharedData = _c === void 0 ? void (0) : _c;
-                var sharedHistory = (sharedData === null || sharedData === void 0 ? void 0 : sharedData.get(historyKey)) || _this.platformInjector.get(HISTORY);
+                var sharedHistory = (sharedData === null || sharedData === void 0 ? void 0 : sharedData.get(historyKey)) || history || _this.platformInjector.get(HISTORY);
                 sharedData === null || sharedData === void 0 ? void 0 : sharedData.set(historyKey, sharedHistory);
                 return sharedHistory;
             };
-            return [{ provide: HISTORY, useFactory: factory, deps: [Injector] }];
+            if (historyProvider) {
+                providers.push(__assign(__assign({}, historyProvider), { provide: historyProvider }));
+                deps.push(historyProvider);
+            }
+            providers.push({ provide: HISTORY, useFactory: factory, deps: deps });
         }
+    };
+    Platform.prototype.runRender = function (injector, options, render) {
+        var application = injector.get(APPLICATION_TOKEN);
+        return (render || application.bootstrapRender).call(application, injector, options);
     };
     Platform.prototype.parseParams = function (providers, render, options) {
         return typeof providers === 'function' ? [[], providers, options] : [__spreadArray([], providers, true), render, options];

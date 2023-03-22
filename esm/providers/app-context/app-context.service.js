@@ -1,13 +1,13 @@
 import { __decorate } from "tslib";
+import { AppContextService as SharedAppContextService } from '@fm/core/providers';
 import { Injectable } from '@fm/di';
-import { AppContextService as SharedAppContextService } from '@fm/core';
 let AppContextService = class AppContextService extends SharedAppContextService {
     constructor() {
         super(...arguments);
         this.resourceCache = new Map();
     }
     getResourceCache(type, needRemove = true) {
-        if (this.resourceCache.has(type)) {
+        if (!type || this.resourceCache.has(type)) {
             return type && this.resourceCache.get(type) || [];
         }
         const resource = this.getContext().resource;

@@ -2,8 +2,8 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AppContextService = void 0;
 var tslib_1 = require("tslib");
+var providers_1 = require("@fm/core/providers");
 var di_1 = require("@fm/di");
-var core_1 = require("@fm/core");
 var AppContextService = /** @class */ (function (_super) {
     tslib_1.__extends(AppContextService, _super);
     function AppContextService() {
@@ -13,7 +13,7 @@ var AppContextService = /** @class */ (function (_super) {
     }
     AppContextService.prototype.getResourceCache = function (type, needRemove) {
         if (needRemove === void 0) { needRemove = true; }
-        if (this.resourceCache.has(type)) {
+        if (!type || this.resourceCache.has(type)) {
             return type && this.resourceCache.get(type) || [];
         }
         var resource = this.getContext().resource;
@@ -32,5 +32,5 @@ var AppContextService = /** @class */ (function (_super) {
         (0, di_1.Injectable)()
     ], AppContextService);
     return AppContextService;
-}(core_1.AppContextService));
+}(providers_1.AppContextService));
 exports.AppContextService = AppContextService;

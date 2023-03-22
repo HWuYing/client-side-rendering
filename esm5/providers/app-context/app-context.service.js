@@ -1,6 +1,6 @@
 import { __decorate, __extends } from "tslib";
+import { AppContextService as SharedAppContextService } from '@fm/core/providers';
 import { Injectable } from '@fm/di';
-import { AppContextService as SharedAppContextService } from '@fm/core';
 var AppContextService = /** @class */ (function (_super) {
     __extends(AppContextService, _super);
     function AppContextService() {
@@ -10,7 +10,7 @@ var AppContextService = /** @class */ (function (_super) {
     }
     AppContextService.prototype.getResourceCache = function (type, needRemove) {
         if (needRemove === void 0) { needRemove = true; }
-        if (this.resourceCache.has(type)) {
+        if (!type || this.resourceCache.has(type)) {
             return type && this.resourceCache.get(type) || [];
         }
         var resource = this.getContext().resource;

@@ -10,5 +10,6 @@ export declare class Platform {
     private beforeBootstrapRender;
     private importMicro;
     private regeditHistory;
+    private runRender;
     private parseParams;
 }

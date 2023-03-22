@@ -1,5 +1,5 @@
-import { Injector } from '@fm/di';
 import { HttpHandler, HttpInterceptor } from '@fm/core';
+import { Injector } from '@fm/di';
 import { Observable } from 'rxjs';
 import { AppContextService } from '../app-context/app-context.service';
 export declare const JSON_TYPE = "json-config";

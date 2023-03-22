@@ -1,16 +1,18 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.dynamicPlatform = void 0;
-var di_1 = require("@fm/di");
-var core_1 = require("@fm/core");
+exports.Prov = exports.Application = exports.dynamicPlatform = exports.PLATFORM_SCOPE = void 0;
 var platform_1 = require("@fm/core/providers/platform");
+var token_1 = require("@fm/core/token");
+var di_1 = require("@fm/di");
 var platform_2 = require("./platform");
 var isMicro = typeof microStore !== 'undefined';
 var resource = typeof fetchCacheData !== 'undefined' ? fetchCacheData : [];
+var applicationContext = new platform_1.ApplicationContext();
 var _CORE_PLATFORM_PROVIDERS = [
     { provide: platform_1.PlatformOptions, useValue: { isMicro: isMicro, resource: resource } },
     { provide: platform_2.Platform, deps: [di_1.Injector, platform_1.PlatformOptions] },
-    { provide: core_1.PLATFORM, useExisting: platform_2.Platform }
+    { provide: token_1.PLATFORM, useExisting: platform_2.Platform },
+    { provide: platform_1.ApplicationContext, useFactory: function () { return applicationContext; } }
 ];
 var DyanmicPlatfom = /** @class */ (function () {
     function DyanmicPlatfom(providers) {
@@ -19,14 +21,19 @@ var DyanmicPlatfom = /** @class */ (function () {
     DyanmicPlatfom.prototype.bootstrapRender = function (providers, render) {
         var _this = this;
         if (!isMicro) {
-            return this.createPlatform().bootstrapRender(providers, render);
+            return this.createPlatform(applicationContext).bootstrapRender(providers, render);
         }
-        microStore.render = function (options) { return _this.createPlatform().bootstrapMicroRender(providers, render, options); };
+        microStore.render = function (options) { return _this.createPlatform(applicationContext).bootstrapMicroRender(providers, render, options); };
     };
     return DyanmicPlatfom;
 }());
+var platform_3 = require("@fm/core/providers/platform");
+Object.defineProperty(exports, "PLATFORM_SCOPE", { enumerable: true, get: function () { return platform_3.PLATFORM_SCOPE; } });
 var dynamicPlatform = function (providers) {
     if (providers === void 0) { providers = []; }
     return new DyanmicPlatfom(providers);
 };
 exports.dynamicPlatform = dynamicPlatform;
+applicationContext.regeditStart(function () { return (0, exports.dynamicPlatform)().bootstrapRender(applicationContext.providers); });
+exports.Application = applicationContext.makeApplicationDecorator();
+exports.Prov = applicationContext.makeProvDecorator('MethodDecorator');

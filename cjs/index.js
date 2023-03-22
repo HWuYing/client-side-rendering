@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.dynamicPlatform = exports.MicroStore = exports.microOptions = exports.assetsPath = exports.MicroManage = exports.LoadAssets = void 0;
+exports.Prov = exports.PLATFORM_SCOPE = exports.dynamicPlatform = exports.Application = exports.MicroStore = exports.microOptions = exports.assetsPath = exports.MicroManage = exports.LoadAssets = void 0;
 var tslib_1 = require("tslib");
 var load_assets_1 = require("./micro/load-assets/load-assets");
 Object.defineProperty(exports, "LoadAssets", { enumerable: true, get: function () { return load_assets_1.LoadAssets; } });
@@ -12,6 +12,9 @@ Object.defineProperty(exports, "microOptions", { enumerable: true, get: function
 var micro_store_1 = require("./micro/micro-store/micro-store");
 Object.defineProperty(exports, "MicroStore", { enumerable: true, get: function () { return micro_store_1.MicroStore; } });
 var platform_1 = require("./providers/platform");
+Object.defineProperty(exports, "Application", { enumerable: true, get: function () { return platform_1.Application; } });
 Object.defineProperty(exports, "dynamicPlatform", { enumerable: true, get: function () { return platform_1.dynamicPlatform; } });
+Object.defineProperty(exports, "PLATFORM_SCOPE", { enumerable: true, get: function () { return platform_1.PLATFORM_SCOPE; } });
+Object.defineProperty(exports, "Prov", { enumerable: true, get: function () { return platform_1.Prov; } });
 tslib_1.__exportStar(require("./token"), exports);
 tslib_1.__exportStar(require("@fm/core"), exports);

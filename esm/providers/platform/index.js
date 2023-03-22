@@ -1,13 +1,15 @@
+import { ApplicationContext, createPlafformFactory, PlatformOptions } from '@fm/core/providers/platform';
+import { PLATFORM } from '@fm/core/token';
 import { Injector } from '@fm/di';
-import { PLATFORM } from '@fm/core';
-import { createPlafformFactory, PlatformOptions } from '@fm/core/providers/platform';
 import { Platform } from './platform';
 const isMicro = typeof microStore !== 'undefined';
 const resource = typeof fetchCacheData !== 'undefined' ? fetchCacheData : [];
+const applicationContext = new ApplicationContext();
 const _CORE_PLATFORM_PROVIDERS = [
     { provide: PlatformOptions, useValue: { isMicro, resource } },
     { provide: Platform, deps: [Injector, PlatformOptions] },
-    { provide: PLATFORM, useExisting: Platform }
+    { provide: PLATFORM, useExisting: Platform },
+    { provide: ApplicationContext, useFactory: () => applicationContext }
 ];
 class DyanmicPlatfom {
     constructor(providers) {
@@ -15,9 +17,13 @@ class DyanmicPlatfom {
     }
     bootstrapRender(providers, render) {
         if (!isMicro) {
-            return this.createPlatform().bootstrapRender(providers, render);
+            return this.createPlatform(applicationContext).bootstrapRender(providers, render);
         }
-        microStore.render = (options) => this.createPlatform().bootstrapMicroRender(providers, render, options);
+        microStore.render = (options) => this.createPlatform(applicationContext).bootstrapMicroRender(providers, render, options);
     }
 }
+export { PLATFORM_SCOPE } from '@fm/core/providers/platform';
 export const dynamicPlatform = (providers = []) => new DyanmicPlatfom(providers);
+applicationContext.regeditStart(() => dynamicPlatform().bootstrapRender(applicationContext.providers));
+export const Application = applicationContext.makeApplicationDecorator();
+export const Prov = applicationContext.makeProvDecorator('MethodDecorator');

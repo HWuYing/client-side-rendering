@@ -1,6 +1,7 @@
 import { __awaiter, __rest } from "tslib";
-import { Injector, INJECTOR_SCOPE } from '@fm/di';
 import { APP_CONTEXT, AppContextService, HISTORY, HTTP_INTERCEPTORS, HttpHandler, HttpInterceptingHandler, JsonConfigService } from '@fm/core';
+import { APPLICATION_TOKEN } from '@fm/core/providers/platform';
+import { Injector, INJECTOR_SCOPE } from '@fm/di';
 import { IMPORT_MICRO } from '../../token';
 import { AppContextService as ClientAppContextService } from '../app-context';
 import { JsonConfigService as ClientJsonConfigService, JsonIntercept } from '../json-config';
@@ -15,7 +16,7 @@ export class Platform {
             const [providers, _render] = this.parseParams(additionalProviders, render);
             yield this.importMicro(providers);
             const injector = this.beforeBootstrapRender({ useMicroManage: () => injector.get(IMPORT_MICRO) }, providers);
-            yield _render(injector);
+            yield this.runRender(injector, undefined, _render);
         });
     }
     bootstrapMicroRender(additionalProviders, render, options) {
@@ -24,7 +25,7 @@ export class Platform {
             const { microManage, head, body } = __options, _options = __rest(__options, ["microManage", "head", "body"]);
             const microConfig = { container: body, styleContainer: head, useMicroManage: () => microManage };
             const injector = this.beforeBootstrapRender(microConfig, providers);
-            const unRender = yield _render(injector, _options);
+            const unRender = yield this.runRender(injector, _options, _render);
             return (_container) => {
                 unRender(_container);
                 injector.destroy();
@@ -37,15 +38,15 @@ export class Platform {
         const styleContainer = document.head;
         const appContext = Object.assign({ container, styleContainer, renderSSR: true, resource: this.resource, isMicro: this.isMicro }, context);
         const additionalProviders = [
-            { provide: HTTP_INTERCEPTORS, multi: true, useExisting: JsonIntercept },
             { provide: INJECTOR_SCOPE, useValue: 'root' },
             { provide: APP_CONTEXT, useValue: appContext },
             { provide: HttpHandler, useExisting: HttpInterceptingHandler },
             { provide: JsonConfigService, useExisting: ClientJsonConfigService },
             { provide: AppContextService, useExisting: ClientAppContextService },
-            this.regeditHistory() || [],
-            providers
+            { provide: HTTP_INTERCEPTORS, multi: true, useExisting: JsonIntercept },
+            providers,
         ];
+        this.regeditHistory(providers);
         return Injector.create(additionalProviders, this.platformInjector);
     }
     importMicro(providers) {
@@ -57,17 +58,27 @@ export class Platform {
             }
         });
     }
-    regeditHistory() {
-        if (this.platformInjector.get(HISTORY)) {
-            const factory = (injector) => {
+    regeditHistory(providers) {
+        const historyProvider = providers.find(({ provide }) => provide === HISTORY);
+        if (historyProvider || this.platformInjector.get(HISTORY)) {
+            const deps = [Injector];
+            const factory = (injector, history) => {
                 const historyKey = HISTORY.toString();
                 const { microManage: { sharedData = void (0) } = {} } = injector.get(AppContextService);
-                const sharedHistory = (sharedData === null || sharedData === void 0 ? void 0 : sharedData.get(historyKey)) || this.platformInjector.get(HISTORY);
+                const sharedHistory = (sharedData === null || sharedData === void 0 ? void 0 : sharedData.get(historyKey)) || history || this.platformInjector.get(HISTORY);
                 sharedData === null || sharedData === void 0 ? void 0 : sharedData.set(historyKey, sharedHistory);
                 return sharedHistory;
             };
-            return [{ provide: HISTORY, useFactory: factory, deps: [Injector] }];
+            if (historyProvider) {
+                providers.push(Object.assign(Object.assign({}, historyProvider), { provide: historyProvider }));
+                deps.push(historyProvider);
+            }
+            providers.push({ provide: HISTORY, useFactory: factory, deps: deps });
         }
+    }
+    runRender(injector, options, render) {
+        const application = injector.get(APPLICATION_TOKEN);
+        return (render || application.bootstrapRender).call(application, injector, options);
     }
     parseParams(providers, render, options) {
         return typeof providers === 'function' ? [[], providers, options] : [[...providers], render, options];
