@@ -1,7 +1,7 @@
 import { __assign, __awaiter, __generator, __rest, __spreadArray } from "tslib";
 import { APP_CONTEXT, AppContextService, HISTORY, HTTP_INTERCEPTORS, HttpHandler, HttpInterceptingHandler, JsonConfigService } from '@fm/core';
 import { APPLICATION_TOKEN } from '@fm/core/providers/platform';
-import { Injector, INJECTOR_SCOPE } from '@fm/di';
+import { Injector } from '@fm/di';
 import { IMPORT_MICRO } from '../../token';
 import { AppContextService as ClientAppContextService } from '../app-context';
 import { JsonConfigService as ClientJsonConfigService, JsonIntercept } from '../json-config';
@@ -61,7 +61,6 @@ var Platform = /** @class */ (function () {
         var styleContainer = document.head;
         var appContext = __assign({ container: container, styleContainer: styleContainer, renderSSR: true, resource: this.resource, isMicro: this.isMicro }, context);
         var additionalProviders = [
-            { provide: INJECTOR_SCOPE, useValue: 'root' },
             { provide: APP_CONTEXT, useValue: appContext },
             { provide: HttpHandler, useExisting: HttpInterceptingHandler },
             { provide: JsonConfigService, useExisting: ClientJsonConfigService },

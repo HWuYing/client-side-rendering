@@ -4,7 +4,7 @@ import { Injector } from '@fm/di';
 import { Platform } from './platform';
 var isMicro = typeof microStore !== 'undefined';
 var resource = typeof fetchCacheData !== 'undefined' ? fetchCacheData : [];
-var applicationContext = new ApplicationContext();
+export var applicationContext = new ApplicationContext();
 var _CORE_PLATFORM_PROVIDERS = [
     { provide: PlatformOptions, useValue: { isMicro: isMicro, resource: resource } },
     { provide: Platform, deps: [Injector, PlatformOptions] },
@@ -32,3 +32,4 @@ export var dynamicPlatform = function (providers) {
 applicationContext.regeditStart(function () { return dynamicPlatform().bootstrapRender(applicationContext.providers); });
 export var Application = applicationContext.makeApplicationDecorator();
 export var Prov = applicationContext.makeProvDecorator('MethodDecorator');
+export var Input = applicationContext.makePropInput('InputPropDecorator');

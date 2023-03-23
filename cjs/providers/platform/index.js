@@ -1,18 +1,18 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Prov = exports.Application = exports.dynamicPlatform = exports.PLATFORM_SCOPE = void 0;
+exports.Input = exports.Prov = exports.Application = exports.dynamicPlatform = exports.PLATFORM_SCOPE = exports.applicationContext = void 0;
 var platform_1 = require("@fm/core/providers/platform");
 var token_1 = require("@fm/core/token");
 var di_1 = require("@fm/di");
 var platform_2 = require("./platform");
 var isMicro = typeof microStore !== 'undefined';
 var resource = typeof fetchCacheData !== 'undefined' ? fetchCacheData : [];
-var applicationContext = new platform_1.ApplicationContext();
+exports.applicationContext = new platform_1.ApplicationContext();
 var _CORE_PLATFORM_PROVIDERS = [
     { provide: platform_1.PlatformOptions, useValue: { isMicro: isMicro, resource: resource } },
     { provide: platform_2.Platform, deps: [di_1.Injector, platform_1.PlatformOptions] },
     { provide: token_1.PLATFORM, useExisting: platform_2.Platform },
-    { provide: platform_1.ApplicationContext, useFactory: function () { return applicationContext; } }
+    { provide: platform_1.ApplicationContext, useFactory: function () { return exports.applicationContext; } }
 ];
 var DyanmicPlatfom = /** @class */ (function () {
     function DyanmicPlatfom(providers) {
@@ -21,9 +21,9 @@ var DyanmicPlatfom = /** @class */ (function () {
     DyanmicPlatfom.prototype.bootstrapRender = function (providers, render) {
         var _this = this;
         if (!isMicro) {
-            return this.createPlatform(applicationContext).bootstrapRender(providers, render);
+            return this.createPlatform(exports.applicationContext).bootstrapRender(providers, render);
         }
-        microStore.render = function (options) { return _this.createPlatform(applicationContext).bootstrapMicroRender(providers, render, options); };
+        microStore.render = function (options) { return _this.createPlatform(exports.applicationContext).bootstrapMicroRender(providers, render, options); };
     };
     return DyanmicPlatfom;
 }());
@@ -34,6 +34,7 @@ var dynamicPlatform = function (providers) {
     return new DyanmicPlatfom(providers);
 };
 exports.dynamicPlatform = dynamicPlatform;
-applicationContext.regeditStart(function () { return (0, exports.dynamicPlatform)().bootstrapRender(applicationContext.providers); });
-exports.Application = applicationContext.makeApplicationDecorator();
-exports.Prov = applicationContext.makeProvDecorator('MethodDecorator');
+exports.applicationContext.regeditStart(function () { return (0, exports.dynamicPlatform)().bootstrapRender(exports.applicationContext.providers); });
+exports.Application = exports.applicationContext.makeApplicationDecorator();
+exports.Prov = exports.applicationContext.makeProvDecorator('MethodDecorator');
+exports.Input = exports.applicationContext.makePropInput('InputPropDecorator');
