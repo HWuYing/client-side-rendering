@@ -57,9 +57,10 @@ var Platform = /** @class */ (function () {
     Platform.prototype.beforeBootstrapRender = function (context, providers) {
         if (context === void 0) { context = {}; }
         if (providers === void 0) { providers = []; }
-        var container = document.getElementById('app');
+        var container = context.container || document.getElementById('app');
         var styleContainer = document.head;
-        var appContext = __assign({ container: container, styleContainer: styleContainer, renderSSR: true, resource: this.resource, isMicro: this.isMicro }, context);
+        var renderSSR = !!(container === null || container === void 0 ? void 0 : container.innerHTML);
+        var appContext = __assign({ container: container, styleContainer: styleContainer, renderSSR: renderSSR, resource: this.resource, isMicro: this.isMicro }, context);
         var additionalProviders = [
             { provide: APP_CONTEXT, useValue: appContext },
             { provide: HttpHandler, useExisting: HttpInterceptingHandler },

@@ -34,9 +34,10 @@ export class Platform {
         });
     }
     beforeBootstrapRender(context = {}, providers = []) {
-        const container = document.getElementById('app');
+        const container = context.container || document.getElementById('app');
         const styleContainer = document.head;
-        const appContext = Object.assign({ container, styleContainer, renderSSR: true, resource: this.resource, isMicro: this.isMicro }, context);
+        const renderSSR = !!(container === null || container === void 0 ? void 0 : container.innerHTML);
+        const appContext = Object.assign({ container, styleContainer, renderSSR, resource: this.resource, isMicro: this.isMicro }, context);
         const additionalProviders = [
             { provide: APP_CONTEXT, useValue: appContext },
             { provide: HttpHandler, useExisting: HttpInterceptingHandler },
