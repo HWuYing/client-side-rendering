@@ -14,27 +14,27 @@ var _CORE_PLATFORM_PROVIDERS = [
     { provide: token_1.PLATFORM, useExisting: platform_2.Platform },
     { provide: platform_1.ApplicationContext, useFactory: function () { return exports.applicationContext; } }
 ];
-var DyanmicPlatfom = /** @class */ (function () {
-    function DyanmicPlatfom(providers) {
-        this.createPlatform = (0, platform_1.createPlafformFactory)(null, _CORE_PLATFORM_PROVIDERS, providers);
+var DynamicPlatform = /** @class */ (function () {
+    function DynamicPlatform(providers) {
+        this.createPlatform = (0, platform_1.createPlatformFactory)(null, _CORE_PLATFORM_PROVIDERS, providers);
     }
-    DyanmicPlatfom.prototype.bootstrapRender = function (providers, render) {
+    DynamicPlatform.prototype.bootstrapRender = function (providers, render) {
         var _this = this;
         if (!isMicro) {
             return this.createPlatform(exports.applicationContext).bootstrapRender(providers, render);
         }
         microStore.render = function (options) { return _this.createPlatform(exports.applicationContext).bootstrapMicroRender(providers, render, options); };
     };
-    return DyanmicPlatfom;
+    return DynamicPlatform;
 }());
 var platform_3 = require("@fm/core/providers/platform");
 Object.defineProperty(exports, "PLATFORM_SCOPE", { enumerable: true, get: function () { return platform_3.PLATFORM_SCOPE; } });
 var dynamicPlatform = function (providers) {
     if (providers === void 0) { providers = []; }
-    return new DyanmicPlatfom(providers);
+    return new DynamicPlatform(providers);
 };
 exports.dynamicPlatform = dynamicPlatform;
-exports.applicationContext.regeditStart(function () { return (0, exports.dynamicPlatform)().bootstrapRender(exports.applicationContext.providers); });
+exports.applicationContext.registerStart(function () { return (0, exports.dynamicPlatform)().bootstrapRender(exports.applicationContext.providers); });
 exports.Application = exports.applicationContext.makeApplicationDecorator();
 exports.Prov = exports.applicationContext.makeProvDecorator('MethodDecorator');
 exports.Input = exports.applicationContext.makePropInput('InputPropDecorator');

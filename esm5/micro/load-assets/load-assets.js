@@ -25,7 +25,7 @@ var LoadAssets = /** @class */ (function () {
         var staticAssets = __assign(__assign({}, serializableAssets(entrypoints)), { script: [], fetchCacheData: fetchCacheData });
         return this.readJavascript(staticAssets);
     };
-    LoadAssets.prototype.reeadLinkToStyles = function (links) {
+    LoadAssets.prototype.readLinkToStyles = function (links) {
         var _this = this;
         return isEmpty(links) ? of(links) : forkJoin(links.map(function (href) { return _this.fetchStatic(href); }));
     };
@@ -36,7 +36,7 @@ var LoadAssets = /** @class */ (function () {
     };
     LoadAssets.prototype.createMicroTag = function (microName, staticAssets) {
         var tag = document.createElement("".concat(microName, "-tag"));
-        return tag && tag.shadowRoot ? of(staticAssets) : this.reeadLinkToStyles(staticAssets.links).pipe(
+        return tag && tag.shadowRoot ? of(staticAssets) : this.readLinkToStyles(staticAssets.links).pipe(
         // eslint-disable-next-line no-new-func
         tap(function (linkToStyles) { return new Function(createMicroElementTemplate(microName, { linkToStyles: linkToStyles }))(); }), map(function () { return staticAssets; }));
     };

@@ -9,7 +9,7 @@ export declare class Platform {
     bootstrapMicroRender(additionalProviders: Provider[] | Render, render?: Render, options?: any): Promise<(_container: HTMLElement) => void>;
     private beforeBootstrapRender;
     private importMicro;
-    private regeditHistory;
+    private registerHistory;
     private runRender;
     private parseParams;
 }

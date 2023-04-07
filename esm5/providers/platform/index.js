@@ -1,4 +1,4 @@
-import { ApplicationContext, createPlafformFactory, PlatformOptions } from '@fm/core/providers/platform';
+import { ApplicationContext, createPlatformFactory, PlatformOptions } from '@fm/core/providers/platform';
 import { PLATFORM } from '@fm/core/token';
 import { Injector } from '@fm/di';
 import { Platform } from './platform';
@@ -11,25 +11,25 @@ var _CORE_PLATFORM_PROVIDERS = [
     { provide: PLATFORM, useExisting: Platform },
     { provide: ApplicationContext, useFactory: function () { return applicationContext; } }
 ];
-var DyanmicPlatfom = /** @class */ (function () {
-    function DyanmicPlatfom(providers) {
-        this.createPlatform = createPlafformFactory(null, _CORE_PLATFORM_PROVIDERS, providers);
+var DynamicPlatform = /** @class */ (function () {
+    function DynamicPlatform(providers) {
+        this.createPlatform = createPlatformFactory(null, _CORE_PLATFORM_PROVIDERS, providers);
     }
-    DyanmicPlatfom.prototype.bootstrapRender = function (providers, render) {
+    DynamicPlatform.prototype.bootstrapRender = function (providers, render) {
         var _this = this;
         if (!isMicro) {
             return this.createPlatform(applicationContext).bootstrapRender(providers, render);
         }
         microStore.render = function (options) { return _this.createPlatform(applicationContext).bootstrapMicroRender(providers, render, options); };
     };
-    return DyanmicPlatfom;
+    return DynamicPlatform;
 }());
 export { PLATFORM_SCOPE } from '@fm/core/providers/platform';
 export var dynamicPlatform = function (providers) {
     if (providers === void 0) { providers = []; }
-    return new DyanmicPlatfom(providers);
+    return new DynamicPlatform(providers);
 };
-applicationContext.regeditStart(function () { return dynamicPlatform().bootstrapRender(applicationContext.providers); });
+applicationContext.registerStart(function () { return dynamicPlatform().bootstrapRender(applicationContext.providers); });
 export var Application = applicationContext.makeApplicationDecorator();
 export var Prov = applicationContext.makeProvDecorator('MethodDecorator');
 export var Input = applicationContext.makePropInput('InputPropDecorator');

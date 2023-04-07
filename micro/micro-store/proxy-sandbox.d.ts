@@ -10,7 +10,7 @@ export declare class ProxySandbox {
         [key: string]: any;
     }]>;
     constructor(microManage: MicroManageInterface, staticAssets: StaticAssets);
-    createShanbox(shadow?: ShadowRoot): any;
+    createShadowbox(shadow?: ShadowRoot): any;
     protected linkToStyle(link: HTMLLinkElement): Promise<void>;
     protected srcToScript(shadBox: any, node: HTMLScriptElement): Promise<void>;
     protected appendChild(shadBox: any, node: HTMLElement): Promise<void>;

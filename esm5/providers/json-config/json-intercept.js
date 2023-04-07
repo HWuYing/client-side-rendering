@@ -35,9 +35,9 @@ var JsonIntercept = /** @class */ (function () {
         var _a = params.requestType, requestType = _a === void 0 ? '' : _a;
         var isJsonFetch = requestType === JSON_TYPE;
         if (isJsonFetch && this.cacheConfig.has(req)) {
-            var respons = createResponse();
-            respons.json = function () { return _this.cacheConfig.get(req); };
-            return of(respons);
+            var response = createResponse();
+            response.json = function () { return _this.cacheConfig.get(req); };
+            return of(response);
         }
         var event$ = next.handle(req, params);
         return !isJsonFetch ? event$ : event$.pipe(switchMap(function (response) {

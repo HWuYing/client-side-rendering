@@ -10,7 +10,7 @@ var ProxySandbox = /** @class */ (function () {
         this.loaderStyleSubject = new Subject();
         this.loaderScriptSubject = new Subject();
     }
-    ProxySandbox.prototype.createShanbox = function (shadow) {
+    ProxySandbox.prototype.createShadowbox = function (shadow) {
         var shadBox = {};
         var _document = new Proxy(document, this.propProxy(this.docProxy(shadBox, shadow)));
         var _window = new Proxy(window, this.propProxy({ document: _document }));

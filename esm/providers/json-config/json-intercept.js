@@ -30,9 +30,9 @@ let JsonIntercept = class JsonIntercept {
         const { requestType = '' } = params;
         const isJsonFetch = requestType === JSON_TYPE;
         if (isJsonFetch && this.cacheConfig.has(req)) {
-            const respons = createResponse();
-            respons.json = () => this.cacheConfig.get(req);
-            return of(respons);
+            const response = createResponse();
+            response.json = () => this.cacheConfig.get(req);
+            return of(response);
         }
         const event$ = next.handle(req, params);
         return !isJsonFetch ? event$ : event$.pipe(switchMap((response) => {

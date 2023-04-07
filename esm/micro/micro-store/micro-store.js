@@ -19,7 +19,7 @@ export class MicroStore {
             const { selfScope } = options;
             this.execMountedList.push([container, options]);
             if (selfScope || !this._renderMicro) {
-                const shadBox = this.proxySandbox.createShanbox(selfScope && container.shadowRoot);
+                const shadBox = this.proxySandbox.createShadowbox(selfScope && container.shadowRoot);
                 this._renderMicro = yield this.loadScriptContext([this.staticAssets, shadBox]);
             }
             if (selfScope || this.execMountedList.length === 1) {
@@ -59,7 +59,7 @@ export class MicroStore {
             this.mountedList.push(mountedItem);
             mountedItem.unRender = yield _renderMicro(this.parseRenderOptions(container, options));
             yield this.resetUnMountedFail();
-            this.mountendAppendLoadStyleNode(container);
+            this.mountedAppendLoadStyleNode(container);
             this.execMountedList.length !== 0 && (yield this.execMounted(_renderMicro));
         });
     }
@@ -76,9 +76,9 @@ export class MicroStore {
     }
     headAppendChildProxy(styleNode) {
         Promise.resolve().then(() => this.loaderStyleNodes.push(styleNode.cloneNode(true)));
-        this.mountedList.forEach(({ container }) => this.mountendAppendLoadStyleNode(container, [styleNode]));
+        this.mountedList.forEach(({ container }) => this.mountedAppendLoadStyleNode(container, [styleNode]));
     }
-    mountendAppendLoadStyleNode(container, styleNodes = this.loaderStyleNodes) {
+    mountedAppendLoadStyleNode(container, styleNodes = this.loaderStyleNodes) {
         const styleContainer = this.getByContainer(container, 'head');
         if (styleContainer) {
             styleNodes.forEach((styleNode) => styleContainer.appendChild(styleNode));

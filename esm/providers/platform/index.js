@@ -1,4 +1,4 @@
-import { ApplicationContext, createPlafformFactory, PlatformOptions } from '@fm/core/providers/platform';
+import { ApplicationContext, createPlatformFactory, PlatformOptions } from '@fm/core/providers/platform';
 import { PLATFORM } from '@fm/core/token';
 import { Injector } from '@fm/di';
 import { Platform } from './platform';
@@ -11,9 +11,9 @@ const _CORE_PLATFORM_PROVIDERS = [
     { provide: PLATFORM, useExisting: Platform },
     { provide: ApplicationContext, useFactory: () => applicationContext }
 ];
-class DyanmicPlatfom {
+class DynamicPlatform {
     constructor(providers) {
-        this.createPlatform = createPlafformFactory(null, _CORE_PLATFORM_PROVIDERS, providers);
+        this.createPlatform = createPlatformFactory(null, _CORE_PLATFORM_PROVIDERS, providers);
     }
     bootstrapRender(providers, render) {
         if (!isMicro) {
@@ -23,8 +23,8 @@ class DyanmicPlatfom {
     }
 }
 export { PLATFORM_SCOPE } from '@fm/core/providers/platform';
-export const dynamicPlatform = (providers = []) => new DyanmicPlatfom(providers);
-applicationContext.regeditStart(() => dynamicPlatform().bootstrapRender(applicationContext.providers));
+export const dynamicPlatform = (providers = []) => new DynamicPlatform(providers);
+applicationContext.registerStart(() => dynamicPlatform().bootstrapRender(applicationContext.providers));
 export const Application = applicationContext.makeApplicationDecorator();
 export const Prov = applicationContext.makeProvDecorator('MethodDecorator');
 export const Input = applicationContext.makePropInput('InputPropDecorator');

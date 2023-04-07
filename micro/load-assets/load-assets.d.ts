@@ -15,7 +15,7 @@ export declare class LoadAssets {
     constructor(http: HttpFetchHandler, options?: any);
     private initialCacheServerData;
     private parseStatic;
-    private reeadLinkToStyles;
+    private readLinkToStyles;
     private readJavascript;
     private createMicroTag;
     fetchStatic<T = any>(url: string, isText?: boolean): Observable<T>;

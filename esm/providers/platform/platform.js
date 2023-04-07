@@ -46,7 +46,7 @@ export class Platform {
             { provide: HTTP_INTERCEPTORS, multi: true, useExisting: JsonIntercept },
             providers,
         ];
-        this.regeditHistory(providers);
+        this.registerHistory(providers);
         return Injector.create(additionalProviders, this.platformInjector);
     }
     importMicro(providers) {
@@ -58,7 +58,7 @@ export class Platform {
             }
         });
     }
-    regeditHistory(providers) {
+    registerHistory(providers) {
         const historyProvider = providers.find(({ provide }) => provide === HISTORY);
         if (historyProvider || this.platformInjector.get(HISTORY)) {
             const deps = [Injector];

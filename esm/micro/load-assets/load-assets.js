@@ -21,7 +21,7 @@ let LoadAssets = class LoadAssets {
         const staticAssets = Object.assign(Object.assign({}, serializableAssets(entrypoints)), { script: [], fetchCacheData });
         return this.readJavascript(staticAssets);
     }
-    reeadLinkToStyles(links) {
+    readLinkToStyles(links) {
         return isEmpty(links) ? of(links) : forkJoin(links.map((href) => this.fetchStatic(href)));
     }
     readJavascript(_a) {
@@ -30,7 +30,7 @@ let LoadAssets = class LoadAssets {
     }
     createMicroTag(microName, staticAssets) {
         const tag = document.createElement(`${microName}-tag`);
-        return tag && tag.shadowRoot ? of(staticAssets) : this.reeadLinkToStyles(staticAssets.links).pipe(
+        return tag && tag.shadowRoot ? of(staticAssets) : this.readLinkToStyles(staticAssets.links).pipe(
         // eslint-disable-next-line no-new-func
         tap((linkToStyles) => new Function(createMicroElementTemplate(microName, { linkToStyles }))()), map(() => staticAssets));
     }

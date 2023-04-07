@@ -17,7 +17,7 @@ export declare class MicroStore implements MicroStoreInterface {
     private execJavascript;
     private parseRenderOptions;
     private headAppendChildProxy;
-    private mountendAppendLoadStyleNode;
+    private mountedAppendLoadStyleNode;
     private loadScriptContext;
     private loadBlobScript;
     private getByContainer;

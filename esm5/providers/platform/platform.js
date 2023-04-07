@@ -69,7 +69,7 @@ var Platform = /** @class */ (function () {
             { provide: HTTP_INTERCEPTORS, multi: true, useExisting: JsonIntercept },
             providers,
         ];
-        this.regeditHistory(providers);
+        this.registerHistory(providers);
         return Injector.create(additionalProviders, this.platformInjector);
     };
     Platform.prototype.importMicro = function (providers) {
@@ -90,7 +90,7 @@ var Platform = /** @class */ (function () {
             });
         });
     };
-    Platform.prototype.regeditHistory = function (providers) {
+    Platform.prototype.registerHistory = function (providers) {
         var _this = this;
         var historyProvider = providers.find(function (_a) {
             var provide = _a.provide;

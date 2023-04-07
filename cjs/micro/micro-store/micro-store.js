@@ -27,7 +27,7 @@ var MicroStore = /** @class */ (function () {
                         selfScope = options.selfScope;
                         this.execMountedList.push([container, options]);
                         if (!(selfScope || !this._renderMicro)) return [3 /*break*/, 2];
-                        shadBox = this.proxySandbox.createShanbox(selfScope && container.shadowRoot);
+                        shadBox = this.proxySandbox.createShadowbox(selfScope && container.shadowRoot);
                         _a = this;
                         return [4 /*yield*/, this.loadScriptContext([this.staticAssets, shadBox])];
                     case 1:
@@ -108,7 +108,7 @@ var MicroStore = /** @class */ (function () {
                         return [4 /*yield*/, this.resetUnMountedFail()];
                     case 2:
                         _d.sent();
-                        this.mountendAppendLoadStyleNode(container);
+                        this.mountedAppendLoadStyleNode(container);
                         _c = this.execMountedList.length !== 0;
                         if (!_c) return [3 /*break*/, 4];
                         return [4 /*yield*/, this.execMounted(_renderMicro)];
@@ -140,10 +140,10 @@ var MicroStore = /** @class */ (function () {
         Promise.resolve().then(function () { return _this.loaderStyleNodes.push(styleNode.cloneNode(true)); });
         this.mountedList.forEach(function (_a) {
             var container = _a.container;
-            return _this.mountendAppendLoadStyleNode(container, [styleNode]);
+            return _this.mountedAppendLoadStyleNode(container, [styleNode]);
         });
     };
-    MicroStore.prototype.mountendAppendLoadStyleNode = function (container, styleNodes) {
+    MicroStore.prototype.mountedAppendLoadStyleNode = function (container, styleNodes) {
         if (styleNodes === void 0) { styleNodes = this.loaderStyleNodes; }
         var styleContainer = this.getByContainer(container, 'head');
         if (styleContainer) {
