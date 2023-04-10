@@ -8,8 +8,7 @@ export var applicationContext = new ApplicationContext();
 var _CORE_PLATFORM_PROVIDERS = [
     { provide: PlatformOptions, useValue: { isMicro: isMicro, resource: resource } },
     { provide: Platform, deps: [Injector, PlatformOptions] },
-    { provide: PLATFORM, useExisting: Platform },
-    { provide: ApplicationContext, useFactory: function () { return applicationContext; } }
+    { provide: PLATFORM, useExisting: Platform }
 ];
 var DynamicPlatform = /** @class */ (function () {
     function DynamicPlatform(providers) {

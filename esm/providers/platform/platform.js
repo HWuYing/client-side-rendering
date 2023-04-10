@@ -77,8 +77,10 @@ export class Platform {
         }
     }
     runRender(injector, options, render) {
-        const application = injector.get(APPLICATION_TOKEN);
-        return (render || application.bootstrapRender).call(application, injector, options);
+        return __awaiter(this, void 0, void 0, function* () {
+            const application = yield injector.get(APPLICATION_TOKEN);
+            return (render || application.bootstrapRender).call(application, injector, options);
+        });
     }
     parseParams(providers, render, options) {
         return typeof providers === 'function' ? [[], providers, options] : [[...providers], render, options];

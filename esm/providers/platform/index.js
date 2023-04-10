@@ -8,8 +8,7 @@ export const applicationContext = new ApplicationContext();
 const _CORE_PLATFORM_PROVIDERS = [
     { provide: PlatformOptions, useValue: { isMicro, resource } },
     { provide: Platform, deps: [Injector, PlatformOptions] },
-    { provide: PLATFORM, useExisting: Platform },
-    { provide: ApplicationContext, useFactory: () => applicationContext }
+    { provide: PLATFORM, useExisting: Platform }
 ];
 class DynamicPlatform {
     constructor(providers) {

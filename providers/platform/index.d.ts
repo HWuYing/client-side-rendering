@@ -9,8 +9,10 @@ declare class DynamicPlatform {
 }
 export { PLATFORM_SCOPE } from '@fm/core/providers/platform';
 export declare const dynamicPlatform: (providers?: Provider[]) => DynamicPlatform;
-export declare const Application: (this: unknown, ...args: any[]) => (cls: import("@fm/di").Type<any>) => any;
-export declare const Prov: (token: import("@fm/di").TokenKey, provider?: {
+export declare const Application: <M extends import("../..").MetadataInfo>(metadata: {
+    [key: string]: Record<string, any>;
+} | import("../../../di").Type<M>) => <T = any>(cls: import("../../../di").Type<T>) => import("../../../di").Type<T>;
+export declare const Prov: (token: import("../../../di").TokenKey, provider?: {
     [key: string]: any;
     providedIn?: string;
 }) => any;
