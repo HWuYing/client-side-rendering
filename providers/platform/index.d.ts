@@ -11,8 +11,8 @@ export { PLATFORM_SCOPE } from '@fm/core/providers/platform';
 export declare const dynamicPlatform: (providers?: Provider[]) => DynamicPlatform;
 export declare const Application: <M extends import("../..").MetadataInfo>(metadata?: {
     [key: string]: any;
-} | import("../../../di").Type<M>) => <T = any>(cls: import("../../../di").Type<T>) => import("../../../di").Type<T>;
-export declare const Prov: (token: import("../../../di").TokenKey, provider?: {
+} | import("@fm/di").Type<M>) => <T = any>(cls: import("@fm/di").Type<T>) => import("@fm/di").Type<T>;
+export declare const Prov: (token: import("@fm/di").TokenKey, provider?: {
     [key: string]: any;
     providedIn?: string;
 }) => any;
