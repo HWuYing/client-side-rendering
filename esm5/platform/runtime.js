@@ -1,7 +1,8 @@
-import { ApplicationContext, createPlatformFactory, PlatformOptions } from '@fm/core/providers/platform';
-import { PLATFORM } from '@fm/core/token';
+import { createPlatformFactory } from '@fm/core/platform';
+import { ApplicationContext } from '@fm/core/platform/application';
+import { PLATFORM, PlatformOptions } from '@fm/core/token';
 import { Injector } from '@fm/di';
-import { Platform } from './platform';
+import { Platform } from './index';
 var isMicro = typeof microStore !== 'undefined';
 var resource = typeof fetchCacheData !== 'undefined' ? fetchCacheData : [];
 export var applicationContext = new ApplicationContext();
@@ -23,7 +24,7 @@ var DynamicPlatform = /** @class */ (function () {
     };
     return DynamicPlatform;
 }());
-export { PLATFORM_SCOPE } from '@fm/core/providers/platform';
+export { PLATFORM_SCOPE } from '@fm/core/platform/application';
 export var dynamicPlatform = function (providers) {
     if (providers === void 0) { providers = []; }
     return new DynamicPlatform(providers);

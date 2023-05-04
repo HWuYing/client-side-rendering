@@ -78,6 +78,18 @@
 			"es2015": "./esm/micro/shared-data/*.js",
 			"default": "./esm5/micro/shared-data/*.js"
 		},
+		"./platform": {
+			"node": "./cjs/platform/index.js",
+			"require": "./cjs/platform/index.js",
+			"es2015": "./esm/platform/index.js",
+			"default": "./esm5/platform/index.js"
+		},
+		"./platform/*": {
+			"node": "./cjs/platform/*.js",
+			"require": "./cjs/platform/*.js",
+			"es2015": "./esm/platform/*.js",
+			"default": "./esm5/platform/*.js"
+		},
 		"./providers": {
 			"node": "./cjs/providers/index.js",
 			"require": "./cjs/providers/index.js",
@@ -113,18 +125,6 @@
 			"require": "./cjs/providers/json-config/*.js",
 			"es2015": "./esm/providers/json-config/*.js",
 			"default": "./esm5/providers/json-config/*.js"
-		},
-		"./providers/platform": {
-			"node": "./cjs/providers/platform/index.js",
-			"require": "./cjs/providers/platform/index.js",
-			"es2015": "./esm/providers/platform/index.js",
-			"default": "./esm5/providers/platform/index.js"
-		},
-		"./providers/platform/*": {
-			"node": "./cjs/providers/platform/*.js",
-			"require": "./cjs/providers/platform/*.js",
-			"es2015": "./esm/providers/platform/*.js",
-			"default": "./esm5/providers/platform/*.js"
 		},
 		"./token": {
 			"node": "./cjs/token/index.js",

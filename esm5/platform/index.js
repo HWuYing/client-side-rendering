@@ -1,10 +1,12 @@
 import { __assign, __awaiter, __generator, __rest, __spreadArray } from "tslib";
-import { APP_CONTEXT, AppContextService, HISTORY, HTTP_INTERCEPTORS, HttpHandler, HttpInterceptingHandler, JsonConfigService } from '@fm/core';
-import { APPLICATION_TOKEN } from '@fm/core/providers/platform';
+import { HttpHandler, HttpInterceptingHandler } from '@fm/core/common/http';
+import { APP_CONTEXT, AppContextService } from '@fm/core/providers/app-context';
+import { JsonConfigService } from '@fm/core/providers/json-config';
+import { APPLICATION_TOKEN, HISTORY, HTTP_INTERCEPTORS } from '@fm/core/token';
 import { Injector } from '@fm/di';
-import { IMPORT_MICRO } from '../../token';
-import { AppContextService as ClientAppContextService } from '../app-context';
-import { JsonConfigService as ClientJsonConfigService, JsonIntercept } from '../json-config';
+import { AppContextService as ClientAppContextService } from '../providers/app-context';
+import { JsonConfigService as ClientJsonConfigService, JsonIntercept } from '../providers/json-config';
+import { IMPORT_MICRO } from '../token';
 var Platform = /** @class */ (function () {
     function Platform(platformInjector, _a) {
         var isMicro = _a.isMicro, resource = _a.resource;

@@ -11,11 +11,11 @@ Object.defineProperty(exports, "assetsPath", { enumerable: true, get: function (
 Object.defineProperty(exports, "microOptions", { enumerable: true, get: function () { return micro_options_1.microOptions; } });
 var micro_store_1 = require("./micro/micro-store/micro-store");
 Object.defineProperty(exports, "MicroStore", { enumerable: true, get: function () { return micro_store_1.MicroStore; } });
-var platform_1 = require("./providers/platform");
-Object.defineProperty(exports, "Application", { enumerable: true, get: function () { return platform_1.Application; } });
-Object.defineProperty(exports, "dynamicPlatform", { enumerable: true, get: function () { return platform_1.dynamicPlatform; } });
-Object.defineProperty(exports, "Input", { enumerable: true, get: function () { return platform_1.Input; } });
-Object.defineProperty(exports, "PLATFORM_SCOPE", { enumerable: true, get: function () { return platform_1.PLATFORM_SCOPE; } });
-Object.defineProperty(exports, "Prov", { enumerable: true, get: function () { return platform_1.Prov; } });
+var runtime_1 = require("./platform/runtime");
+Object.defineProperty(exports, "Application", { enumerable: true, get: function () { return runtime_1.Application; } });
+Object.defineProperty(exports, "dynamicPlatform", { enumerable: true, get: function () { return runtime_1.dynamicPlatform; } });
+Object.defineProperty(exports, "Input", { enumerable: true, get: function () { return runtime_1.Input; } });
+Object.defineProperty(exports, "PLATFORM_SCOPE", { enumerable: true, get: function () { return runtime_1.PLATFORM_SCOPE; } });
+Object.defineProperty(exports, "Prov", { enumerable: true, get: function () { return runtime_1.Prov; } });
 tslib_1.__exportStar(require("./token"), exports);
 tslib_1.__exportStar(require("@fm/core"), exports);

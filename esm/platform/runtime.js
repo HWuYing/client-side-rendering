@@ -1,7 +1,8 @@
-import { ApplicationContext, createPlatformFactory, PlatformOptions } from '@fm/core/providers/platform';
-import { PLATFORM } from '@fm/core/token';
+import { createPlatformFactory } from '@fm/core/platform';
+import { ApplicationContext } from '@fm/core/platform/application';
+import { PLATFORM, PlatformOptions } from '@fm/core/token';
 import { Injector } from '@fm/di';
-import { Platform } from './platform';
+import { Platform } from './index';
 const isMicro = typeof microStore !== 'undefined';
 const resource = typeof fetchCacheData !== 'undefined' ? fetchCacheData : [];
 export const applicationContext = new ApplicationContext();
@@ -21,7 +22,7 @@ class DynamicPlatform {
         microStore.render = (options) => this.createPlatform(applicationContext).bootstrapMicroRender(providers, render, options);
     }
 }
-export { PLATFORM_SCOPE } from '@fm/core/providers/platform';
+export { PLATFORM_SCOPE } from '@fm/core/platform/application';
 export const dynamicPlatform = (providers = []) => new DynamicPlatform(providers);
 applicationContext.registerStart(() => dynamicPlatform().bootstrapRender(applicationContext.providers));
 export const Application = applicationContext.makeApplicationDecorator();
