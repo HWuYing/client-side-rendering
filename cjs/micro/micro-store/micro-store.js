@@ -14,12 +14,14 @@ var MicroStore = /** @class */ (function () {
         this.mountedList = [];
         this.loaderStyleNodes = [];
         this.execMountedList = [];
-        this.proxySandbox = new proxy_sandbox_1.ProxySandbox(microManage, staticAssets);
-        this.proxySandbox.loaderScriptSubject.subscribe(function (_a) {
+        var loadStyle = function (styleNode) { return _this.headAppendChildProxy(styleNode); };
+        var loadScript = function (_a) {
             var staticAsses = _a[0], shadBox = _a[1], handle = _a[2];
             return _this.loadScriptContext([staticAsses, shadBox]).then(handle);
-        });
-        this.proxySandbox.loaderStyleSubject.subscribe(this.headAppendChildProxy.bind(this));
+        };
+        this.proxySandbox = new proxy_sandbox_1.ProxySandbox(microManage, staticAssets);
+        this.proxySandbox.loaderStyleSubject.subscribe(loadStyle);
+        this.proxySandbox.loaderScriptSubject.subscribe(loadScript);
     }
     MicroStore.prototype.onMounted = function (container, options) {
         if (options === void 0) { options = {}; }

@@ -10,9 +10,11 @@ export class MicroStore {
         this.mountedList = [];
         this.loaderStyleNodes = [];
         this.execMountedList = [];
+        const loadStyle = (styleNode) => this.headAppendChildProxy(styleNode);
+        const loadScript = ([staticAsses, shadBox, handle]) => this.loadScriptContext([staticAsses, shadBox]).then(handle);
         this.proxySandbox = new ProxySandbox(microManage, staticAssets);
-        this.proxySandbox.loaderScriptSubject.subscribe(([staticAsses, shadBox, handle]) => this.loadScriptContext([staticAsses, shadBox]).then(handle));
-        this.proxySandbox.loaderStyleSubject.subscribe(this.headAppendChildProxy.bind(this));
+        this.proxySandbox.loaderStyleSubject.subscribe(loadStyle);
+        this.proxySandbox.loaderScriptSubject.subscribe(loadScript);
     }
     onMounted(container, options = {}) {
         return __awaiter(this, void 0, void 0, function* () {

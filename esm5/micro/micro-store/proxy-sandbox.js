@@ -42,7 +42,7 @@ var ProxySandbox = /** @class */ (function () {
     };
     ProxySandbox.prototype.srcToScript = function (shadBox, node) {
         return __awaiter(this, void 0, void 0, function () {
-            var src, subject, text, loadEnd;
+            var src, subject, text;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -55,8 +55,8 @@ var ProxySandbox = /** @class */ (function () {
                         return [4 /*yield*/, lastValueFrom(subject)];
                     case 1:
                         text = _a.sent();
-                        loadEnd = function () { return node.src = URL.createObjectURL(new Blob([''])); };
-                        this.loaderScriptSubject.next([{ script: [text], js: [src] }, shadBox, loadEnd]);
+                        node.src = URL.createObjectURL(new Blob(['']));
+                        this.loaderScriptSubject.next([{ script: [text], js: [src] }, shadBox, function () { return document.head.append(node); }]);
                         return [2 /*return*/];
                 }
             });
@@ -78,9 +78,7 @@ var ProxySandbox = /** @class */ (function () {
                     case 2:
                         if (!(name === 'SCRIPT')) return [3 /*break*/, 4];
                         return [4 /*yield*/, this.srcToScript(shadBox, node)];
-                    case 3:
-                        _b.sent();
-                        _b.label = 4;
+                    case 3: return [2 /*return*/, _b.sent()];
                     case 4: return [2 /*return*/, name === 'STYLE' ? (_a = this.loaderStyleSubject) === null || _a === void 0 ? void 0 : _a.next(node) : document.head.append(node)];
                 }
             });
