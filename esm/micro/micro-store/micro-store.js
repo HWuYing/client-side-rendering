@@ -11,7 +11,7 @@ export class MicroStore {
         this.loaderStyleNodes = [];
         this.execMountedList = [];
         this.proxySandbox = new ProxySandbox(microManage, staticAssets);
-        this.proxySandbox.loaderScriptSubject.subscribe(this.loadScriptContext.bind(this));
+        this.proxySandbox.loaderScriptSubject.subscribe(([staticAsses, shadBox, handle]) => this.loadScriptContext([staticAsses, shadBox]).then(handle));
         this.proxySandbox.loaderStyleSubject.subscribe(this.headAppendChildProxy.bind(this));
     }
     onMounted(container, options = {}) {

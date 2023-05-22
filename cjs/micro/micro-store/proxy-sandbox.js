@@ -45,7 +45,7 @@ var ProxySandbox = /** @class */ (function () {
     };
     ProxySandbox.prototype.srcToScript = function (shadBox, node) {
         return tslib_1.__awaiter(this, void 0, void 0, function () {
-            var src, subject, text;
+            var src, subject, text, loadEnd;
             return tslib_1.__generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -58,8 +58,8 @@ var ProxySandbox = /** @class */ (function () {
                         return [4 /*yield*/, (0, rxjs_1.lastValueFrom)(subject)];
                     case 1:
                         text = _a.sent();
-                        this.loaderScriptSubject.next([{ script: [text], js: [src] }, shadBox]);
-                        node.src = URL.createObjectURL(new Blob(['']));
+                        loadEnd = function () { return node.src = URL.createObjectURL(new Blob([''])); };
+                        this.loaderScriptSubject.next([{ script: [text], js: [src] }, shadBox, loadEnd]);
                         return [2 /*return*/];
                 }
             });

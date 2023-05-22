@@ -8,7 +8,7 @@ export declare class ProxySandbox {
     loaderStyleSubject: Subject<HTMLElement>;
     loaderScriptSubject: Subject<[StaticAssets, {
         [key: string]: any;
-    }]>;
+    }, () => void]>;
     constructor(microManage: MicroManageInterface, staticAssets: StaticAssets);
     createShadowbox(shadow?: ShadowRoot): any;
     protected linkToStyle(link: HTMLLinkElement): Promise<void>;

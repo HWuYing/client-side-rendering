@@ -7,6 +7,7 @@ var FAIL = 'fail';
 var SUCCESS = 'success';
 var MicroStore = /** @class */ (function () {
     function MicroStore(microName, staticAssets, microManage) {
+        var _this = this;
         this.microName = microName;
         this.staticAssets = staticAssets;
         this.microManage = microManage;
@@ -14,7 +15,10 @@ var MicroStore = /** @class */ (function () {
         this.loaderStyleNodes = [];
         this.execMountedList = [];
         this.proxySandbox = new proxy_sandbox_1.ProxySandbox(microManage, staticAssets);
-        this.proxySandbox.loaderScriptSubject.subscribe(this.loadScriptContext.bind(this));
+        this.proxySandbox.loaderScriptSubject.subscribe(function (_a) {
+            var staticAsses = _a[0], shadBox = _a[1], handle = _a[2];
+            return _this.loadScriptContext([staticAsses, shadBox]).then(handle);
+        });
         this.proxySandbox.loaderStyleSubject.subscribe(this.headAppendChildProxy.bind(this));
     }
     MicroStore.prototype.onMounted = function (container, options) {

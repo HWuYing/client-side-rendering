@@ -38,8 +38,8 @@ export class ProxySandbox {
                 this.cache.set(src, subject);
             }
             const text = yield lastValueFrom(subject);
-            this.loaderScriptSubject.next([{ script: [text], js: [src] }, shadBox]);
-            node.src = URL.createObjectURL(new Blob(['']));
+            const loadEnd = () => node.src = URL.createObjectURL(new Blob(['']));
+            this.loaderScriptSubject.next([{ script: [text], js: [src] }, shadBox, loadEnd]);
         });
     }
     appendChild(shadBox, node) {
