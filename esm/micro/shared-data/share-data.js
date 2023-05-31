@@ -10,6 +10,9 @@ let SharedData = class SharedData {
     get(key) {
         return this.data.get(key);
     }
+    delete(key) {
+        this.data.delete(key);
+    }
 };
 SharedData = __decorate([
     Injectable()

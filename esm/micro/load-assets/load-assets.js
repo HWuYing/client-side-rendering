@@ -25,8 +25,8 @@ let LoadAssets = class LoadAssets {
         return isEmpty(links) ? of(links) : forkJoin(links.map((href) => this.fetchStatic(href)));
     }
     readJavascript(_a) {
-        var { js, script } = _a, other = __rest(_a, ["js", "script"]);
-        return forkJoin(js.map((src) => this.fetchStatic(src))).pipe(map((script) => (Object.assign({ script, js }, other))));
+        var { js } = _a, other = __rest(_a, ["js"]);
+        return forkJoin(js.map((src) => this.fetchStatic(src))).pipe(map((script) => (Object.assign(Object.assign({}, other), { script, js }))));
     }
     createMicroTag(microName, staticAssets) {
         const tag = document.createElement(`${microName}-tag`);

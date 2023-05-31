@@ -39,7 +39,7 @@ export class ProxySandbox {
             }
             const text = yield lastValueFrom(subject);
             node.src = URL.createObjectURL(new Blob(['']));
-            this.loaderScriptSubject.next([{ script: [text], js: [src] }, shadBox, () => document.head.append(node)]);
+            return new Promise((resolve) => this.loaderScriptSubject.next([{ script: [text], js: [src] }, shadBox, resolve]));
         });
     }
     appendChild(shadBox, node) {
@@ -50,7 +50,7 @@ export class ProxySandbox {
                 yield this.linkToStyle(node);
             }
             if (name === 'SCRIPT') {
-                return yield this.srcToScript(shadBox, node);
+                yield this.srcToScript(shadBox, node);
             }
             return name === 'STYLE' ? (_a = this.loaderStyleSubject) === null || _a === void 0 ? void 0 : _a.next(node) : document.head.append(node);
         });

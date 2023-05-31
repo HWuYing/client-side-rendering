@@ -13,6 +13,9 @@ var SharedData = /** @class */ (function () {
     SharedData.prototype.get = function (key) {
         return this.data.get(key);
     };
+    SharedData.prototype.delete = function (key) {
+        this.data.delete(key);
+    };
     SharedData = tslib_1.__decorate([
         (0, di_1.Injectable)()
     ], SharedData);

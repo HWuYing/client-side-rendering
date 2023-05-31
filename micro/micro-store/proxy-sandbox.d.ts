@@ -8,11 +8,11 @@ export declare class ProxySandbox {
     loaderStyleSubject: Subject<HTMLElement>;
     loaderScriptSubject: Subject<[StaticAssets, {
         [key: string]: any;
-    }, () => void]>;
+    }, (val: any) => void]>;
     constructor(microManage: MicroManageInterface, staticAssets: StaticAssets);
     createShadowbox(shadow?: ShadowRoot): any;
     protected linkToStyle(link: HTMLLinkElement): Promise<void>;
-    protected srcToScript(shadBox: any, node: HTMLScriptElement): Promise<void>;
+    protected srcToScript(shadBox: any, node: HTMLScriptElement): Promise<unknown>;
     protected appendChild(shadBox: any, node: HTMLElement): Promise<void>;
     protected docProxy(shadBox: any, shadow?: ShadowRoot): any;
     protected querySelector(head: HTMLHeadElement, body: HTMLElement, shadow?: Document | ShadowRoot): (selectors: string) => Element;

@@ -10,6 +10,9 @@ var SharedData = /** @class */ (function () {
     SharedData.prototype.get = function (key) {
         return this.data.get(key);
     };
+    SharedData.prototype.delete = function (key) {
+        this.data.delete(key);
+    };
     SharedData = __decorate([
         Injectable()
     ], SharedData);

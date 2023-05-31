@@ -31,8 +31,8 @@ var LoadAssets = /** @class */ (function () {
     };
     LoadAssets.prototype.readJavascript = function (_a) {
         var _this = this;
-        var js = _a.js, script = _a.script, other = __rest(_a, ["js", "script"]);
-        return forkJoin(js.map(function (src) { return _this.fetchStatic(src); })).pipe(map(function (script) { return (__assign({ script: script, js: js }, other)); }));
+        var js = _a.js, other = __rest(_a, ["js"]);
+        return forkJoin(js.map(function (src) { return _this.fetchStatic(src); })).pipe(map(function (script) { return (__assign(__assign({}, other), { script: script, js: js })); }));
     };
     LoadAssets.prototype.createMicroTag = function (microName, staticAssets) {
         var tag = document.createElement("".concat(microName, "-tag"));

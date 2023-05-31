@@ -34,8 +34,8 @@ var LoadAssets = /** @class */ (function () {
     };
     LoadAssets.prototype.readJavascript = function (_a) {
         var _this = this;
-        var js = _a.js, script = _a.script, other = tslib_1.__rest(_a, ["js", "script"]);
-        return (0, rxjs_1.forkJoin)(js.map(function (src) { return _this.fetchStatic(src); })).pipe((0, operators_1.map)(function (script) { return (tslib_1.__assign({ script: script, js: js }, other)); }));
+        var js = _a.js, other = tslib_1.__rest(_a, ["js"]);
+        return (0, rxjs_1.forkJoin)(js.map(function (src) { return _this.fetchStatic(src); })).pipe((0, operators_1.map)(function (script) { return (tslib_1.__assign(tslib_1.__assign({}, other), { script: script, js: js })); }));
     };
     LoadAssets.prototype.createMicroTag = function (microName, staticAssets) {
         var tag = document.createElement("".concat(microName, "-tag"));
