@@ -5,7 +5,7 @@ var tslib_1 = require("tslib");
 var core_1 = require("@fm/core");
 var di_1 = require("@fm/di");
 var lodash_1 = require("lodash");
-var rxjs_1 = require("rxjs");
+var operators_1 = require("rxjs/operators");
 var json_intercept_1 = require("./json-intercept");
 var JsonConfigService = /** @class */ (function (_super) {
     tslib_1.__extends(JsonConfigService, _super);
@@ -20,7 +20,7 @@ var JsonConfigService = /** @class */ (function (_super) {
         url = /http|https/.test(url) ? url : url.replace(/\/+/g, '/');
         var subject = this.cache.get(url);
         if (!subject) {
-            subject = this.http.get(url, { requestType: json_intercept_1.JSON_TYPE }).pipe((0, rxjs_1.shareReplay)(1), (0, rxjs_1.map)(lodash_1.cloneDeep));
+            subject = this.http.get(url, { requestType: json_intercept_1.JSON_TYPE }).pipe((0, operators_1.shareReplay)(1), (0, operators_1.map)(lodash_1.cloneDeep));
             this.cache.set(url, subject);
         }
         return subject;

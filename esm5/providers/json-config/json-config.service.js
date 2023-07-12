@@ -2,7 +2,7 @@ import { __decorate, __extends, __metadata } from "tslib";
 import { HttpClient, JsonConfigService as SharedJsonConfigService } from '@fm/core';
 import { Injectable, Injector } from '@fm/di';
 import { cloneDeep } from 'lodash';
-import { map, shareReplay } from 'rxjs';
+import { map, shareReplay } from 'rxjs/operators';
 import { JSON_TYPE } from './json-intercept';
 var JsonConfigService = /** @class */ (function (_super) {
     __extends(JsonConfigService, _super);

@@ -6,6 +6,7 @@ var core_1 = require("@fm/core");
 var di_1 = require("@fm/di");
 var lodash_1 = require("lodash");
 var rxjs_1 = require("rxjs");
+var operators_1 = require("rxjs/operators");
 var FILE_STATIC = 'file-static';
 exports.JSON_TYPE = 'json-config';
 var JsonIntercept = /** @class */ (function () {
@@ -15,7 +16,7 @@ var JsonIntercept = /** @class */ (function () {
         this.cacheConfig = this.resetCacheConfig();
     }
     JsonIntercept.prototype.createCache = function (observable) {
-        return observable.pipe((0, rxjs_1.shareReplay)(1), (0, rxjs_1.map)(lodash_1.cloneDeep));
+        return observable.pipe((0, operators_1.shareReplay)(1), (0, operators_1.map)(lodash_1.cloneDeep));
     };
     JsonIntercept.prototype.resetCacheConfig = function () {
         var _this = this;
@@ -43,8 +44,8 @@ var JsonIntercept = /** @class */ (function () {
             return (0, rxjs_1.of)(response);
         }
         var event$ = next.handle(req, params);
-        return !isJsonFetch ? event$ : event$.pipe((0, rxjs_1.switchMap)(function (response) {
-            return (0, rxjs_1.from)(response.clone().json()).pipe((0, rxjs_1.tap)(function (json) { return _this.putGlobalSource(req, json); }), (0, rxjs_1.map)(function () { return response; }));
+        return !isJsonFetch ? event$ : event$.pipe((0, operators_1.switchMap)(function (response) {
+            return (0, rxjs_1.from)(response.clone().json()).pipe((0, operators_1.tap)(function (json) { return _this.putGlobalSource(req, json); }), (0, operators_1.map)(function () { return response; }));
         }));
     };
     JsonIntercept = tslib_1.__decorate([

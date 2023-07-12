@@ -4,6 +4,7 @@ exports.ProxySandbox = void 0;
 var tslib_1 = require("tslib");
 var lodash_1 = require("lodash");
 var rxjs_1 = require("rxjs");
+var operators_1 = require("rxjs/operators");
 var docProxyMethod = ['querySelectorAll', 'getElementById'];
 var ProxySandbox = /** @class */ (function () {
     function ProxySandbox(microManage, staticAssets) {
@@ -53,7 +54,7 @@ var ProxySandbox = /** @class */ (function () {
                         src = node.getAttribute('src') || '';
                         subject = this.cache.get(src);
                         if (!subject) {
-                            subject = this.microManage.la.fetchStatic(src).pipe((0, rxjs_1.shareReplay)(1));
+                            subject = this.microManage.la.fetchStatic(src).pipe((0, operators_1.shareReplay)(1));
                             this.cache.set(src, subject);
                         }
                         return [4 /*yield*/, (0, rxjs_1.lastValueFrom)(subject)];

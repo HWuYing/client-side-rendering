@@ -1,6 +1,7 @@
 import { __assign, __awaiter, __generator } from "tslib";
 import { isUndefined } from 'lodash';
-import { lastValueFrom, shareReplay, Subject } from 'rxjs';
+import { lastValueFrom, Subject } from 'rxjs';
+import { shareReplay } from 'rxjs/operators';
 var docProxyMethod = ['querySelectorAll', 'getElementById'];
 var ProxySandbox = /** @class */ (function () {
     function ProxySandbox(microManage, staticAssets) {

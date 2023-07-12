@@ -1,6 +1,7 @@
 import { __awaiter } from "tslib";
 import { isUndefined } from 'lodash';
-import { lastValueFrom, shareReplay, Subject } from 'rxjs';
+import { lastValueFrom, Subject } from 'rxjs';
+import { shareReplay } from 'rxjs/operators';
 const docProxyMethod = ['querySelectorAll', 'getElementById'];
 export class ProxySandbox {
     constructor(microManage, staticAssets) {

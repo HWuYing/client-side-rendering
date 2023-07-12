@@ -2,7 +2,8 @@ import { __decorate, __metadata, __param } from "tslib";
 import { AppContextService as SharedContext, createResponse } from '@fm/core';
 import { Inject, Injectable, Injector } from '@fm/di';
 import { cloneDeep } from 'lodash';
-import { from, map, of, shareReplay, switchMap, tap } from 'rxjs';
+import { from, of } from 'rxjs';
+import { map, shareReplay, switchMap, tap } from 'rxjs/operators';
 const FILE_STATIC = 'file-static';
 export const JSON_TYPE = 'json-config';
 let JsonIntercept = class JsonIntercept {
