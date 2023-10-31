@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Input = exports.Prov = exports.Application = exports.dynamicPlatform = exports.PLATFORM_SCOPE = exports.applicationContext = void 0;
+exports.Application = exports.registerProvider = exports.Prov = exports.Input = exports.ApplicationPlugin = exports.dynamicPlatform = exports.PLATFORM_SCOPE = exports.applicationContext = void 0;
+require("./plugin.effects");
 var platform_1 = require("@fm/core/platform");
 var application_1 = require("@fm/core/platform/application");
 var token_1 = require("@fm/core/token");
@@ -35,6 +36,9 @@ var dynamicPlatform = function (providers) {
 };
 exports.dynamicPlatform = dynamicPlatform;
 exports.applicationContext.registerStart(function () { return (0, exports.dynamicPlatform)().bootstrapRender(exports.applicationContext.providers); });
+var decorator_1 = require("@fm/core/platform/decorator");
+Object.defineProperty(exports, "ApplicationPlugin", { enumerable: true, get: function () { return decorator_1.ApplicationPlugin; } });
+Object.defineProperty(exports, "Input", { enumerable: true, get: function () { return decorator_1.Input; } });
+Object.defineProperty(exports, "Prov", { enumerable: true, get: function () { return decorator_1.Prov; } });
+Object.defineProperty(exports, "registerProvider", { enumerable: true, get: function () { return decorator_1.registerProvider; } });
 exports.Application = exports.applicationContext.makeApplicationDecorator();
-exports.Prov = exports.applicationContext.makeProvDecorator('MethodDecorator');
-exports.Input = exports.applicationContext.makePropInput('InputPropDecorator');

@@ -1,3 +1,4 @@
+import './plugin.effects';
 import { createPlatformFactory } from '@fm/core/platform';
 import { ApplicationContext } from '@fm/core/platform/application';
 import { PLATFORM, PlatformOptions } from '@fm/core/token';
@@ -30,6 +31,5 @@ export var dynamicPlatform = function (providers) {
     return new DynamicPlatform(providers);
 };
 applicationContext.registerStart(function () { return dynamicPlatform().bootstrapRender(applicationContext.providers); });
+export { ApplicationPlugin, Input, Prov, registerProvider } from '@fm/core/platform/decorator';
 export var Application = applicationContext.makeApplicationDecorator();
-export var Prov = applicationContext.makeProvDecorator('MethodDecorator');
-export var Input = applicationContext.makePropInput('InputPropDecorator');

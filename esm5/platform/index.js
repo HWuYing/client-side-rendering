@@ -2,7 +2,7 @@ import { __assign, __awaiter, __generator, __rest, __spreadArray } from "tslib";
 import { HttpHandler, HttpInterceptingHandler } from '@fm/core/common/http';
 import { APP_CONTEXT, AppContextService } from '@fm/core/providers/app-context';
 import { JsonConfigService } from '@fm/core/providers/json-config';
-import { APPLICATION_TOKEN, HISTORY, HTTP_INTERCEPTORS } from '@fm/core/token';
+import { APPLICATION_TOKEN, HTTP_INTERCEPTORS } from '@fm/core/token';
 import { Injector } from '@fm/di';
 import { AppContextService as ClientAppContextService } from '../providers/app-context';
 import { JsonConfigService as ClientJsonConfigService, JsonIntercept } from '../providers/json-config';
@@ -21,12 +21,9 @@ var Platform = /** @class */ (function () {
                 switch (_b.label) {
                     case 0:
                         _a = this.parseParams(additionalProviders, render), providers = _a[0], _render = _a[1];
-                        return [4 /*yield*/, this.importMicro(providers)];
-                    case 1:
-                        _b.sent();
                         injector = this.beforeBootstrapRender({ useMicroManage: function () { return injector.get(IMPORT_MICRO); } }, providers);
                         return [4 /*yield*/, this.runRender(injector, undefined, _render)];
-                    case 2:
+                    case 1:
                         _b.sent();
                         return [2 /*return*/];
                 }
@@ -71,48 +68,7 @@ var Platform = /** @class */ (function () {
             { provide: HTTP_INTERCEPTORS, multi: true, useExisting: JsonIntercept },
             providers,
         ];
-        this.registerHistory(providers);
         return Injector.create(additionalProviders, this.platformInjector);
-    };
-    Platform.prototype.importMicro = function (providers) {
-        return __awaiter(this, void 0, void 0, function () {
-            var importMicro, MicroManage;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        importMicro = this.platformInjector.get(IMPORT_MICRO);
-                        if (!importMicro) return [3 /*break*/, 2];
-                        return [4 /*yield*/, importMicro];
-                    case 1:
-                        MicroManage = (_a.sent()).MicroManage;
-                        providers.push({ provide: IMPORT_MICRO, useExisting: MicroManage });
-                        _a.label = 2;
-                    case 2: return [2 /*return*/];
-                }
-            });
-        });
-    };
-    Platform.prototype.registerHistory = function (providers) {
-        var _this = this;
-        var historyProvider = providers.find(function (_a) {
-            var provide = _a.provide;
-            return provide === HISTORY;
-        });
-        if (historyProvider || this.platformInjector.get(HISTORY)) {
-            var deps = [Injector];
-            var factory = function (injector, history) {
-                var historyKey = HISTORY.toString();
-                var _a = injector.get(AppContextService).microManage, _b = _a === void 0 ? {} : _a, _c = _b.sharedData, sharedData = _c === void 0 ? void (0) : _c;
-                var sharedHistory = (sharedData === null || sharedData === void 0 ? void 0 : sharedData.get(historyKey)) || history || _this.platformInjector.get(HISTORY);
-                sharedData === null || sharedData === void 0 ? void 0 : sharedData.set(historyKey, sharedHistory);
-                return sharedHistory;
-            };
-            if (historyProvider) {
-                providers.push(__assign(__assign({}, historyProvider), { provide: historyProvider }));
-                deps.push(historyProvider);
-            }
-            providers.push({ provide: HISTORY, useFactory: factory, deps: deps });
-        }
     };
     Platform.prototype.runRender = function (injector, options, render) {
         var _a;
@@ -123,7 +79,7 @@ var Platform = /** @class */ (function () {
                     case 0: return [4 /*yield*/, injector.get(APPLICATION_TOKEN)];
                     case 1:
                         application = _b.sent();
-                        return [2 /*return*/, (_a = (render || application.bootstrapRender)) === null || _a === void 0 ? void 0 : _a.call(application, injector, options)];
+                        return [2 /*return*/, (_a = (render || application.main)) === null || _a === void 0 ? void 0 : _a.call(application, injector, options)];
                 }
             });
         });

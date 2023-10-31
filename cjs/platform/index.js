@@ -24,12 +24,9 @@ var Platform = /** @class */ (function () {
                 switch (_b.label) {
                     case 0:
                         _a = this.parseParams(additionalProviders, render), providers = _a[0], _render = _a[1];
-                        return [4 /*yield*/, this.importMicro(providers)];
-                    case 1:
-                        _b.sent();
                         injector = this.beforeBootstrapRender({ useMicroManage: function () { return injector.get(token_2.IMPORT_MICRO); } }, providers);
                         return [4 /*yield*/, this.runRender(injector, undefined, _render)];
-                    case 2:
+                    case 1:
                         _b.sent();
                         return [2 /*return*/];
                 }
@@ -74,48 +71,7 @@ var Platform = /** @class */ (function () {
             { provide: token_1.HTTP_INTERCEPTORS, multi: true, useExisting: json_config_2.JsonIntercept },
             providers,
         ];
-        this.registerHistory(providers);
         return di_1.Injector.create(additionalProviders, this.platformInjector);
-    };
-    Platform.prototype.importMicro = function (providers) {
-        return tslib_1.__awaiter(this, void 0, void 0, function () {
-            var importMicro, MicroManage;
-            return tslib_1.__generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        importMicro = this.platformInjector.get(token_2.IMPORT_MICRO);
-                        if (!importMicro) return [3 /*break*/, 2];
-                        return [4 /*yield*/, importMicro];
-                    case 1:
-                        MicroManage = (_a.sent()).MicroManage;
-                        providers.push({ provide: token_2.IMPORT_MICRO, useExisting: MicroManage });
-                        _a.label = 2;
-                    case 2: return [2 /*return*/];
-                }
-            });
-        });
-    };
-    Platform.prototype.registerHistory = function (providers) {
-        var _this = this;
-        var historyProvider = providers.find(function (_a) {
-            var provide = _a.provide;
-            return provide === token_1.HISTORY;
-        });
-        if (historyProvider || this.platformInjector.get(token_1.HISTORY)) {
-            var deps = [di_1.Injector];
-            var factory = function (injector, history) {
-                var historyKey = token_1.HISTORY.toString();
-                var _a = injector.get(app_context_1.AppContextService).microManage, _b = _a === void 0 ? {} : _a, _c = _b.sharedData, sharedData = _c === void 0 ? void (0) : _c;
-                var sharedHistory = (sharedData === null || sharedData === void 0 ? void 0 : sharedData.get(historyKey)) || history || _this.platformInjector.get(token_1.HISTORY);
-                sharedData === null || sharedData === void 0 ? void 0 : sharedData.set(historyKey, sharedHistory);
-                return sharedHistory;
-            };
-            if (historyProvider) {
-                providers.push(tslib_1.__assign(tslib_1.__assign({}, historyProvider), { provide: historyProvider }));
-                deps.push(historyProvider);
-            }
-            providers.push({ provide: token_1.HISTORY, useFactory: factory, deps: deps });
-        }
     };
     Platform.prototype.runRender = function (injector, options, render) {
         var _a;
@@ -126,7 +82,7 @@ var Platform = /** @class */ (function () {
                     case 0: return [4 /*yield*/, injector.get(token_1.APPLICATION_TOKEN)];
                     case 1:
                         application = _b.sent();
-                        return [2 /*return*/, (_a = (render || application.bootstrapRender)) === null || _a === void 0 ? void 0 : _a.call(application, injector, options)];
+                        return [2 /*return*/, (_a = (render || application.main)) === null || _a === void 0 ? void 0 : _a.call(application, injector, options)];
                 }
             });
         });
