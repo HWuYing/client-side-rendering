@@ -66,7 +66,7 @@ var Platform = /** @class */ (function () {
             { provide: JsonConfigService, useExisting: ClientJsonConfigService },
             { provide: AppContextService, useExisting: ClientAppContextService },
             { provide: HTTP_INTERCEPTORS, multi: true, useExisting: JsonIntercept },
-            providers,
+            providers
         ];
         return Injector.create(additionalProviders, this.platformInjector);
     };
