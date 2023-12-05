@@ -29,20 +29,16 @@ var Plugin = /** @class */ (function () {
         });
     };
     Plugin.prototype.interceptHistory = function () {
-        return __awaiter(this, void 0, void 0, function () {
-            var history, _a, _b, _c, sharedData, historyKey, sharedHistory;
-            return __generator(this, function (_d) {
-                history = this.injector.get(HISTORY);
-                _a = this.injector.get(AppContextService).microManage, _b = _a === void 0 ? {} : _a, _c = _b.sharedData, sharedData = _c === void 0 ? void (0) : _c;
-                if (history && sharedData) {
-                    historyKey = HISTORY.toString();
-                    sharedHistory = sharedData.get(historyKey) || history;
-                    sharedData.set(historyKey, sharedHistory);
-                    this.ctx.addProvider({ provide: HISTORY, useValue: sharedHistory });
-                }
-                return [2 /*return*/];
-            });
-        });
+        var history = this.injector.get(HISTORY);
+        var _a = this.injector.get(AppContextService).microManage, _b = _a === void 0 ? {} : _a, _c = _b.sharedData, sharedData = _c === void 0 ? void (0) : _c;
+        if (history && sharedData) {
+            var historyKey = HISTORY.toString();
+            var sharedHistory = sharedData.get(historyKey);
+            if (!sharedHistory)
+                sharedData.set(historyKey, history);
+            else if (history !== sharedHistory)
+                this.ctx.addProvider({ provide: HISTORY, useValue: sharedHistory });
+        }
     };
     Plugin.prototype.register = function () {
         return __awaiter(this, void 0, void 0, function () {
@@ -51,9 +47,7 @@ var Plugin = /** @class */ (function () {
                     case 0: return [4 /*yield*/, this.microLoad()];
                     case 1:
                         _a.sent();
-                        return [4 /*yield*/, this.interceptHistory()];
-                    case 2:
-                        _a.sent();
+                        this.interceptHistory();
                         return [2 /*return*/];
                 }
             });

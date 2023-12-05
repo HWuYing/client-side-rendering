@@ -6,6 +6,6 @@ export declare class Plugin {
     private options;
     constructor(ctx: ApplicationContext, injector: Injector);
     microLoad(): Promise<void>;
-    interceptHistory(): Promise<void>;
+    interceptHistory(): void;
     register(): Promise<void>;
 }

@@ -20,21 +20,21 @@ let Plugin = class Plugin {
         });
     }
     interceptHistory() {
-        return __awaiter(this, void 0, void 0, function* () {
-            const history = this.injector.get(HISTORY);
-            const { microManage: { sharedData = void (0) } = {} } = this.injector.get(AppContextService);
-            if (history && sharedData) {
-                const historyKey = HISTORY.toString();
-                const sharedHistory = sharedData.get(historyKey) || history;
-                sharedData.set(historyKey, sharedHistory);
+        const history = this.injector.get(HISTORY);
+        const { microManage: { sharedData = void (0) } = {} } = this.injector.get(AppContextService);
+        if (history && sharedData) {
+            const historyKey = HISTORY.toString();
+            const sharedHistory = sharedData.get(historyKey);
+            if (!sharedHistory)
+                sharedData.set(historyKey, history);
+            else if (history !== sharedHistory)
                 this.ctx.addProvider({ provide: HISTORY, useValue: sharedHistory });
-            }
-        });
+        }
     }
     register() {
         return __awaiter(this, void 0, void 0, function* () {
             yield this.microLoad();
-            yield this.interceptHistory();
+            this.interceptHistory();
         });
     }
 };
