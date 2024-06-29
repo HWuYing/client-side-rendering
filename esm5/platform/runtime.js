@@ -31,5 +31,5 @@ export var dynamicPlatform = function (providers) {
     return new DynamicPlatform(providers);
 };
 applicationContext.registerStart(function () { return dynamicPlatform().bootstrapRender(applicationContext.providers); });
-export { ApplicationPlugin, Input, Prov, registerProvider } from '@fm/core/platform/decorator';
+export { ApplicationPlugin, createRegisterLoader, Input, Prov, registerProvider, runtimeInjector } from '@fm/core/platform/decorator';
 export var Application = applicationContext.makeApplicationDecorator();

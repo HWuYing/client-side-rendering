@@ -26,5 +26,5 @@ class DynamicPlatform {
 export { PLATFORM_SCOPE } from '@fm/core/platform/application';
 export const dynamicPlatform = (providers = []) => new DynamicPlatform(providers);
 applicationContext.registerStart(() => dynamicPlatform().bootstrapRender(applicationContext.providers));
-export { ApplicationPlugin, Input, Prov, registerProvider } from '@fm/core/platform/decorator';
+export { ApplicationPlugin, createRegisterLoader, Input, Prov, registerProvider, runtimeInjector } from '@fm/core/platform/decorator';
 export const Application = applicationContext.makeApplicationDecorator();
