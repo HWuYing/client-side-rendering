@@ -16,8 +16,8 @@ export class MicroStore {
         this.proxySandbox.loaderStyleSubject.subscribe(loadStyle);
         this.proxySandbox.loaderScriptSubject.subscribe(loadScript);
     }
-    onMounted(container, options = {}) {
-        return __awaiter(this, void 0, void 0, function* () {
+    onMounted(container_1) {
+        return __awaiter(this, arguments, void 0, function* (container, options = {}) {
             const { selfScope } = options;
             this.execMountedList.push([container, options]);
             if (selfScope || !this._renderMicro) {
@@ -54,8 +54,8 @@ export class MicroStore {
             return Promise.all(this.mountedList.filter((item) => item.unMounted === FAIL).map(({ container }) => this.unMounted(container)));
         });
     }
-    execMounted(_renderMicro = this._renderMicro) {
-        return __awaiter(this, void 0, void 0, function* () {
+    execMounted() {
+        return __awaiter(this, arguments, void 0, function* (_renderMicro = this._renderMicro) {
             const [container, options] = this.execMountedList.shift();
             const mountedItem = { container };
             this.mountedList.push(mountedItem);
@@ -86,8 +86,8 @@ export class MicroStore {
             styleNodes.forEach((styleNode) => styleContainer.appendChild(styleNode));
         }
     }
-    loadScriptContext([staticAssets, shadBox]) {
-        return __awaiter(this, void 0, void 0, function* () {
+    loadScriptContext(_a) {
+        return __awaiter(this, arguments, void 0, function* ([staticAssets, shadBox]) {
             const { script, js } = staticAssets;
             return Promise.all(script.map((source, index) => {
                 const hasSourceMap = !/[\S]+\.[\S]+\.js$/.test(js[index]);

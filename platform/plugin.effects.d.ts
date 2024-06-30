@@ -1,4 +1,4 @@
-import { ApplicationContext } from '@fm/core/platform/application';
+import { ApplicationContext } from '@fm/core/platform';
 import { Injector } from '@fm/di';
 export declare class Plugin {
     private ctx;

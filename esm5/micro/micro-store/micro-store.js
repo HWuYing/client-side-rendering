@@ -20,10 +20,10 @@ var MicroStore = /** @class */ (function () {
         this.proxySandbox.loaderStyleSubject.subscribe(loadStyle);
         this.proxySandbox.loaderScriptSubject.subscribe(loadScript);
     }
-    MicroStore.prototype.onMounted = function (container, options) {
-        if (options === void 0) { options = {}; }
-        return __awaiter(this, void 0, void 0, function () {
+    MicroStore.prototype.onMounted = function (container_1) {
+        return __awaiter(this, arguments, void 0, function (container, options) {
             var selfScope, shadBox, _a;
+            if (options === void 0) { options = {}; }
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
@@ -94,10 +94,10 @@ var MicroStore = /** @class */ (function () {
             });
         });
     };
-    MicroStore.prototype.execMounted = function (_renderMicro) {
-        if (_renderMicro === void 0) { _renderMicro = this._renderMicro; }
-        return __awaiter(this, void 0, void 0, function () {
+    MicroStore.prototype.execMounted = function () {
+        return __awaiter(this, arguments, void 0, function (_renderMicro) {
             var _a, container, options, mountedItem, _b, _c;
+            if (_renderMicro === void 0) { _renderMicro = this._renderMicro; }
             return __generator(this, function (_d) {
                 switch (_d.label) {
                     case 0:
@@ -154,11 +154,11 @@ var MicroStore = /** @class */ (function () {
         }
     };
     MicroStore.prototype.loadScriptContext = function (_a) {
-        var staticAssets = _a[0], shadBox = _a[1];
-        return __awaiter(this, void 0, void 0, function () {
+        return __awaiter(this, arguments, void 0, function (_b) {
             var script, js;
             var _this = this;
-            return __generator(this, function (_b) {
+            var staticAssets = _b[0], shadBox = _b[1];
+            return __generator(this, function (_c) {
                 script = staticAssets.script, js = staticAssets.js;
                 return [2 /*return*/, Promise.all(script.map(function (source, index) {
                         var hasSourceMap = !/[\S]+\.[\S]+\.js$/.test(js[index]);

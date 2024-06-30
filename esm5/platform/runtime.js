@@ -1,35 +1,25 @@
 import './plugin.effects';
 import { createPlatformFactory } from '@fm/core/platform';
-import { ApplicationContext } from '@fm/core/platform/application';
+import { makeApplication } from '@fm/core/platform/decorator';
 import { PLATFORM, PlatformOptions } from '@fm/core/token';
 import { Injector } from '@fm/di';
 import { Platform } from './index';
-var isMicro = typeof microStore !== 'undefined';
-var resource = typeof fetchCacheData !== 'undefined' ? fetchCacheData : [];
-export var applicationContext = new ApplicationContext();
-var _CORE_PLATFORM_PROVIDERS = [
-    { provide: PlatformOptions, useValue: { isMicro: isMicro, resource: resource } },
-    { provide: Platform, deps: [Injector, PlatformOptions] },
-    { provide: PLATFORM, useExisting: Platform }
-];
-var DynamicPlatform = /** @class */ (function () {
-    function DynamicPlatform(providers) {
-        this.createPlatform = createPlatformFactory(null, _CORE_PLATFORM_PROVIDERS, providers);
+export { PLATFORM_SCOPE } from '@fm/core/platform';
+export { ApplicationPlugin, createRegisterLoader, Input, Prov, Register, runtimeInjector } from '@fm/core/platform/decorator';
+export var Application = makeApplication(function (applicationContext) {
+    var isMicro = typeof microStore !== 'undefined';
+    var resource = typeof fetchCacheData !== 'undefined' ? fetchCacheData : [];
+    var createPlatform = createPlatformFactory(null, [
+        { provide: PlatformOptions, useValue: { isMicro: isMicro, resource: resource } },
+        { provide: PLATFORM, useClass: Platform, deps: [Injector, PlatformOptions] }
+    ]);
+    if (!isMicro) {
+        createPlatform(applicationContext).bootstrapRender(applicationContext.providers);
     }
-    DynamicPlatform.prototype.bootstrapRender = function (providers, render) {
-        var _this = this;
-        if (!isMicro) {
-            return this.createPlatform(applicationContext).bootstrapRender(providers, render);
-        }
-        microStore.render = function (options) { return _this.createPlatform(applicationContext).bootstrapMicroRender(providers, render, options); };
-    };
-    return DynamicPlatform;
-}());
-export { PLATFORM_SCOPE } from '@fm/core/platform/application';
-export var dynamicPlatform = function (providers) {
-    if (providers === void 0) { providers = []; }
-    return new DynamicPlatform(providers);
-};
-applicationContext.registerStart(function () { return dynamicPlatform().bootstrapRender(applicationContext.providers); });
-export { ApplicationPlugin, createRegisterLoader, Input, Prov, registerProvider, runtimeInjector } from '@fm/core/platform/decorator';
-export var Application = applicationContext.makeApplicationDecorator();
+    else {
+        microStore.render = function (options) {
+            if (options === void 0) { options = {}; }
+            return createPlatform(applicationContext).bootstrapMicroRender(applicationContext.providers, options);
+        };
+    }
+});

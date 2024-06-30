@@ -1,46 +1,35 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Application = exports.runtimeInjector = exports.registerProvider = exports.Prov = exports.Input = exports.createRegisterLoader = exports.ApplicationPlugin = exports.dynamicPlatform = exports.PLATFORM_SCOPE = exports.applicationContext = void 0;
+exports.Application = exports.runtimeInjector = exports.Register = exports.Prov = exports.Input = exports.createRegisterLoader = exports.ApplicationPlugin = exports.PLATFORM_SCOPE = void 0;
 require("./plugin.effects");
 var platform_1 = require("@fm/core/platform");
-var application_1 = require("@fm/core/platform/application");
+var decorator_1 = require("@fm/core/platform/decorator");
 var token_1 = require("@fm/core/token");
 var di_1 = require("@fm/di");
 var index_1 = require("./index");
-var isMicro = typeof microStore !== 'undefined';
-var resource = typeof fetchCacheData !== 'undefined' ? fetchCacheData : [];
-exports.applicationContext = new application_1.ApplicationContext();
-var _CORE_PLATFORM_PROVIDERS = [
-    { provide: token_1.PlatformOptions, useValue: { isMicro: isMicro, resource: resource } },
-    { provide: index_1.Platform, deps: [di_1.Injector, token_1.PlatformOptions] },
-    { provide: token_1.PLATFORM, useExisting: index_1.Platform }
-];
-var DynamicPlatform = /** @class */ (function () {
-    function DynamicPlatform(providers) {
-        this.createPlatform = (0, platform_1.createPlatformFactory)(null, _CORE_PLATFORM_PROVIDERS, providers);
+var platform_2 = require("@fm/core/platform");
+Object.defineProperty(exports, "PLATFORM_SCOPE", { enumerable: true, get: function () { return platform_2.PLATFORM_SCOPE; } });
+var decorator_2 = require("@fm/core/platform/decorator");
+Object.defineProperty(exports, "ApplicationPlugin", { enumerable: true, get: function () { return decorator_2.ApplicationPlugin; } });
+Object.defineProperty(exports, "createRegisterLoader", { enumerable: true, get: function () { return decorator_2.createRegisterLoader; } });
+Object.defineProperty(exports, "Input", { enumerable: true, get: function () { return decorator_2.Input; } });
+Object.defineProperty(exports, "Prov", { enumerable: true, get: function () { return decorator_2.Prov; } });
+Object.defineProperty(exports, "Register", { enumerable: true, get: function () { return decorator_2.Register; } });
+Object.defineProperty(exports, "runtimeInjector", { enumerable: true, get: function () { return decorator_2.runtimeInjector; } });
+exports.Application = (0, decorator_1.makeApplication)(function (applicationContext) {
+    var isMicro = typeof microStore !== 'undefined';
+    var resource = typeof fetchCacheData !== 'undefined' ? fetchCacheData : [];
+    var createPlatform = (0, platform_1.createPlatformFactory)(null, [
+        { provide: token_1.PlatformOptions, useValue: { isMicro: isMicro, resource: resource } },
+        { provide: token_1.PLATFORM, useClass: index_1.Platform, deps: [di_1.Injector, token_1.PlatformOptions] }
+    ]);
+    if (!isMicro) {
+        createPlatform(applicationContext).bootstrapRender(applicationContext.providers);
     }
-    DynamicPlatform.prototype.bootstrapRender = function (providers, render) {
-        var _this = this;
-        if (!isMicro) {
-            return this.createPlatform(exports.applicationContext).bootstrapRender(providers, render);
-        }
-        microStore.render = function (options) { return _this.createPlatform(exports.applicationContext).bootstrapMicroRender(providers, render, options); };
-    };
-    return DynamicPlatform;
-}());
-var application_2 = require("@fm/core/platform/application");
-Object.defineProperty(exports, "PLATFORM_SCOPE", { enumerable: true, get: function () { return application_2.PLATFORM_SCOPE; } });
-var dynamicPlatform = function (providers) {
-    if (providers === void 0) { providers = []; }
-    return new DynamicPlatform(providers);
-};
-exports.dynamicPlatform = dynamicPlatform;
-exports.applicationContext.registerStart(function () { return (0, exports.dynamicPlatform)().bootstrapRender(exports.applicationContext.providers); });
-var decorator_1 = require("@fm/core/platform/decorator");
-Object.defineProperty(exports, "ApplicationPlugin", { enumerable: true, get: function () { return decorator_1.ApplicationPlugin; } });
-Object.defineProperty(exports, "createRegisterLoader", { enumerable: true, get: function () { return decorator_1.createRegisterLoader; } });
-Object.defineProperty(exports, "Input", { enumerable: true, get: function () { return decorator_1.Input; } });
-Object.defineProperty(exports, "Prov", { enumerable: true, get: function () { return decorator_1.Prov; } });
-Object.defineProperty(exports, "registerProvider", { enumerable: true, get: function () { return decorator_1.registerProvider; } });
-Object.defineProperty(exports, "runtimeInjector", { enumerable: true, get: function () { return decorator_1.runtimeInjector; } });
-exports.Application = exports.applicationContext.makeApplicationDecorator();
+    else {
+        microStore.render = function (options) {
+            if (options === void 0) { options = {}; }
+            return createPlatform(applicationContext).bootstrapMicroRender(applicationContext.providers, options);
+        };
+    }
+});

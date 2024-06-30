@@ -1,5 +1,5 @@
 import { __awaiter, __decorate, __metadata } from "tslib";
-import { ApplicationContext } from '@fm/core/platform/application';
+import { ApplicationContext } from '@fm/core/platform';
 import { ApplicationPlugin } from '@fm/core/platform/decorator';
 import { AppContextService } from '@fm/core/providers/app-context';
 import { HISTORY, PlatformOptions } from '@fm/core/token';
@@ -14,7 +14,7 @@ let Plugin = class Plugin {
         return __awaiter(this, void 0, void 0, function* () {
             const importMicro = this.injector.get(IMPORT_MICRO);
             if (importMicro && !this.options.isMicro) {
-                const { MicroManage } = yield importMicro;
+                const { MicroManage } = yield importMicro();
                 this.ctx.addProvider({ provide: IMPORT_MICRO, useExisting: MicroManage });
             }
         });

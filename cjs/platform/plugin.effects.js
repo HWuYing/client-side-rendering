@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Plugin = void 0;
 var tslib_1 = require("tslib");
-var application_1 = require("@fm/core/platform/application");
+var platform_1 = require("@fm/core/platform");
 var decorator_1 = require("@fm/core/platform/decorator");
 var app_context_1 = require("@fm/core/providers/app-context");
 var token_1 = require("@fm/core/token");
@@ -21,7 +21,7 @@ var Plugin = /** @class */ (function () {
                     case 0:
                         importMicro = this.injector.get(token_2.IMPORT_MICRO);
                         if (!(importMicro && !this.options.isMicro)) return [3 /*break*/, 2];
-                        return [4 /*yield*/, importMicro];
+                        return [4 /*yield*/, importMicro()];
                     case 1:
                         MicroManage = (_a.sent()).MicroManage;
                         this.ctx.addProvider({ provide: token_2.IMPORT_MICRO, useExisting: MicroManage });
@@ -62,7 +62,7 @@ var Plugin = /** @class */ (function () {
     ], Plugin.prototype, "options", void 0);
     Plugin = tslib_1.__decorate([
         (0, decorator_1.ApplicationPlugin)(),
-        tslib_1.__metadata("design:paramtypes", [application_1.ApplicationContext, di_1.Injector])
+        tslib_1.__metadata("design:paramtypes", [platform_1.ApplicationContext, di_1.Injector])
     ], Plugin);
     return Plugin;
 }());

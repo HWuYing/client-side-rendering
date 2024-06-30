@@ -44,8 +44,8 @@ export class ProxySandbox {
         });
     }
     appendChild(shadBox, node) {
-        var _a;
         return __awaiter(this, void 0, void 0, function* () {
+            var _a;
             const name = node.nodeName;
             if (name === 'LINK') {
                 yield this.linkToStyle(node);

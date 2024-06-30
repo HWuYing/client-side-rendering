@@ -64,9 +64,9 @@ var ProxySandbox = /** @class */ (function () {
         });
     };
     ProxySandbox.prototype.appendChild = function (shadBox, node) {
-        var _a;
         return __awaiter(this, void 0, void 0, function () {
             var name;
+            var _a;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
