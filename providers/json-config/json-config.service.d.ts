@@ -1,5 +1,5 @@
-import { HttpClient, JsonConfigService as SharedJsonConfigService } from '@fm/core';
-import { Injector } from '@fm/di';
+import { HttpClient, JsonConfigService as SharedJsonConfigService } from '@hwy-fm/core';
+import { Injector } from '@hwy-fm/di';
 import { Observable } from 'rxjs';
 export declare class JsonConfigService extends SharedJsonConfigService {
     protected injector: Injector;

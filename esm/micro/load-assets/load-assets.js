@@ -1,6 +1,6 @@
 import { __decorate, __metadata, __param, __rest } from "tslib";
-import { createMicroElementTemplate, HttpFetchHandler, MICRO_OPTIONS, serializableAssets } from '@fm/core';
-import { Inject, Injectable } from '@fm/di';
+import { createMicroElementTemplate, HttpFetchHandler, MICRO_OPTIONS, serializableAssets } from '@hwy-fm/core';
+import { Inject, Injectable } from '@hwy-fm/di';
 import { isEmpty, merge } from 'lodash';
 import { forkJoin, of } from 'rxjs';
 import { map, mergeMap, switchMap, tap } from 'rxjs/operators';

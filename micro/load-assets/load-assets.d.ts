@@ -1,4 +1,4 @@
-import { HttpFetchHandler } from '@fm/core';
+import { HttpFetchHandler } from '@hwy-fm/core';
 import { Observable } from 'rxjs';
 export interface StaticAssets {
     script: string[];

@@ -1,9 +1,9 @@
 import { __awaiter, __decorate, __metadata } from "tslib";
-import { ApplicationContext } from '@fm/core/platform';
-import { ApplicationPlugin } from '@fm/core/platform/decorator';
-import { AppContextService } from '@fm/core/providers/app-context';
-import { HISTORY, PlatformOptions } from '@fm/core/token';
-import { Inject, Injector } from '@fm/di';
+import { ApplicationContext } from '@hwy-fm/core/platform';
+import { ApplicationPlugin } from '@hwy-fm/core/platform/decorator';
+import { AppContextService } from '@hwy-fm/core/providers/app-context';
+import { HISTORY, PlatformOptions } from '@hwy-fm/core/token';
+import { Inject, Injector } from '@hwy-fm/di';
 import { IMPORT_MICRO } from '../token';
 let Plugin = class Plugin {
     constructor(ctx, injector) {
@@ -38,6 +38,7 @@ let Plugin = class Plugin {
         });
     }
 };
+Plugin.__order__ = Infinity;
 __decorate([
     Inject(PlatformOptions),
     __metadata("design:type", Object)

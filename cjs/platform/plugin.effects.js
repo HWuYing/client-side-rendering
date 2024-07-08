@@ -2,11 +2,11 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Plugin = void 0;
 var tslib_1 = require("tslib");
-var platform_1 = require("@fm/core/platform");
-var decorator_1 = require("@fm/core/platform/decorator");
-var app_context_1 = require("@fm/core/providers/app-context");
-var token_1 = require("@fm/core/token");
-var di_1 = require("@fm/di");
+var platform_1 = require("@hwy-fm/core/platform");
+var decorator_1 = require("@hwy-fm/core/platform/decorator");
+var app_context_1 = require("@hwy-fm/core/providers/app-context");
+var token_1 = require("@hwy-fm/core/token");
+var di_1 = require("@hwy-fm/di");
 var token_2 = require("../token");
 var Plugin = /** @class */ (function () {
     function Plugin(ctx, injector) {
@@ -56,6 +56,7 @@ var Plugin = /** @class */ (function () {
             });
         });
     };
+    Plugin.__order__ = Infinity;
     tslib_1.__decorate([
         (0, di_1.Inject)(token_1.PlatformOptions),
         tslib_1.__metadata("design:type", Object)

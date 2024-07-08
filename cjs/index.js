@@ -1,16 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.runtimeInjector = exports.Register = exports.Prov = exports.PLATFORM_SCOPE = exports.Input = exports.createRegisterLoader = exports.ApplicationPlugin = exports.Application = exports.Platform = exports.MicroStore = exports.microOptions = exports.assetsPath = exports.MicroManage = exports.LoadAssets = void 0;
+exports.runtimeInjector = exports.Register = exports.Prov = exports.PLATFORM_SCOPE = exports.Input = exports.createRegisterLoader = exports.ApplicationPlugin = exports.Application = exports.Platform = void 0;
 var tslib_1 = require("tslib");
-var load_assets_1 = require("./micro/load-assets/load-assets");
-Object.defineProperty(exports, "LoadAssets", { enumerable: true, get: function () { return load_assets_1.LoadAssets; } });
-var micro_manage_1 = require("./micro/micro-manage/micro-manage");
-Object.defineProperty(exports, "MicroManage", { enumerable: true, get: function () { return micro_manage_1.MicroManage; } });
-var micro_options_1 = require("./micro/micro-options");
-Object.defineProperty(exports, "assetsPath", { enumerable: true, get: function () { return micro_options_1.assetsPath; } });
-Object.defineProperty(exports, "microOptions", { enumerable: true, get: function () { return micro_options_1.microOptions; } });
-var micro_store_1 = require("./micro/micro-store/micro-store");
-Object.defineProperty(exports, "MicroStore", { enumerable: true, get: function () { return micro_store_1.MicroStore; } });
 var platform_1 = require("./platform");
 Object.defineProperty(exports, "Platform", { enumerable: true, get: function () { return platform_1.Platform; } });
 var runtime_1 = require("./platform/runtime");
@@ -23,4 +14,4 @@ Object.defineProperty(exports, "Prov", { enumerable: true, get: function () { re
 Object.defineProperty(exports, "Register", { enumerable: true, get: function () { return runtime_1.Register; } });
 Object.defineProperty(exports, "runtimeInjector", { enumerable: true, get: function () { return runtime_1.runtimeInjector; } });
 tslib_1.__exportStar(require("./token"), exports);
-tslib_1.__exportStar(require("@fm/core"), exports);
+tslib_1.__exportStar(require("@hwy-fm/core"), exports);

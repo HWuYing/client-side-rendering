@@ -2,8 +2,8 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AppContextService = void 0;
 var tslib_1 = require("tslib");
-var providers_1 = require("@fm/core/providers");
-var di_1 = require("@fm/di");
+var providers_1 = require("@hwy-fm/core/providers");
+var di_1 = require("@hwy-fm/di");
 var AppContextService = /** @class */ (function (_super) {
     tslib_1.__extends(AppContextService, _super);
     function AppContextService() {

@@ -1,4 +1,4 @@
-import { Injector, Provider } from '@fm/di';
+import { Injector, Provider } from '@hwy-fm/di';
 export declare class Platform {
     private platformInjector;
     private resource;

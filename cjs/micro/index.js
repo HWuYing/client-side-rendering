@@ -11,4 +11,4 @@ Object.defineProperty(exports, "assetsPath", { enumerable: true, get: function (
 Object.defineProperty(exports, "microOptions", { enumerable: true, get: function () { return micro_options_1.microOptions; } });
 var micro_store_1 = require("./micro-store/micro-store");
 Object.defineProperty(exports, "MicroStore", { enumerable: true, get: function () { return micro_store_1.MicroStore; } });
-tslib_1.__exportStar(require("@fm/core/micro"), exports);
+tslib_1.__exportStar(require("@hwy-fm/core/micro"), exports);

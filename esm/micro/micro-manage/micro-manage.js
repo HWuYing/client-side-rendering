@@ -1,5 +1,5 @@
 import { __decorate, __metadata } from "tslib";
-import { Injectable, Injector } from '@fm/di';
+import { Injectable, Injector } from '@hwy-fm/di';
 import { map, shareReplay } from 'rxjs/operators';
 import { LoadAssets } from '../load-assets/load-assets';
 import { MicroStore } from '../micro-store/micro-store';

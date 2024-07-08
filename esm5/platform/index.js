@@ -1,9 +1,9 @@
 import { __assign, __awaiter, __generator, __rest } from "tslib";
-import { HttpHandler, HttpInterceptingHandler } from '@fm/core/common/http';
-import { APP_CONTEXT, AppContextService } from '@fm/core/providers/app-context';
-import { JsonConfigService } from '@fm/core/providers/json-config';
-import { APPLICATION_TOKEN, HTTP_INTERCEPTORS } from '@fm/core/token';
-import { Injector } from '@fm/di';
+import { HttpHandler, HttpInterceptingHandler } from '@hwy-fm/core/common/http';
+import { APP_CONTEXT, AppContextService } from '@hwy-fm/core/providers/app-context';
+import { JsonConfigService } from '@hwy-fm/core/providers/json-config';
+import { APPLICATION_TOKEN, HTTP_INTERCEPTORS } from '@hwy-fm/core/token';
+import { Injector } from '@hwy-fm/di';
 import { AppContextService as ClientAppContextService } from '../providers/app-context';
 import { JsonConfigService as ClientJsonConfigService, JsonIntercept } from '../providers/json-config';
 import { IMPORT_MICRO } from '../token';

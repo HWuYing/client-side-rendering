@@ -1,6 +1,6 @@
 import { __decorate } from "tslib";
-import { AppContextService as SharedAppContextService } from '@fm/core/providers';
-import { Injectable } from '@fm/di';
+import { AppContextService as SharedAppContextService } from '@hwy-fm/core/providers';
+import { Injectable } from '@hwy-fm/di';
 let AppContextService = class AppContextService extends SharedAppContextService {
     constructor() {
         super(...arguments);

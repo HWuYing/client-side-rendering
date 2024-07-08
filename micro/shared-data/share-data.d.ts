@@ -1,4 +1,4 @@
-import { SharedDataInterface } from '@fm/core/micro';
+import { SharedDataInterface } from '@hwy-fm/core/micro';
 export declare class SharedData implements SharedDataInterface {
     private data;
     set(key: string, value: any): void;

@@ -2,11 +2,11 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Platform = void 0;
 var tslib_1 = require("tslib");
-var http_1 = require("@fm/core/common/http");
-var app_context_1 = require("@fm/core/providers/app-context");
-var json_config_1 = require("@fm/core/providers/json-config");
-var token_1 = require("@fm/core/token");
-var di_1 = require("@fm/di");
+var http_1 = require("@hwy-fm/core/common/http");
+var app_context_1 = require("@hwy-fm/core/providers/app-context");
+var json_config_1 = require("@hwy-fm/core/providers/json-config");
+var token_1 = require("@hwy-fm/core/token");
+var di_1 = require("@hwy-fm/di");
 var app_context_2 = require("../providers/app-context");
 var json_config_2 = require("../providers/json-config");
 var token_2 = require("../token");

@@ -1,5 +1,5 @@
 import { __decorate } from "tslib";
-import { Injectable } from '@fm/di';
+import { Injectable } from '@hwy-fm/di';
 let SharedData = class SharedData {
     constructor() {
         this.data = new Map();

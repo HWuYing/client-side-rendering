@@ -1,4 +1,4 @@
-import { MicroManageInterface, MicroStoreInterface } from '@fm/core/micro';
+import { MicroManageInterface, MicroStoreInterface } from '@hwy-fm/core/micro';
 import { StaticAssets } from '../load-assets/load-assets';
 export declare class MicroStore implements MicroStoreInterface {
     private microName;
