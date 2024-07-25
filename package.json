@@ -140,7 +140,6 @@
 			"default": "./esm5/token/*.js"
 		}
 	},
-	"dependencies": {},
 	"scripts": {
 		"test": "echo 'Error: no test specified' && exit 1"
 	},
